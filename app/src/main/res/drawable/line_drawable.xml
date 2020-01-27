@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <solid android:color="?bottom_sheet_vertical_view_color" />
+    <size
+        android:width="@dimen/line_bottom_sheet_width"
+        android:height="@dimen/line_bottom_sheet_height" />
+    <corners android:radius="@dimen/line_bottom_sheet_radius" />
+</shape>

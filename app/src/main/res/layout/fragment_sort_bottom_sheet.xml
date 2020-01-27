@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data class="SortBottomSheetBinding" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/line_bottom_sheet_margin"
+            android:layout_marginBottom="@dimen/line_bottom_sheet_margin"
+            app:srcCompat="@drawable/line_drawable" />
+
+        <RadioGroup
+            android:id="@+id/radio_group_sort"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <RadioButton
+                android:id="@+id/radio_btn_hot"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:background="?android:selectableItemBackground"
+                android:button="@null"
+                android:drawableEnd="?android:attr/listChoiceIndicatorSingle"
+                android:paddingStart="@dimen/padding_bottom_sheet_start"
+                android:paddingEnd="@dimen/padding_bottom_sheet"
+                android:paddingBottom="@dimen/padding_bottom_sheet"
+                android:text="@string/hot_sort"
+                android:textAlignment="textStart"
+                android:textColor="?attr/bottom_sheet_text_style" />
+
+            <RadioButton
+                android:id="@+id/radio_btn_top"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:background="?android:selectableItemBackground"
+                android:button="@null"
+                android:drawableEnd="?android:attr/listChoiceIndicatorSingle"
+                android:paddingStart="@dimen/padding_bottom_sheet_start"
+                android:paddingEnd="@dimen/padding_bottom_sheet"
+                android:paddingBottom="@dimen/padding_bottom_sheet"
+                android:text="@string/top_sort"
+                android:textAlignment="textStart"
+                android:textColor="?attr/bottom_sheet_text_style" />
+
+            <RadioButton
+                android:id="@+id/radio_btn_new"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:background="?android:selectableItemBackground"
+                android:button="@null"
+                android:drawableEnd="?android:attr/listChoiceIndicatorSingle"
+                android:paddingStart="@dimen/padding_bottom_sheet_start"
+                android:paddingEnd="@dimen/padding_bottom_sheet"
+                android:paddingBottom="@dimen/padding_bottom_sheet"
+                android:text="@string/new_sort"
+                android:textAlignment="textStart"
+                android:textColor="?attr/bottom_sheet_text_style" />
+
+            <RadioButton
+                android:id="@+id/radio_btn_controversial"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:background="?android:selectableItemBackground"
+                android:button="@null"
+                android:drawableEnd="?android:attr/listChoiceIndicatorSingle"
+                android:paddingStart="@dimen/padding_bottom_sheet_start"
+                android:paddingEnd="@dimen/padding_bottom_sheet"
+                android:paddingBottom="@dimen/padding_bottom_sheet"
+                android:text="@string/controversial_sort"
+                android:textAlignment="textStart"
+                android:textColor="?attr/bottom_sheet_text_style" />
+        </RadioGroup>
+    </LinearLayout>
+</layout>

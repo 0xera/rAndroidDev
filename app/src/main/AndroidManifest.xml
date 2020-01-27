@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="ru.aydarov.randroid">
+
+    <application
+        android:allowBackup="true"
+        android:fullBackupContent="@xml/backup_descriptor"
+        android:icon="@mipmap/ic_launcher_logo"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_logo_round"
+        android:supportsRtl="true"
+        tools:ignore="GoogleAppIndexingWarning">
+        <activity
+            android:name=".presentation.ui.search.SearchActivity"
+            android:theme="@style/ThemeLight" />
+        <activity
+            android:name=".theme_helper.ThemeChanger"
+            android:theme="@style/ThemeChangeTheme" />
+        <activity
+            android:name=".presentation.common.SingleActivity"
+            android:theme="@style/ThemeLight" />
+        <activity
+            android:name=".presentation.ui.searched.SearchedActivity"
+            android:theme="@style/ThemeLight" />
+        <activity
+            android:name=".presentation.common.SplashActivity"
+            android:theme="@style/SplashThemeDark">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+    </application>
+
+</manifest>

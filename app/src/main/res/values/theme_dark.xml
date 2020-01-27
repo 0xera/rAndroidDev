@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+
+    <color name="darkWindowBackground">#18191D</color>
+    <color name="dark_primary">#272A2E</color>
+    <color name="dark_primary_dark">#25262B</color>
+    <color name="dark_accent">#2196F3</color>
+    <color name="search_hint_dark">@android:color/darker_gray</color>
+
+    <style name="ThemeDark" parent="ThemeDark.Base" />
+
+    <style name="ThemeDark.Base" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <item name="android:windowAnimationStyle">@style/ActivityAnim</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowBackground">@color/darkWindowBackground</item>
+        <item name="colorPrimary">@color/dark_primary</item>
+        <item name="navigation_background">?colorPrimary</item>
+        <item name="colorPrimaryDark">@color/dark_primary_dark</item>
+        <item name="colorAccent">@android:color/white</item>
+        <item name="android:colorAccent">@color/dark_accent</item>
+        <item name="colorControlNormal">?colorAccent</item>
+        <item name="colorControlActivated">@android:color/white</item>
+        <item name="actionModeBackground">?colorPrimary</item>
+        <item name="android:textColorPrimary">@android:color/white</item>
+        <!--        <item name="android:textColorPrimary">#eee</item>-->
+        <!--        <item name="android:textColorSecondary">#9E9E9E</item>-->
+        <!--        <item name="android:textColorTertiary">#ffe0e0e0</item>-->
+        <item name="android:colorEdgeEffect">?colorPrimary</item>
+        <!--        <item name="android:windowDrawsSystemBarBackgrounds">true</item>-->
+        <item name="android:navigationBarColor">?colorPrimaryDark</item>
+        <item name="android:dialogTheme">@style/DialogThemeDark</item>
+        <item name="android:alertDialogTheme">@style/DialogThemeDark</item>
+        <item name="android:toolbarStyle">@style/ToolbarStyleDark</item>
+        <item name="android:windowLightStatusBar" tools:targetApi="m">false</item>
+        <item name="android:popupMenuStyle">@style/PopupMenuDark</item>
+        <item name="navigation_user">@drawable/ic_user_dark</item>
+        <item name="navigation_news">@drawable/ic_news_dark</item>
+        <item name="theme_change_icon">@drawable/ic_lamp_on</item>
+        <item name="item_color">@android:color/white</item>
+        <item name="bottom_sheet_text_style">@android:color/white</item>
+        <item name="bottomSheetDialogTheme">@style/BottomSheetDialogDark</item>
+        <item name="bottom_sheet_vertical_view_color">#ED424242</item>
+        <item name="splash_drawable">@drawable/splash_draw_dark</item>
+        <item name="hint_color">@color/search_hint_dark</item>
+        <item name="card_view_color">@color/dark_primary_dark</item>
+        <item name="text_color">@android:color/white</item>
+    </style>
+
+
+    <style name="ToolbarStyleDark">
+        <!--        <item name="android:background">?colorPrimaryDark</item>-->
+        <item name="android:textColorPrimary">@android:color/white</item>
+        <item name="theme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
+        <item name="titleTextAppearance">@style/TextAppearance.AppCompat.Title</item>
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+
+    <style name="PopupThemeDark" parent="ThemeOverlay.AppCompat">
+        <item name="android:colorBackground">@color/darkWindowBackground</item>
+    </style>
+
+    <style name="PopupMenuDark" parent="Widget.AppCompat.PopupMenu">
+        <item name="android:popupBackground">@color/darkWindowBackground</item>
+    </style>
+
+    <style name="DialogThemeDark" parent="Theme.AppCompat.Dialog.Alert">
+        <item name="android:toolbarStyle">@style/ToolbarStyleDark</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowBackground">@color/darkWindowBackground</item>
+        <item name="colorPrimary">?colorPrimary</item>
+        <item name="colorPrimaryDark">?colorPrimaryDark</item>
+        <item name="colorAccent">?colorAccent</item>
+    </style>
+
+
+    <style name="BottomSheetDialogDark" parent="BottomSheetDialog">
+        <item name="colorControlNormal">@android:color/white</item>
+        <item name="android:backgroundTint">?colorPrimaryDark</item>
+        <item name="colorAccent">@color/dark_accent</item>
+    </style>
+
+</resources>

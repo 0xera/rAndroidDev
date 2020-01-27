@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+
+    <!--    <color name="lightWindowBackground">#FAFAFA</color>-->
+    <!--    <color name="light_primary">#F5F5F5</color>-->
+    <!--    <color name="light_primary_dark">#E0E0E0</color>-->
+    <!--    <color name="light_accent">#2962FF</color>-->
+    <color name="lightBackground">#FAFAFA</color>
+    <color name="lightWinBackground">#DFDFDF</color>
+    <color name="lightNavBackground">#FAFAFA</color>
+    <color name="light_primary">#1976d2</color>
+    <color name="light_primary_dark">#004ba0</color>
+    <color name="light_accent">#1976d2</color>
+    <color name="search_hint_light">@color/lightWinBackground</color>
+
+    <style name="ThemeLight" parent="ThemeLight.Base" />
+
+    <style name="ThemeLight.Base" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <item name="android:windowAnimationStyle">@style/ActivityAnim</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowBackground">@color/lightWinBackground</item>
+        <item name="colorPrimary">@color/light_primary</item>
+        <item name="colorPrimaryDark">@color/light_primary_dark</item>
+        <item name="navigation_background">@color/lightNavBackground</item>
+        <item name="colorAccent">@android:color/white</item>
+        <item name="android:colorAccent">@color/light_accent</item>
+        <item name="colorControlNormal">?colorAccent</item>
+        <item name="actionModeBackground">?colorPrimary</item>
+        <item name="android:textColorPrimary">@android:color/white</item>
+        <!--        <item name="android:textColorSecondary">#727272</item>-->
+        <!--        <item name="android:textColorTertiary">#686868</item>-->
+        <item name="android:colorEdgeEffect">?colorPrimary</item>
+        <!--        <item name="android:windowDrawsSystemBarBackgrounds">true</item>-->
+        <!--        <item name="android:statusBarColor">@android:color/transparent</item>-->
+        <item name="android:dialogTheme">@style/DialogThemeLight</item>
+        <item name="android:alertDialogTheme">@style/DialogThemeLight</item>
+        <item name="android:toolbarStyle">@style/ToolbarStyleLight</item>
+        <item name="android:windowLightStatusBar" tools:targetApi="m">false</item>
+        <item name="navigation_user">@drawable/ic_user_light</item>
+        <item name="navigation_news">@drawable/ic_news_light</item>
+        <item name="theme_change_icon">@drawable/ic_lamp_off</item>
+        <item name="item_color">@android:color/black</item>
+        <item name="bottom_sheet_text_style">@android:color/black</item>
+        <item name="bottomSheetDialogTheme">@style/BottomSheetDialogLight</item>
+        <item name="bottom_sheet_vertical_view_color">#A49E9E9E</item>
+        <item name="splash_drawable">@drawable/splash_draw_light</item>
+        <item name="hint_color">@color/search_hint_light</item>
+        <item name="card_view_color">@color/lightBackground</item>
+        <item name="text_color">@android:color/black</item>
+    </style>
+
+
+    <style name="DialogThemeLight" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="android:toolbarStyle">@style/ToolbarStyleLight</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowBackground">@color/lightBackground</item>
+        <item name="colorPrimary">@color/light_primary</item>
+        <item name="colorPrimaryDark">@color/light_primary_dark</item>
+        <item name="colorAccent">@color/light_accent</item>
+    </style>
+
+    <style name="ToolbarStyleLight" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
+        <item name="titleTextAppearance">@style/TextAppearance.AppCompat.Title</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:popupTheme">@style/PopupThemeLight</item>
+    </style>
+
+    <style name="PopupThemeLight" parent="ThemeOverlay.AppCompat.Light">
+        <item name="android:colorBackground">@color/lightBackground</item>
+    </style>
+
+    <style name="BottomSheetDialogLight" parent="BottomSheetDialog">
+        <item name="colorControlNormal">@android:color/black</item>
+        <item name="android:textColor">@android:color/black</item>
+        <item name="colorAccent">@color/light_accent</item>
+    </style>
+
+
+</resources>

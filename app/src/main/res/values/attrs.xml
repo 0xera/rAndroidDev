@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="NavBarItems">
+        <attr name="navigation_user" format="reference" />
+        <attr name="navigation_news" format="reference" />
+        <attr name="navigation_background" format="reference" />
+    </declare-styleable>
+    <declare-styleable name="ThemeChangeIcon">
+        <attr name="theme_change_icon" format="reference" />
+        <attr name="splash_drawable" format="reference" />
+    </declare-styleable>
+    <declare-styleable name="BottomViewItemColor">
+        <attr name="item_color" format="reference" />
+    </declare-styleable>
+    <declare-styleable name="BottomSheetStyle">
+        <attr name="bottom_sheet_text_style" format="reference" />
+        <attr name="bottom_sheet_vertical_view_color" format="color" />
+    </declare-styleable>
+    <declare-styleable name="CircleImageView">
+        <attr name="srcCircle" format="reference" />
+    </declare-styleable>
+    <declare-styleable name="TextColorForTheme">
+        <attr name="hint_color" format="color" />
+        <attr name="card_view_color" format="color" />
+        <attr name="text_color" format="color" />
+    </declare-styleable>
+    <declare-styleable name="SnowView">
+        <attr name="red" format="integer" />
+        <attr name="green" format="integer" />
+        <attr name="blue" format="integer" />
+    </declare-styleable>
+</resources>
