@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">rAndroid</string>
+    <string name="about_me">Обо мне</string>
+    <string name="app_info">Информация о приложении</string>
+    <string name="controversial_sort">Спорные</string>
+    <string name="hot_sort">Горячие</string>
+    <string name="log_out">Выйти</string>
+    <string name="navigation_news">Новости</string>
+    <string name="navigation_user">Профиль</string>
+    <string name="new_sort">Новые</string>
+    <string name="no_string">Нет</string>
+    <string name="ok_string">Хорошо</string>
+    <string name="question_logout">Вы уверены, что хотите выйти?</string>
+    <string name="search">Поиск</string>
+    <string name="sing_in">Войти</string>
+    <string name="sort">Сортировка</string>
+    <string name="top_sort">Топовые</string>
+    <string name="username">Имя пользователя</string>
+    <string name="yes_string">Да</string>
+    <string name="apply">Принять</string>
+    <string name="cancel">Отменить</string>
+    <string name="download">Загрузка</string>
+    <string name="write_about_you_dialog">Напишите о себе</string>
+    <string name="success">Успешно</string>
+    <string name="action_settings">Настройки</string>
+    <string name="error">Ошибка</string>
+    <string name="denied">Отказано</string>
+    <string name="no_internet">Нет подключения к интернету</string>
+</resources>

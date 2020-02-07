@@ -6,26 +6,26 @@ import androidx.annotation.NonNull;
 import androidx.paging.PagedListAdapter;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
-import ru.aydarov.randroid.data.model.Post;
+import ru.aydarov.randroid.data.model.RedditPost;
 
 /**
  * @author Aydarov Askhar 2020
  */
-public class NewsAdapter extends PagedListAdapter {
+public class PostAdapter extends PagedListAdapter {
 
-    private final DiffUtil.ItemCallback<Post> DIFF_CALLBACK = new DiffUtil.ItemCallback<Post>() {
+    private final DiffUtil.ItemCallback<RedditPost> DIFF_CALLBACK = new DiffUtil.ItemCallback<RedditPost>() {
         @Override
-        public boolean areItemsTheSame(@NonNull Post oldItem, @NonNull Post newItem) {
-            return oldItem.id.equals(newItem.id);
+        public boolean areItemsTheSame(@NonNull RedditPost oldItem, @NonNull RedditPost newItem) {
+            return oldItem.getId().equals(newItem.getId());
         }
 
         @Override
-        public boolean areContentsTheSame(@NonNull Post oldItem, @NonNull Post newItem) {
+        public boolean areContentsTheSame(@NonNull RedditPost oldItem, @NonNull RedditPost newItem) {
             return false;
         }
     };
 
-    protected NewsAdapter(@NonNull DiffUtil.ItemCallback diffCallback) {
+    protected PostAdapter(@NonNull DiffUtil.ItemCallback diffCallback) {
         super(diffCallback);
     }
 

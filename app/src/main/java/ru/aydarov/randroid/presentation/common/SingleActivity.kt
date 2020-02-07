@@ -7,14 +7,23 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.NavigationUI
+
 import kotlinx.android.synthetic.main.activity_single.*
 import ru.aydarov.randroid.R
+import ru.aydarov.randroid.data.util.TokensSharedHelper
 import ru.aydarov.randroid.theme_helper.ThemeHelper
+
 
 /**
  * @author Aydarov Askhar 2020
  */
 class SingleActivity : AppCompatActivity(), INavigator {
+
+    val mAccessToken: String
+        get() = TokensSharedHelper.getAccessToken(this)
+    val mRefreshToken: String
+        get() = TokensSharedHelper.getRefreshToken(this)
+
     private val mNavController: NavController by lazy {
         findNavController(R.id.nav_host_fragment)
     }
@@ -26,6 +35,16 @@ class SingleActivity : AppCompatActivity(), INavigator {
         NavigationUI.setupWithNavController(navView, mNavController)
     }
 
+
+    fun nullifyTokens() {
+        saveTokens(TokensSharedHelper.NONE, TokensSharedHelper.NONE)
+    }
+
+    fun saveTokens(accessToken: String, refreshToken: String) {
+        TokensSharedHelper.saveAccessToken(this, accessToken)
+        TokensSharedHelper.saveRefreshToken(this, refreshToken)
+    }
+
     override fun onSupportNavigateUp() = mNavController.navigateUp()
 
 
@@ -33,8 +52,6 @@ class SingleActivity : AppCompatActivity(), INavigator {
         fun newIntent(context: Context) = with(context) {
             Intent(this, SingleActivity::class.java)
         }
-
-        public var count = 0;
     }
 
     override fun navigateFromSearchedToSelf(extras: Bundle?) {
@@ -48,5 +65,7 @@ class SingleActivity : AppCompatActivity(), INavigator {
     override fun navigateFromNewsToSearchedFragment(extras: Bundle) {
         mNavController.navigate(R.id.action_navigation_news_to_searchedFragment, extras)
     }
+
+
 }
 

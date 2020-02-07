@@ -1,7 +1,6 @@
 package ru.aydarov.randroid.presentation.ui.view;
 
 import android.content.Context;
-import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
@@ -12,53 +11,36 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.core.graphics.drawable.RoundedBitmapDrawable;
 import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory;
-import ru.aydarov.randroid.R;
-
 /**
  * @author Aydarov Askhar 2020
  */
-public class CircleImageView extends AppCompatImageView {
+public class CircleImageViewRoundedBitmap extends AppCompatImageView {
 
     private AppCompatImageView mImageView;
 
-    public CircleImageView(Context context) {
+    public CircleImageViewRoundedBitmap(Context context) {
         super(context);
-        mImageView = new AppCompatImageView(context);
+
     }
 
-    public CircleImageView(Context context, AttributeSet attrs) {
+    public CircleImageViewRoundedBitmap(Context context, AttributeSet attrs) {
         super(context, attrs);
-        if (attrs != null) {
-            TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.CircleImageView);
-            Drawable drawable = typedArray.getDrawable(R.styleable.CircleImageView_srcCircle);
-            typedArray.recycle();
-            setImage(drawable);
-        }
     }
+    {
 
-
-    public void setImage(Bitmap bm) {
-        if (bm != null) {
-            mImageView.setImageBitmap(bm);
-            setImage(mImageView.getDrawable());
-        }
+        initImageView();
     }
-
-    public void setImage(int resId) {
+    @Override
+    public void setImageResource(int resId) {
+        initImageView();
         mImageView.setImageResource(resId);
         if (mImageView.getDrawable() != null)
-            setImage(mImageView.getDrawable());
-
+            setImageDrawable(mImageView.getDrawable());
     }
 
-    public void setImage(@Nullable Uri uri) {
-        if (uri != null) {
-            mImageView.setImageURI(uri);
-            setImage(mImageView.getDrawable());
-        }
-    }
-
-    public void setImage(Drawable drawable) {
+    @Override
+    public void setImageDrawable(@Nullable Drawable drawable) {
+        initImageView();
         if (drawable != null) {
             Bitmap bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
             Canvas canvas = new Canvas(bitmap);
@@ -66,9 +48,40 @@ public class CircleImageView extends AppCompatImageView {
             drawable.draw(canvas);
             RoundedBitmapDrawable roundedBitmapDrawable = RoundedBitmapDrawableFactory.create(getResources(), bitmap);
             roundedBitmapDrawable.setCircular(true);
-            setImageDrawable(roundedBitmapDrawable);
+            super.setImageDrawable(roundedBitmapDrawable);
+        } else {
+            super.setImageDrawable(null);
+        }
+
+
+    }
+
+    @Override
+    public void setImageBitmap(Bitmap bm) {
+        initImageView();
+        if (bm != null) {
+            mImageView.setImageBitmap(bm);
+            setImageDrawable(mImageView.getDrawable());
         }
     }
+
+    @Override
+    public void setImageURI(@Nullable Uri uri) {
+        initImageView();
+        if (uri != null) {
+            mImageView.setImageURI(uri);
+            setImageDrawable(mImageView.getDrawable());
+        }
+    }
+
+
+    private void initImageView() {
+        if(mImageView == null){
+            mImageView = new AppCompatImageView(this.getContext());
+        }
+    }
+
+
 
 
 }

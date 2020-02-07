@@ -1,128 +1,169 @@
 <?xml version="1.0" encoding="utf-8"?>
+<layout>
 
+    <data class="UserFragmentBinding">
 
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+        <variable
+            name="vm"
+            type="ru.aydarov.randroid.presentation.ui.user.UserViewModel" />
 
-    <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/app_bar_layout"
+        <import
+            alias="T"
+            type="android.text.TextUtils" />
+    </data>
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="false">
 
-        <com.google.android.material.appbar.CollapsingToolbarLayout
-            android:id="@+id/collapsingToolbarLayout"
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/app_bar_layout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:layout_scrollFlags="noScroll"
-            app:titleEnabled="false"
-            app:toolbarId="@id/toolbar">
+            android:layout_height="wrap_content"
+            android:fitsSystemWindows="false">
 
-            <ImageView
-                android:id="@+id/ivBackground"
+            <com.google.android.material.appbar.CollapsingToolbarLayout
+
+                android:id="@+id/collapsingToolbarLayout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:scaleType="fitXY"
-                app:srcCompat="@drawable/ic_add_background" />
+                app:layout_scrollFlags="scroll|snap"
+                app:titleEnabled="false"
+                app:toolbarId="@id/toolbar">
 
-            <androidx.appcompat.widget.Toolbar
-                android:id="@+id/toolbar"
-                style="?toolbarStyle"
-                android:layout_width="match_parent"
-                android:layout_height="?actionBarSize"
-                app:layout_collapseMode="pin" />
+                <ImageView
+                    android:id="@+id/ivBackground"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/iv_toolbar_user_height"
+                    android:scaleType="centerCrop"
+                    android:transitionName="@string/iv_transition"
+                    app:imageUrl="@{vm.user.sub.banner}"
+                    app:srcCompat="@drawable/ic_add_image" />
+
+                <androidx.appcompat.widget.Toolbar
+                    android:id="@+id/toolbar"
+                    style="?toolbarStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="?actionBarSize"
+                    app:layout_collapseMode="pin"
+                    app:layout_scrollFlags="scroll|enterAlways" />
 
 
-        </com.google.android.material.appbar.CollapsingToolbarLayout>
+            </com.google.android.material.appbar.CollapsingToolbarLayout>
 
-    </com.google.android.material.appbar.AppBarLayout>
+        </com.google.android.material.appbar.AppBarLayout>
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/card_view_under_profile_image"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:backgroundTint="?card_view_color"
-        app:layout_anchor="@id/app_bar_layout"
-        app:layout_anchorGravity="bottom|start">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/nested_scroll_view"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent"
+            android:layout_below="@id/app_bar_layout"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-            <ru.aydarov.randroid.presentation.ui.view.CircleImageView
-                android:id="@+id/ivProfile"
-                android:layout_width="@dimen/circle_profile_image_size"
-                android:layout_height="@dimen/circle_profile_image_size"
-                android:scaleType="fitCenter"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCircle="@drawable/ic_add_profile" />
 
-            <TextView
-                android:id="@+id/tvUsername"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:text="@string/username"
-                android:textColor="?text_color"
-                android:textSize="@dimen/username_item_text_size"
-                app:layout_constraintBottom_toBottomOf="@id/ivProfile"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/ivProfile"
-                app:layout_constraintTop_toTopOf="@id/ivProfile" />
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
-            <ImageView
-                android:id="@+id/ivChangeTheme"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_end_auth_iv_change_theme"
-                app:layout_constraintEnd_toEndOf="@id/tvUsername"
-                app:layout_constraintStart_toStartOf="@+id/tvUsername"
-                app:layout_constraintTop_toBottomOf="@id/tvUsername"
-                app:srcCompat="?theme_change_icon" />
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/card_view_under_profile_image"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="?card_view_color"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
 
-            <TextView
-                android:id="@+id/tvAbout"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="?attr/selectableItemBackground"
-                android:maxLength="@integer/about_text_max_length"
-                android:padding="@dimen/padding_tv"
-                android:text="@string/about_me"
-                android:textColor="?text_color"
-                android:textSize="@dimen/item_text_size"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/ivProfile" />
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/constraint_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
 
-            <TextView
-                android:id="@+id/tvLogout"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="?attr/selectableItemBackground"
-                android:maxLength="@integer/about_text_max_length"
-                android:padding="@dimen/padding_tv"
-                android:text="@string/log_out"
-                android:textColor="@android:color/holo_red_dark"
-                android:textSize="@dimen/item_text_size"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tvAbout" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.cardview.widget.CardView>
+                        <ru.aydarov.randroid.presentation.ui.view.CircleImageViewRoundedBitmap
+                            android:id="@+id/ivProfile"
+                            android:layout_width="@dimen/circle_profile_image_size"
+                            android:layout_height="@dimen/circle_profile_image_size"
+                            android:layout_marginStart="@dimen/padding_tv"
+                            android:layout_marginTop="@dimen/padding_tv"
+                            android:scaleType="centerCrop"
+                            android:transitionName="@string/iv_transition"
+                            app:imageUrl="@{vm.user.icon}"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:srcCompat="@drawable/ic_add_profile" />
 
-    <TextView
-        android:id="@+id/tvAppVersion"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|center_horizontal"
-        android:layout_marginTop="@dimen/margin_top_app_info"
-        android:padding="@dimen/padding_tv"
-        android:text="@string/app_info"
-        android:textColor="@android:color/darker_gray"
-        android:textSize="@dimen/about_tv_size"
-        app:layout_anchor="@id/card_view_under_profile_image"
-        app:layout_anchorGravity="bottom|center" />
+                        <TextView
+                            android:id="@+id/tvUsername"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:text="@{vm.user.name}"
+                            android:textColor="?text_color"
+                            android:textSize="@dimen/username_item_text_size"
+                            app:layout_constraintBottom_toBottomOf="@id/ivProfile"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toEndOf="@id/ivProfile"
+                            app:layout_constraintTop_toTopOf="@id/ivProfile" />
 
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+                        <ImageView
+                            android:id="@+id/ivChangeTheme"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/margin_top_auth_iv_change_theme"
+                            app:layout_constraintEnd_toEndOf="@id/tvUsername"
+                            app:layout_constraintStart_toStartOf="@+id/tvUsername"
+                            app:layout_constraintTop_toBottomOf="@id/tvUsername"
+                            app:srcCompat="?theme_change_icon" />
+
+                        <TextView
+                            android:id="@+id/tvAbout"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/margin_bottom_auth_iv_change_theme"
+                            android:background="?attr/selectableItemBackground"
+                            android:maxLength="@integer/about_text_max_length"
+                            android:padding="@dimen/padding_tv"
+                            android:text="@{(!T.isEmpty(vm.user.sub.description))? vm.user.sub.description: @string/about_me}"
+                            android:textColor="?text_color"
+                            android:textSize="@dimen/item_text_size"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/ivChangeTheme" />
+
+                        <TextView
+                            android:id="@+id/tvLogout"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="?attr/selectableItemBackground"
+                            android:maxLength="@integer/about_text_max_length"
+                            android:padding="@dimen/padding_tv"
+                            android:text="@string/log_out"
+                            android:textColor="@android:color/holo_red_dark"
+                            android:textSize="@dimen/item_text_size"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/tvAbout" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </androidx.cardview.widget.CardView>
+
+                <TextView
+                    android:id="@+id/tvAppVersion"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom|center_horizontal"
+                    android:layout_marginTop="@dimen/margin_top_app_info"
+                    android:padding="@dimen/padding_tv"
+                    android:text="@string/app_info"
+                    android:textColor="@android:color/darker_gray"
+                    android:textSize="@dimen/about_tv_size"
+                    app:layout_constraintEnd_toEndOf="@id/card_view_under_profile_image"
+                    app:layout_constraintStart_toStartOf="@id/card_view_under_profile_image"
+                    app:layout_constraintTop_toBottomOf="@id/card_view_under_profile_image" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        </androidx.core.widget.NestedScrollView>
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+</layout>

@@ -1,4 +1,4 @@
-package ru.aydarov.randroid.presentation.ui.news;
+package ru.aydarov.randroid.presentation.ui.post;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,7 +8,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import java.util.Objects;
 
@@ -17,14 +16,14 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProviders;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
 import ru.aydarov.randroid.R;
+import ru.aydarov.randroid.data.util.SortTypeHelper;
 import ru.aydarov.randroid.databinding.PostListBinding;
 import ru.aydarov.randroid.presentation.common.SingleActivity;
 import ru.aydarov.randroid.presentation.ui.bottom_sheet.SortBottomSheetFragment;
 import ru.aydarov.randroid.presentation.ui.search.SearchActivity;
-import ru.aydarov.randroid.presentation.util.SortTypeHelper;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -57,39 +56,14 @@ public class PostListFragment extends Fragment implements SortBottomSheetFragmen
         mPostListBinding = PostListBinding.inflate(inflater, container, false);
         initToolbar();
         initRecyclerView();
+
+
         return mPostListBinding.getRoot();
     }
 
     private void initRecyclerView() {
         mRecyclerView = mPostListBinding.postListRecyclerView;
-        mRecyclerView.setAdapter(new RecyclerView.Adapter() {
-                                     @NonNull
-                                     @Override
-                                     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-                                         return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.support_simple_spinner_dropdown_item, parent, false));
-                                     }
-
-                                     @Override
-                                     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-
-                                     }
-
-                                     @Override
-                                     public int getItemCount() {
-                                         return 50;
-                                     }
-
-                                     class ViewHolder extends RecyclerView.ViewHolder {
-                                         public ViewHolder(@NonNull View itemView) {
-                                             super(itemView);
-                                             TextView viewById = itemView.findViewById(android.R.id.text1);
-                                             viewById.setText("blalvlalvalva");
-                                         }
-                                     }
-                                 }
-
-
-        );
+        mRecyclerView.setAdapter();
     }
 
     private void initToolbar() {
@@ -103,9 +77,10 @@ public class PostListFragment extends Fragment implements SortBottomSheetFragmen
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mViewModel = ViewModelProviders.of(this).get(PostListViewModel.class);
+        mViewModel = new ViewModelProvider(this).get(PostListViewModel.class);
         setToolbarTitle();
     }
+
 
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
@@ -156,7 +131,6 @@ public class PostListFragment extends Fragment implements SortBottomSheetFragmen
     }
 
     private void setToolbarTitle() {
-
         switch (SORT_TYPE) {
             case 0:
                 mToolbar.setTitle(getString(R.string.hot_sort));

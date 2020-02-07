@@ -1,4 +1,4 @@
-package ru.aydarov.randroid.presentation.util;
+package ru.aydarov.randroid.data.util;
 
 import android.content.Context;
 

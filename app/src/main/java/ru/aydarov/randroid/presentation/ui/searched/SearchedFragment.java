@@ -17,7 +17,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProviders;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
 import ru.aydarov.randroid.R;
 import ru.aydarov.randroid.databinding.SearchedFragmentBinding;
@@ -101,7 +101,7 @@ public class SearchedFragment extends Fragment implements SortBottomSheetFragmen
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mViewModel = ViewModelProviders.of(this).get(SearchedViewModel.class);
+        mViewModel = new ViewModelProvider(this).get(SearchedViewModel.class);
         if (getArguments() != null) {
             setToolbarTitle(getArguments().getString(SearchActivity.SEARCH_KEY_EXTRA));
         }

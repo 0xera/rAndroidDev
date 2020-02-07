@@ -23,6 +23,8 @@ import ru.aydarov.randroid.theme_helper.ThemeHelper;
 public class AboutAppBottomSheetFragment extends BottomSheetDialogFragment {
 
     private static final String FRAGMENT_TAG = "tegos";
+    private static final int BOUND = 150;
+    private static final int BOUND_DEVIATION = 50;
     private AboutBottomSheetBinding mAboutBottomSheetBinding;
     private Random mRnd = ThreadLocalRandom.current();
 
@@ -42,11 +44,15 @@ public class AboutAppBottomSheetFragment extends BottomSheetDialogFragment {
     public View onCreateView(@NotNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         mAboutBottomSheetBinding = AboutBottomSheetBinding.inflate(inflater, container, false);
-        //     BottomSheetBehavior.from(mAboutBottomSheetBinding.getRoot()).setState(BottomSheetBehavior.STATE_EXPANDED);
-        mAboutBottomSheetBinding.tvApp.setOnClickListener(v->
-                mAboutBottomSheetBinding.snowView.setRGB(mRnd.nextInt(200), mRnd.nextInt(200), mRnd.nextInt(200))
+        changeColor();
+        mAboutBottomSheetBinding.tvApp.setOnClickListener(v ->
+                changeColor()
         );
         return mAboutBottomSheetBinding.getRoot();
+    }
+
+    private void changeColor() {
+        mAboutBottomSheetBinding.snowView.setRGB(mRnd.nextInt(BOUND) + BOUND_DEVIATION, mRnd.nextInt(BOUND) + BOUND_DEVIATION, mRnd.nextInt(BOUND) + BOUND_DEVIATION);
     }
 
     public static String getFragmentTag() {

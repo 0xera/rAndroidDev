@@ -14,8 +14,8 @@ import org.jetbrains.annotations.NotNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import ru.aydarov.randroid.R;
+import ru.aydarov.randroid.data.util.SortTypeHelper;
 import ru.aydarov.randroid.databinding.SortBottomSheetBinding;
-import ru.aydarov.randroid.presentation.util.SortTypeHelper;
 import ru.aydarov.randroid.theme_helper.ThemeHelper;
 
 /**

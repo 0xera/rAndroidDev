@@ -1,0 +1,10 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="ru.aydarov.randroid.presentation.common.ImageViewActivity">
+    <item
+        android:id="@+id/action_download"
+        android:icon="@drawable/ic_file_download_white"
+        android:title="@string/download"
+        app:showAsAction="always" />
+</menu>

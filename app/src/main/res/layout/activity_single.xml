@@ -28,6 +28,7 @@
                 app:itemIconTint="@color/selector_bottom_item_state"
                 app:labelVisibilityMode="unlabeled"
                 app:menu="@menu/menu_bottom_nav" />
+
         </RelativeLayout>
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

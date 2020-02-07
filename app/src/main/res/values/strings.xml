@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">rAndroid</string>
+    <string name="app_name">rAndroidDev</string>
     <string name="navigation_news">News</string>
     <string name="navigation_user">User</string>
     <string name="search">Search</string>
@@ -11,20 +11,19 @@
     <string name="username">Username</string>
     <string name="about_me">About me</string>
     <string name="app_info">App info</string>
-    <string name="title_activity_single2">Single2Activity</string>
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="nav_header_title">Android Studio</string>
-    <string name="nav_header_subtitle">android.studio@android.com</string>
-    <string name="nav_header_desc">Navigation header</string>
-    <string name="action_settings">Settings</string>
-
-    <string name="menu_home">Home</string>
-    <string name="menu_gallery">Gallery</string>
-    <string name="menu_slideshow">Slideshow</string>
-    <string name="menu_tools">Tools</string>
-    <string name="menu_share">Share</string>
-    <string name="menu_send">Send</string>
     <string name="log_out">Log out</string>
     <string name="sing_in">Sing in</string>
+    <string name="ok_string">OK</string>
+    <string name="yes_string">Yes</string>
+    <string name="no_string">No</string>
+    <string name="question_logout">Are you sure you want to log out?</string>
+    <string name="action_settings">Settings</string>
+    <string name="download">Download</string>
+    <string name="write_about_you_dialog">Write about yourself</string>
+    <string name="apply">Apply</string>
+    <string name="cancel">Cancel</string>
+    <string name="success">Success</string>
+    <string name="error">Error</string>
+    <string name="denied">Denied</string>
+    <string name="no_internet">No internet connection</string>
 </resources>

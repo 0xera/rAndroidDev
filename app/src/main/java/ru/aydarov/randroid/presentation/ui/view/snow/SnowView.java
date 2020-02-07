@@ -28,11 +28,11 @@ public class SnowView extends View {
     private SnowFlake[] snowflakes;
     private Paint mPaintLine;
 
-    public void setRGB(int red2, int green2, int blue2) {
-        this.red = red2;
-        this.green = green2;
-        this.blue = blue2;
-        this.paint.setColor(Color.argb(255, red2, green2, blue2));
+    public void setRGB(int red, int green, int blue) {
+        this.red = red;
+        this.green = green;
+        this.blue = blue;
+        this.paint.setColor(Color.argb(255, red, green, blue));
     }
 
     public SnowView(Context context) {
@@ -87,7 +87,8 @@ public class SnowView extends View {
     /* access modifiers changed from: protected */
     public void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        Double[][] modul = (Double[][]) Array.newInstance(Double.class, new int[]{100, 100});
+        int[] dimensions = {100, 100};
+        Double[][] modul = (Double[][]) Array.newInstance(Double.class, dimensions);
         for (int i = 0; i < 100; i++) {
             for (int j = i + 1; j < 100; j++) {
                 Double a = Math.sqrt((double) (((this.snowflakes[i].position.x - this.snowflakes[j].position.x) * (this.snowflakes[i].position.x - this.snowflakes[j].position.x)) + ((this.snowflakes[i].position.y - this.snowflakes[j].position.y) * (this.snowflakes[i].position.y - this.snowflakes[j].position.y))));

@@ -3,7 +3,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="ru.aydarov.randroid">
 
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
     <application
+        android:name=".presentation.common.App"
         android:allowBackup="true"
         android:fullBackupContent="@xml/backup_descriptor"
         android:icon="@mipmap/ic_launcher_logo"
@@ -12,6 +18,17 @@
         android:supportsRtl="true"
         tools:ignore="GoogleAppIndexingWarning">
         <activity
+            android:name=".presentation.ui.web.WebViewActivity"
+            android:theme="@style/ThemeLight" />
+
+        <activity
+            android:name=".presentation.ui.user.EditTextActivity"
+            android:theme="@style/ThemeLight"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".presentation.common.ImageViewActivity"
+            android:theme="@style/ImageViewTheme" />
+        <activity
             android:name=".presentation.ui.search.SearchActivity"
             android:theme="@style/ThemeLight" />
         <activity
@@ -19,7 +36,10 @@
             android:theme="@style/ThemeChangeTheme" />
         <activity
             android:name=".presentation.common.SingleActivity"
-            android:theme="@style/ThemeLight" />
+            android:theme="@style/ThemeLight">
+            <nav-graph android:value="@navigation/navigation_graph" />
+
+        </activity>
         <activity
             android:name=".presentation.ui.searched.SearchedActivity"
             android:theme="@style/ThemeLight" />

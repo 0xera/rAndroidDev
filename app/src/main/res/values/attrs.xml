@@ -16,7 +16,7 @@
         <attr name="bottom_sheet_text_style" format="reference" />
         <attr name="bottom_sheet_vertical_view_color" format="color" />
     </declare-styleable>
-    <declare-styleable name="CircleImageView">
+    <declare-styleable name="CircleImageViewRoundedBitmap">
         <attr name="srcCircle" format="reference" />
     </declare-styleable>
     <declare-styleable name="TextColorForTheme">
@@ -28,5 +28,12 @@
         <attr name="red" format="integer" />
         <attr name="green" format="integer" />
         <attr name="blue" format="integer" />
+    </declare-styleable>
+    <declare-styleable name="TextInputTheme">
+        <attr name="text_input_style" format="reference" />
+    </declare-styleable>
+    <declare-styleable name="SwipeRefreshLayout">
+        <attr name="scheme_color" format="color" />
+        <attr name="scheme_color_background" format="color" />
     </declare-styleable>
 </resources>

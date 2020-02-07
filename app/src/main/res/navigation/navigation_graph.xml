@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/navigation_news"
-        android:name="ru.aydarov.randroid.presentation.ui.news.PostListFragment"
+        android:name="ru.aydarov.randroid.presentation.ui.post.PostListFragment"
         android:label="@string/navigation_news" >
         <action
             android:id="@+id/action_navigation_news_to_searchedFragment"
@@ -23,6 +23,9 @@
             app:destination="@id/navigation_user"
             app:popUpTo="@+id/navigation_news"
             app:popUpToInclusive="true" />
+        <deepLink
+            android:id="@+id/deepLink"
+            app:uri="http://www.randroiddev.com/my_redirect" />
     </fragment>
     <fragment
         android:id="@+id/searchedFragment"
