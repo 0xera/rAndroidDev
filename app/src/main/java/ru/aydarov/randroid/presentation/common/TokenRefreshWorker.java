@@ -13,7 +13,7 @@ package ru.aydarov.randroid.presentation.common;
 //    @NonNull
 //    @Override
 //    public Result doWork() {
-//        String refreshToken = getInputData().getString(RedditUtils.REFRESH_TOKEN_KEY);
+//        String refreshToken = getInputData().getString(RedditUtilsNet.REFRESH_TOKEN_KEY);
 //
 //        return Result.success();
 //    }

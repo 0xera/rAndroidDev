@@ -39,6 +39,7 @@ public class WebViewActivity extends AppCompatActivity {
         mViewModel = new ViewModelProvider(this, mViewModelFactory).get(WebViewViewModel.class);
         ThemeHelper.setTheme(this);
         mWebViewActivityBinding = DataBindingUtil.setContentView(this, R.layout.activity_web_view);
+        mWebViewActivityBinding.setLifecycleOwner(this);
         initView();
         setLiveDataObserver();
 

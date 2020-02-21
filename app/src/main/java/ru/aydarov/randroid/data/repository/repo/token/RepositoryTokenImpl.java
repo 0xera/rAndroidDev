@@ -6,7 +6,7 @@ import dagger.Lazy;
 import io.reactivex.Single;
 import retrofit2.Call;
 import ru.aydarov.randroid.data.model.Token;
-import ru.aydarov.randroid.data.repository.api.RedditTokenAPI;
+import ru.aydarov.randroid.data.repository.api.token.RedditTokenAPI;
 
 /**
  * @author Aydarov Askhar 2020

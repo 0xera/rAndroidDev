@@ -37,18 +37,19 @@
                     android:id="@+id/ivBackground"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/iv_toolbar_user_height"
-                    android:scaleType="centerCrop"
-                    android:transitionName="@string/iv_transition"
-                    app:imageUrl="@{vm.user.sub.banner}"
+                    android:scaleType="center"
+                    android:transitionName="@string/src_transition"
+                    app:bannerImageUrl="@{vm.user.sub.banner}"
+                    app:layout_collapseMode="parallax"
                     app:srcCompat="@drawable/ic_add_image" />
 
-                <androidx.appcompat.widget.Toolbar
-                    android:id="@+id/toolbar"
-                    style="?toolbarStyle"
-                    android:layout_width="match_parent"
-                    android:layout_height="?actionBarSize"
-                    app:layout_collapseMode="pin"
-                    app:layout_scrollFlags="scroll|enterAlways" />
+                <!--                <androidx.appcompat.widget.Toolbar-->
+                <!--                    android:id="@+id/toolbar"-->
+                <!--                    style="?toolbarStyle"-->
+                <!--                    android:layout_width="match_parent"-->
+                <!--                    android:layout_height="?actionBarSize"-->
+                <!--                    app:layout_collapseMode="pin"-->
+                <!--                    app:layout_scrollFlags="scroll|enterAlways" />-->
 
 
             </com.google.android.material.appbar.CollapsingToolbarLayout>
@@ -81,14 +82,14 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
 
-                        <ru.aydarov.randroid.presentation.ui.view.CircleImageViewRoundedBitmap
+                        <ru.aydarov.randroid.presentation.ui.view.CircleImageViewBitmapShader
                             android:id="@+id/ivProfile"
                             android:layout_width="@dimen/circle_profile_image_size"
                             android:layout_height="@dimen/circle_profile_image_size"
                             android:layout_marginStart="@dimen/padding_tv"
                             android:layout_marginTop="@dimen/padding_tv"
                             android:scaleType="centerCrop"
-                            android:transitionName="@string/iv_transition"
+                            android:transitionName="@string/src_transition"
                             app:imageUrl="@{vm.user.icon}"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
@@ -125,9 +126,9 @@
                             android:background="?attr/selectableItemBackground"
                             android:maxLength="@integer/about_text_max_length"
                             android:padding="@dimen/padding_tv"
-                            android:text="@{(!T.isEmpty(vm.user.sub.description))? vm.user.sub.description: @string/about_me}"
                             android:textColor="?text_color"
                             android:textSize="@dimen/item_text_size"
+                            android:text="@{(!T.isEmpty(vm.user.sub.description))? vm.user.sub.description: @string/about_me}"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/ivChangeTheme" />
 

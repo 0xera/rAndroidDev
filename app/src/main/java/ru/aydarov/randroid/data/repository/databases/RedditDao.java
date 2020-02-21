@@ -30,9 +30,19 @@ public interface RedditDao {
     void insert(List<RedditPost> posts);
 
     @Query("SELECT * FROM redditpost")
-    DataSource.Factory<Integer, RedditPost> postsBySubreddit();
+    DataSource.Factory<Integer, RedditPost> getPosts();
+
 
     @Query("DELETE FROM redditpost")
-    void deleteBySubreddit();
+    void deletePosts();
 
+
+    @Query("SELECT MAX(indexInResponse) + 1 FROM redditpost where searchQuery=null")
+    int getNextIndexInSubreddit();
+
+    @Query("SELECT * FROM redditpost where searchQuery=:searchQuery")
+    DataSource.Factory<Integer, RedditPost> getPosts(String searchQuery);
+
+    @Query("SELECT MAX(indexInResponse) + 1 FROM redditpost where searchQuery=:searchQuery")
+    int getNextIndexInSubreddit(String searchQuery);
 }

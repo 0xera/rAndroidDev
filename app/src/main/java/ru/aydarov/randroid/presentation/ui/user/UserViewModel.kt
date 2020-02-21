@@ -30,25 +30,6 @@ class UserViewModel(private val mInteractor: Lazy<UserInteractor>) : ViewModel()
 
     }
 
-//    private fun getRetrofit(): Retrofit? {
-//        if (mRetrofit == null) {
-//            val interceptor = HttpLoggingInterceptor()
-//            interceptor.level = HttpLoggingInterceptor.Level.HEADERS
-//            val client = OkHttpClient.Builder().addInterceptor(interceptor).build()
-//            mRetrofit = Retrofit.Builder()
-//                    .baseUrl(RedditUtils.OAUTH_API_BASE_URI)
-//                    .client(client)
-//                    .addConverterFactory(GsonConverterFactory.create(Gson()))
-//                    .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-//                    .build()
-//        }
-//        return mRetrofit
-//    }
-//
-//    private fun getApi(): RedditOauthAPI? {
-//        if (mRedditAPI == null) mRedditAPI = getRetrofit()?.create(RedditOauthAPI::class.java)
-//        return mRedditAPI
-//    }
 
     fun dispose() {
         mInteractor.get().dispose()

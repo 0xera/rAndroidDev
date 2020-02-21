@@ -7,7 +7,7 @@
     <dimen name="list_item_spacing">16dp</dimen>
     <dimen name="list_item_spacing_half">8dp</dimen>
     <dimen name="padding_bottom_sheet">5dp</dimen>
-    <dimen name="padding_bottom_sheet_start">10dp</dimen>
+    <dimen name="padding_bottom_sheet_start">8dp</dimen>
     <dimen name="line_bottom_sheet_width">32dp</dimen>
     <dimen name="line_bottom_sheet_height">4dp</dimen>
     <dimen name="line_bottom_sheet_radius">8dp</dimen>
@@ -25,4 +25,10 @@
     <dimen name="iv_toolbar_user_height">160dp</dimen>
     <dimen name="margin_et_button">16dp</dimen>
     <dimen name="margin_bottom_auth_iv_change_theme">8dp</dimen>
+    <dimen name="margin_type_text">8dp</dimen>
+    <dimen name="network_state_layout_padding">16dp</dimen>
+    <dimen name="reddit_post_card_margin">8dp</dimen>
+    <dimen name="title_text_size">32sp</dimen>
+    <dimen name="text_post_size">16sp</dimen>
+    <dimen name="padding_type">2dp</dimen>
 </resources>

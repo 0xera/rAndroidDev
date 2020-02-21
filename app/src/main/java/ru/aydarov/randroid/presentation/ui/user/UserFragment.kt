@@ -22,12 +22,15 @@ import kotlinx.android.synthetic.main.fragment_user.*
 import kotlinx.android.synthetic.main.fragment_user_no_log_in.*
 import ru.aydarov.randroid.BuildConfig
 import ru.aydarov.randroid.R
-import ru.aydarov.randroid.data.util.LiveConnectUtil
-import ru.aydarov.randroid.data.util.TokensSharedHelper
+import ru.aydarov.randroid.data.util.Constants.REQUEST_TRANSITION
+import ru.aydarov.randroid.data.util.Constants.SRC_OPEN_KEY
 import ru.aydarov.randroid.databinding.UserFragmentBinding
+import ru.aydarov.randroid.domain.util.LiveConnectUtil
+import ru.aydarov.randroid.domain.util.RedditUtils
+import ru.aydarov.randroid.domain.util.TokensSharedHelper
+import ru.aydarov.randroid.presentation.activty.ImageViewActivity
+import ru.aydarov.randroid.presentation.activty.SingleActivity
 import ru.aydarov.randroid.presentation.common.App
-import ru.aydarov.randroid.presentation.common.ImageViewActivity
-import ru.aydarov.randroid.presentation.common.SingleActivity
 import ru.aydarov.randroid.presentation.ui.bottom_sheet.AboutAppBottomSheetFragment
 import ru.aydarov.randroid.presentation.ui.web.WebViewActivity
 import ru.aydarov.randroid.theme_helper.ThemeChanger
@@ -121,7 +124,7 @@ class UserFragment : Fragment() {
     }
 
     private fun initViewLogin() {
-        LiveConnectUtil.getInstance().observe(this, Observer {
+        LiveConnectUtil.getInstance().observe(viewLifecycleOwner, Observer {
             if (it) {
                 mUserViewModel.fetchMyData((activity as SingleActivity).mAccessToken)
             } else {
@@ -147,7 +150,8 @@ class UserFragment : Fragment() {
         tvLogout.setOnClickListener { createLogoutAlertDialog() }
         //  ivBackground.setOnLongClickListener { openGallery(Request.BACKGROUND) }
         ivBackground.setOnClickListener {
-            mUserViewModel.user.value?.sub?.banner?.openImage(it)
+            val uri = RedditUtils.getUri(mUserViewModel.user.value?.sub?.banner)
+            uri.openImage(it)
         }
         ivProfile.setOnClickListener {
             mUserViewModel.user.value?.icon?.openImage(it)
@@ -155,7 +159,7 @@ class UserFragment : Fragment() {
 
         // ivProfile.setOnLongClickListener { openGallery(Request.PROFILE) }
         //   tvAbout.setOnClickListener { changeAboutText() }
-        mUserViewModel.result.observe(this, Observer {
+        mUserViewModel.result.observe(viewLifecycleOwner, Observer {
             if (it == UserViewModel.Result.ERROR)
                 Toast.makeText(activity, R.string.error, Toast.LENGTH_SHORT).show()
         })
@@ -163,8 +167,8 @@ class UserFragment : Fragment() {
 
     private infix fun String.openImage(view: View) {
         activity.let {
-            val activityOptions = ActivityOptionsCompat.makeSceneTransitionAnimation(it!!, view, getString(R.string.iv_transition))
-            activity?.startActivityFromFragment(this@UserFragment, Intent(activity, ImageViewActivity::class.java).putExtra(ImageViewActivity.IMAGE_OPEN_KEY, this), REQUEST_TRANSITION, activityOptions.toBundle())
+            val activityOptions = ActivityOptionsCompat.makeSceneTransitionAnimation(it!!, view, getString(R.string.src_transition))
+            activity?.startActivityFromFragment(this@UserFragment, Intent(activity, ImageViewActivity::class.java).putExtra(SRC_OPEN_KEY, this), REQUEST_TRANSITION, activityOptions.toBundle())
         }
     }
 
@@ -251,9 +255,7 @@ class UserFragment : Fragment() {
         super.onDestroy()
     }
 
-    companion object {
-        const val REQUEST_TRANSITION = 505
-    }
+
 }
 
 enum class Request(val code: Int) {

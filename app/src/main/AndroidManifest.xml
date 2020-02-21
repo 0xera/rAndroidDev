@@ -26,8 +26,11 @@
             android:theme="@style/ThemeLight"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name=".presentation.common.ImageViewActivity"
-            android:theme="@style/ImageViewTheme" />
+            android:name=".presentation.activty.ImageViewActivity"
+            android:theme="@style/ViewSourceTheme" />
+        <activity
+            android:name=".presentation.activty.VideoViewActivity"
+            android:theme="@style/ViewSourceTheme" />
         <activity
             android:name=".presentation.ui.search.SearchActivity"
             android:theme="@style/ThemeLight" />
@@ -35,16 +38,13 @@
             android:name=".theme_helper.ThemeChanger"
             android:theme="@style/ThemeChangeTheme" />
         <activity
-            android:name=".presentation.common.SingleActivity"
+            android:name=".presentation.activty.SingleActivity"
             android:theme="@style/ThemeLight">
             <nav-graph android:value="@navigation/navigation_graph" />
 
         </activity>
         <activity
-            android:name=".presentation.ui.searched.SearchedActivity"
-            android:theme="@style/ThemeLight" />
-        <activity
-            android:name=".presentation.common.SplashActivity"
+            android:name=".presentation.activty.SplashActivity"
             android:theme="@style/SplashThemeDark">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

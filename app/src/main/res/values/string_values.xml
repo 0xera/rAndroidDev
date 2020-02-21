@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="iv_transition" translatable="false">iv_transition</string>
+    <string name="src_transition" translatable="false">iv_transition</string>
 </resources>

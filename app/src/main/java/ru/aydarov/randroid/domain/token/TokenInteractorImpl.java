@@ -13,8 +13,8 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 import ru.aydarov.randroid.data.model.Token;
 import ru.aydarov.randroid.data.repository.repo.token.RepositoryToken;
-import ru.aydarov.randroid.data.util.RedditUtils;
-import ru.aydarov.randroid.data.util.TokensSharedHelper;
+import ru.aydarov.randroid.data.util.RedditUtilsNet;
+import ru.aydarov.randroid.domain.util.TokensSharedHelper;
 import ru.aydarov.randroid.presentation.ui.web.WebViewViewModel;
 
 /**
@@ -40,14 +40,14 @@ public class TokenInteractorImpl implements TokenInteractor {
     }
 
     public String getUrl() {
-        Uri baseUri = Uri.parse(RedditUtils.OAUTH_URL);
+        Uri baseUri = Uri.parse(RedditUtilsNet.OAUTH_URL);
         Uri.Builder uriBuilder = baseUri.buildUpon();
-        uriBuilder.appendQueryParameter(RedditUtils.CLIENT_ID_KEY, RedditUtils.CLIENT_ID);
-        uriBuilder.appendQueryParameter(RedditUtils.RESPONSE_TYPE_KEY, RedditUtils.RESPONSE_TYPE);
-        uriBuilder.appendQueryParameter(RedditUtils.STATE_KEY, RedditUtils.STATE);
-        uriBuilder.appendQueryParameter(RedditUtils.REDIRECT_URI_KEY, RedditUtils.REDIRECT_URI);
-        uriBuilder.appendQueryParameter(RedditUtils.DURATION_KEY, RedditUtils.DURATION);
-        uriBuilder.appendQueryParameter(RedditUtils.SCOPE_KEY, RedditUtils.SCOPE);
+        uriBuilder.appendQueryParameter(RedditUtilsNet.CLIENT_ID_KEY, RedditUtilsNet.CLIENT_ID);
+        uriBuilder.appendQueryParameter(RedditUtilsNet.RESPONSE_TYPE_KEY, RedditUtilsNet.RESPONSE_TYPE);
+        uriBuilder.appendQueryParameter(RedditUtilsNet.STATE_KEY, RedditUtilsNet.STATE);
+        uriBuilder.appendQueryParameter(RedditUtilsNet.REDIRECT_URI_KEY, RedditUtilsNet.REDIRECT_URI);
+        uriBuilder.appendQueryParameter(RedditUtilsNet.DURATION_KEY, RedditUtilsNet.DURATION);
+        uriBuilder.appendQueryParameter(RedditUtilsNet.SCOPE_KEY, RedditUtilsNet.SCOPE);
         return uriBuilder.toString();
     }
 
@@ -55,8 +55,8 @@ public class TokenInteractorImpl implements TokenInteractor {
     public boolean checkUrlAndGetTokens(MutableLiveData<WebViewViewModel.State> state, String url) {
         if (url.contains(CODE_URL_1) || url.contains(CODE_URL_2)) {
             mUri = Uri.parse(url);
-            String state_key = mUri.getQueryParameter(RedditUtils.STATE_KEY);
-            if (state_key != null && state_key.equals(RedditUtils.STATE))
+            String state_key = mUri.getQueryParameter(RedditUtilsNet.STATE_KEY);
+            if (state_key != null && state_key.equals(RedditUtilsNet.STATE))
                 return getAccessAndRefreshTokens(state);
         } else if (url.contains(ERROR_ACCESS_DENIED)) {
             state.postValue(WebViewViewModel.State.DENIED);
@@ -66,8 +66,8 @@ public class TokenInteractorImpl implements TokenInteractor {
     }
 
     private boolean getAccessAndRefreshTokens(MutableLiveData<WebViewViewModel.State> state) {
-        Map<String, String> params = RedditUtils.getParamsAuth(mUri);
-        mDisposable = mRepositoryToken.get().getToken(RedditUtils.getHttpBasicAuthHeader(), params)
+        Map<String, String> params = RedditUtilsNet.getParamsAuth(mUri);
+        mDisposable = mRepositoryToken.get().getToken(RedditUtilsNet.getHttpBasicAuthHeader(), params)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
                 .subscribe(token -> {
@@ -79,12 +79,12 @@ public class TokenInteractorImpl implements TokenInteractor {
     }
 
     private void saveToken(Token token) {
-        mPreferences.get().edit().putString(RedditUtils.ACCESS_TOKEN_KEY, token.getAccessToken()).apply();
-        mPreferences.get().edit().putString(RedditUtils.REFRESH_TOKEN_KEY, token.getRefreshToken()).apply();
+        mPreferences.get().edit().putString(RedditUtilsNet.ACCESS_TOKEN_KEY, token.getAccessToken()).apply();
+        mPreferences.get().edit().putString(RedditUtilsNet.REFRESH_TOKEN_KEY, token.getRefreshToken()).apply();
     }
 
     private void saveAccessToken(Token token) {
-        mPreferences.get().edit().putString(RedditUtils.ACCESS_TOKEN_KEY, token.getAccessToken()).apply();
+        mPreferences.get().edit().putString(RedditUtilsNet.ACCESS_TOKEN_KEY, token.getAccessToken()).apply();
     }
 
     @Override
@@ -95,19 +95,19 @@ public class TokenInteractorImpl implements TokenInteractor {
 
     @Override
     public String getAccessTokenFromPreferences() {
-        return mPreferences.get().getString(RedditUtils.ACCESS_TOKEN_KEY, TokensSharedHelper.NONE);
+        return mPreferences.get().getString(RedditUtilsNet.ACCESS_TOKEN_KEY, TokensSharedHelper.NONE);
     }
 
     @Override
     public String getRefreshTokenFromPreferences() {
-        return mPreferences.get().getString(RedditUtils.REFRESH_TOKEN_KEY, TokensSharedHelper.NONE);
+        return mPreferences.get().getString(RedditUtilsNet.REFRESH_TOKEN_KEY, TokensSharedHelper.NONE);
 
     }
 
     @Override
     public String refreshAccessToken() {
         try {
-            retrofit2.Response<Token> response = mRepositoryToken.get().getTokenCall(RedditUtils.getHttpBasicAuthHeader(), RedditUtils.getParamsRefresh(getRefreshTokenFromPreferences())).execute();
+            retrofit2.Response<Token> response = mRepositoryToken.get().getTokenCall(RedditUtilsNet.getHttpBasicAuthHeader(), RedditUtilsNet.getParamsRefresh(getRefreshTokenFromPreferences())).execute();
             if (response.isSuccessful() && response.body() != null) {
                 saveAccessToken(response.body());
                 return response.body().getAccessToken();

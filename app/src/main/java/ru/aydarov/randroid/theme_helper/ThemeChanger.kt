@@ -79,9 +79,6 @@ class ThemeChanger : AppCompatActivity() {
     }
 
     private fun calculateValues(): Int {
-//        val resId = resources.getIdentifier("status_bar_height", "dimen", "android")
-//        if (resId > 0)
-//            mPositionY += resources.getDimensionPixelSize(resId)
         return hypot(ivScreenshot.width.toDouble(), ivScreenshot.height.toDouble()).toInt()
     }
 

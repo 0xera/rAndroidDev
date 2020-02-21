@@ -11,6 +11,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.core.graphics.drawable.RoundedBitmapDrawable;
 import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory;
+
 /**
  * @author Aydarov Askhar 2020
  */
@@ -26,10 +27,11 @@ public class CircleImageViewRoundedBitmap extends AppCompatImageView {
     public CircleImageViewRoundedBitmap(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
-    {
 
+    {
         initImageView();
     }
+
     @Override
     public void setImageResource(int resId) {
         initImageView();
@@ -76,12 +78,10 @@ public class CircleImageViewRoundedBitmap extends AppCompatImageView {
 
 
     private void initImageView() {
-        if(mImageView == null){
+        if (mImageView == null) {
             mImageView = new AppCompatImageView(this.getContext());
         }
     }
-
-
 
 
 }

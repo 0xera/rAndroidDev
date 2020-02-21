@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
     <color name="translucent">#88000000</color>
+    <color name="highlight_found_text">#F8C76A</color>
     <color name="mtrl_textinput_default_box_stroke_color" tools:override="true">@color/light_accent</color>
 </resources>

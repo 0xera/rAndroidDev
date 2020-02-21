@@ -44,6 +44,7 @@ public class AboutAppBottomSheetFragment extends BottomSheetDialogFragment {
     public View onCreateView(@NotNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         mAboutBottomSheetBinding = AboutBottomSheetBinding.inflate(inflater, container, false);
+        mAboutBottomSheetBinding.setLifecycleOwner(this);
         changeColor();
         mAboutBottomSheetBinding.tvApp.setOnClickListener(v ->
                 changeColor()

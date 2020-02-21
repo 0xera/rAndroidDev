@@ -18,6 +18,7 @@ public class Constants {
 
     public static final String ACCESS_TOKEN_URL =
             "https://www.reddit.com/api/v1/access_token";
-
-    public static final String SUBREDDIT = "r/{androiddev}";
+    public static final String SRC_OPEN_KEY = "It_source";
+    public static final int REQUEST_TRANSITION = 505;
+    public static final String SUBREDDIT = "";
 }

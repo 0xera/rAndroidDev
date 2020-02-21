@@ -8,21 +8,28 @@
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:fitsSystemWindows="true"
+
         android:layout_height="match_parent">
 
         <include
             android:id="@+id/toolbar_layout"
             layout="@layout/toolbar_post_fragment" />
 
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/post_list_recycler_view"
+        <ru.aydarov.randroid.presentation.ui.view.SwipeRefreshLayout
+            android:id="@+id/swipe_refresh_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/toolbar_layout"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            app:scheme_color="?android:colorAccent"
+            app:scheme_color_background="?card_view_color">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/post_list_recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/toolbar_layout"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+        </ru.aydarov.randroid.presentation.ui.view.SwipeRefreshLayout>
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
 </layout>

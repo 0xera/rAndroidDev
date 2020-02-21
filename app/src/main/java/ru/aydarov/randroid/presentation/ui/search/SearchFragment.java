@@ -45,6 +45,7 @@ public class SearchFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         mSearchFragmentBinding = SearchFragmentBinding.inflate(inflater, container, false);
+        mSearchFragmentBinding.setLifecycleOwner(this);
         initSearchView();
         initToolbar();
         return mSearchFragmentBinding.getRoot();
@@ -93,7 +94,6 @@ public class SearchFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
         mViewModel = new ViewModelProvider(this).get(SearchViewModel.class);
     }
-
 
 
     private void goSearch(String query) {

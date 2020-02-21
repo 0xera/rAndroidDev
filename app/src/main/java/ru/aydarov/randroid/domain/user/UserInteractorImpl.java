@@ -1,11 +1,14 @@
 package ru.aydarov.randroid.domain.user;
 
+import android.util.Log;
+
 import dagger.Lazy;
+import io.reactivex.Completable;
 import io.reactivex.Flowable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 import ru.aydarov.randroid.data.model.UserData;
-import ru.aydarov.randroid.data.repository.repo.oauth.RepositoryOauth;
+import ru.aydarov.randroid.data.repository.repo.oauth.RepositoryUserOauth;
 
 /**
  * @author Aydarov Askhar 2020
@@ -13,10 +16,11 @@ import ru.aydarov.randroid.data.repository.repo.oauth.RepositoryOauth;
 public class UserInteractorImpl implements UserInteractor {
 
 
-    private final Lazy<RepositoryOauth> mRepository;
+    private static final String TAG = "thidisodsi";
+    private final Lazy<RepositoryUserOauth> mRepository;
     private Disposable mDisposable;
 
-    public UserInteractorImpl(Lazy<RepositoryOauth> repository) {
+    public UserInteractorImpl(Lazy<RepositoryUserOauth> repository) {
         mRepository = repository;
 
     }
@@ -26,13 +30,18 @@ public class UserInteractorImpl implements UserInteractor {
         mDisposable = mRepository.get().getUserDataApi(accessToken)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
-                .subscribe(userData -> mRepository.get().saveUserData(userData), throwable -> { });
+                .subscribe(userData -> mRepository.get().saveUserData(userData), throwable -> {
+                    Log.d(TAG, "getUserData() called with: accessToken = [" + accessToken + "]");
+                });
         return mRepository.get().getUserDataDao().distinctUntilChanged();
     }
 
     @Override
     public void logOut(String username) {
-        mRepository.get().deleteUser(username);
+        Completable.fromAction(() -> mRepository.get().deleteUser(username))
+                .subscribeOn(Schedulers.io())
+                .subscribe();
+
     }
 
     @Override

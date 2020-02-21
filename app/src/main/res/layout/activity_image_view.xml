@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".presentation.common.ImageViewActivity">
+    tools:context=".presentation.activty.ImageViewActivity">
 
 
     <ru.aydarov.randroid.presentation.ui.view.ZoomLayout
@@ -13,12 +13,13 @@
 
 
         <ImageView
+            android:adjustViewBounds="true"
             android:layout_gravity="center"
             android:id="@+id/ivShowView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:scaleType="centerInside"
-            android:transitionName="@string/iv_transition" />
+            android:scaleType="fitCenter"
+            android:transitionName="@string/src_transition" />
     </ru.aydarov.randroid.presentation.ui.view.ZoomLayout>
 
 

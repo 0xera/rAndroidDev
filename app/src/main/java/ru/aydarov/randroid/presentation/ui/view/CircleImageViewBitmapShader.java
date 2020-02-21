@@ -25,7 +25,7 @@ public class CircleImageViewBitmapShader extends AppCompatImageView {
     private Paint mBitmapPaint;
     private Bitmap mBitmap;
     private float mDrawableRadius;
-    private  Matrix mShaderMatrix;
+    private Matrix mShaderMatrix;
     private BitmapShader mBitmapShader;
 
     public CircleImageViewBitmapShader(Context context) {
@@ -95,8 +95,10 @@ public class CircleImageViewBitmapShader extends AppCompatImageView {
     }
 
     private void newBitmap() {
-        mBitmap = getBitmapFromDrawable(getDrawable());
-        shadeBitmap();
+        if (getDrawable() != null) {
+            mBitmap = getBitmapFromDrawable(getDrawable());
+            shadeBitmap();
+        }
     }
 
     private void shadeBitmap() {
