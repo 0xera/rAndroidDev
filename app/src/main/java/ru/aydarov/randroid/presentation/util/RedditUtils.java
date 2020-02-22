@@ -1,4 +1,4 @@
-package ru.aydarov.randroid.domain.util;
+package ru.aydarov.randroid.presentation.util;
 
 import android.text.TextUtils;
 

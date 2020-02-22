@@ -2,7 +2,7 @@ package ru.aydarov.randroid.data.repository.repo.comment;
 
 import dagger.Lazy;
 import io.reactivex.Flowable;
-import ru.aydarov.randroid.data.model.CommentList;
+import okhttp3.ResponseBody;
 import ru.aydarov.randroid.data.repository.api.comments.RedditCommentAPI;
 
 /**
@@ -18,7 +18,7 @@ public class RepositoryCommentImpl implements RepositoryComment {
 
 
     @Override
-    public Flowable<CommentList> loadPostAndCommentsSingleThreadById(String id, String sortType, String singleCommentId, String accessToken) {
+    public Flowable<String> loadPostAndCommentsSingleThreadById(String id, String sortType, String singleCommentId, String accessToken) {
 //
 //        new ListingPost<>(pagedListLiveData, mRedditBoundaryCallback.get().getNetworkState(), refreshState, () -> {
 //            refreshTrigger.setValue(null);
@@ -33,7 +33,12 @@ public class RepositoryCommentImpl implements RepositoryComment {
     }
 
     @Override
-    public Flowable<CommentList> loadPostAndCommentsById(String id, String sortType, String accessToken) {
+    public Flowable<String> loadPostAndCommentsById(String id, String sortType, String accessToken) {
         return mRedditAPI.get().loadPostAndCommentsById(id, sortType);
+    }
+
+    @Override
+    public Flowable<ResponseBody> loadPostAndCommentsByIdBody(String id, String sortType, String accessToken) {
+        return null;
     }
 }

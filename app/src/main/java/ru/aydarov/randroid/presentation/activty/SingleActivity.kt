@@ -63,6 +63,14 @@ class SingleActivity : AppCompatActivity(), INavigatorFragment {
         mNavController.navigate(R.id.action_navigation_user_self)
     }
 
+    override fun navigateFromSearchedToCommentsFragment(extras: Bundle?) {
+        mNavController.navigate(R.id.action_searchedFragment_to_commentsFragment, extras)
+    }
+
+    override fun navigateFromNewsToCommentsFragment(extras: Bundle?) {
+        mNavController.navigate(R.id.action_navigation_news_to_commentsFragment, extras)
+    }
+
     override fun navigateFromNewsToSearchedFragment(extras: Bundle) {
         mNavController.navigate(R.id.action_navigation_news_to_searchedFragment, extras)
     }

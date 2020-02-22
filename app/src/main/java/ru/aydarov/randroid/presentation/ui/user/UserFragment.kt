@@ -25,14 +25,14 @@ import ru.aydarov.randroid.R
 import ru.aydarov.randroid.data.util.Constants.REQUEST_TRANSITION
 import ru.aydarov.randroid.data.util.Constants.SRC_OPEN_KEY
 import ru.aydarov.randroid.databinding.UserFragmentBinding
-import ru.aydarov.randroid.domain.util.LiveConnectUtil
-import ru.aydarov.randroid.domain.util.RedditUtils
 import ru.aydarov.randroid.domain.util.TokensSharedHelper
 import ru.aydarov.randroid.presentation.activty.ImageViewActivity
 import ru.aydarov.randroid.presentation.activty.SingleActivity
 import ru.aydarov.randroid.presentation.common.App
 import ru.aydarov.randroid.presentation.ui.bottom_sheet.AboutAppBottomSheetFragment
 import ru.aydarov.randroid.presentation.ui.web.WebViewActivity
+import ru.aydarov.randroid.presentation.util.LiveConnectUtil
+import ru.aydarov.randroid.presentation.util.RedditUtils
 import ru.aydarov.randroid.theme_helper.ThemeChanger
 import ru.aydarov.randroid.theme_helper.ThemeChanger.Companion.ACTION_THEME_CHANGE
 import ru.aydarov.randroid.theme_helper.ThemeHelper

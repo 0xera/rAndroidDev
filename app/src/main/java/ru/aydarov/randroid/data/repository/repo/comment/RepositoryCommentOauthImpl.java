@@ -2,7 +2,7 @@ package ru.aydarov.randroid.data.repository.repo.comment;
 
 import dagger.Lazy;
 import io.reactivex.Flowable;
-import ru.aydarov.randroid.data.model.CommentList;
+import okhttp3.ResponseBody;
 import ru.aydarov.randroid.data.repository.api.comments.RedditCommentOauthAPI;
 import ru.aydarov.randroid.data.util.RedditUtilsNet;
 
@@ -20,12 +20,18 @@ public class RepositoryCommentOauthImpl implements RepositoryComment {
 
 
     @Override
-    public Flowable<CommentList> loadPostAndCommentsSingleThreadById(String id, String sortType, String singleCommentId, String accessToken) {
+    public Flowable<String> loadPostAndCommentsSingleThreadById(String id, String sortType, String singleCommentId, String accessToken) {
         return mRedditOauthAPI.get().loadPostAndCommentsSingleThreadByIdOauth(id, sortType, singleCommentId, RedditUtilsNet.getOAuthHeader(accessToken));
     }
 
     @Override
-    public Flowable<CommentList> loadPostAndCommentsById(String id, String sortType, String accessToken) {
+    public Flowable<String> loadPostAndCommentsById(String id, String sortType, String accessToken) {
         return mRedditOauthAPI.get().loadPostAndCommentsByIdOauth(id, sortType, RedditUtilsNet.getOAuthHeader(accessToken));
+    }
+
+    @Override
+    public Flowable<ResponseBody> loadPostAndCommentsByIdBody(String id, String sortType, String accessToken) {
+        return mRedditOauthAPI.get().loadPostAndCommentsByIdOauthBody(id, sortType, RedditUtilsNet.getOAuthHeader(accessToken));
+
     }
 }

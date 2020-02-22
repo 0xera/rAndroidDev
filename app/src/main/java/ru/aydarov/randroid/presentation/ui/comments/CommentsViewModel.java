@@ -51,7 +51,7 @@ public class CommentsViewModel extends ViewModel {
     public static class Factory {
 
         @Inject
-        Lazy<CommentInteractor> mPostInteractor;
+        Lazy<CommentInteractor> mCommentInteractor;
 
         @Inject
         Factory() {
@@ -64,7 +64,7 @@ public class CommentsViewModel extends ViewModel {
                 @Override
                 @SuppressWarnings("unchecked")
                 protected <T extends ViewModel> T create(@NonNull String key, @NonNull Class<T> modelClass, @NonNull SavedStateHandle handle) {
-                    return (T) new CommentsViewModel(handle, mPostInteractor);
+                    return (T) new CommentsViewModel(handle, mCommentInteractor);
                 }
             };
         }

@@ -5,6 +5,9 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import org.jetbrains.annotations.NotNull;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import androidx.lifecycle.MutableLiveData;
 import dagger.Lazy;
@@ -42,9 +45,16 @@ public class CommentInteractorImpl implements CommentInteractor {
                 .loadPostAndCommentsById(id, sortType, getToken(RedditUtilsNet.ACCESS_TOKEN_KEY))
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
-                .subscribe(comment -> {
-                            if (comment != null && comment.getData() != null && comment.getData().getComments() != null)
-                                mLiveDataComment.postValue(NetworkCommentResult.success(comment.getData().getComments()));
+                .subscribe(response -> {
+                            Log.d(TAG, "getComments() called with: id = [" + id + "], sortType = [" + sortType + "]");
+//                            if (comments != null && comments.size() > 0 && comments.get(0) != null && comments.get(0).getData() != null) {
+//                                Data data = comments.get(0).getData();
+//                                if (data != null && data.getComments() != null)
+//                                    mLiveDataComment.postValue(NetworkCommentResult.success(data.getComments()));
+////                            }
+//                            if (comments != null && comments.size() > 0) {
+//                                mLiveDataComment.postValue(NetworkCommentResult.success(comments));
+                            parseResponse(mLiveDataComment, response);
                         },
                         throwable -> {
                             Log.d(TAG, "accept() called with: throwable = [" + throwable + "]");
@@ -54,6 +64,18 @@ public class CommentInteractorImpl implements CommentInteractor {
         return mLiveDataComment;
     }
 
+    private void parseResponse(MutableLiveData<NetworkCommentResult> liveDataComment, String response) throws JSONException {
+        JSONObject data = new JSONObject(response).getJSONObject(JSONUtils.DATA_KEY);
+        JSONArray jsonArray = data.getJSONArray(JSONUtils.CHILDREN_KEY);
+        for (int i = 0; i < jsonArray.length(); i++) {
+            try {
+                JSONObject commentJSON = jsonArray.getJSONObject(i).getJSONObject(JSONUtils.DATA_KEY);
+                comments.add(ParseComment.parseSingleComment(commentJSON, 0, locale));
+            } catch (JSONException ignored) {
+            }
+        }
+    }
+
     @Override
     public MutableLiveData<NetworkCommentResult> getCommentsBySingleThread(String id, String sortType, String singleCommentId) {
         mLiveDataCommentSingle.setValue(NetworkCommentResult.LOADING);
@@ -61,9 +83,15 @@ public class CommentInteractorImpl implements CommentInteractor {
                 .loadPostAndCommentsSingleThreadById(id, sortType, singleCommentId, getToken(RedditUtilsNet.ACCESS_TOKEN_KEY))
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
-                .subscribe(comment -> {
-                            if (comment != null && comment.getData() != null && comment.getData().getComments() != null)
-                                mLiveDataCommentSingle.postValue(NetworkCommentResult.success(comment.getData().getComments()));
+                .subscribe(comments -> {
+                            Log.d(TAG, "getComments() called with: id = [" + id + "], sortType = [" + sortType + "]");
+//                            if (comments != null && comments.size() > 0 && comments.get(0) != null && comments.get(0).getData() != null) {
+//                                Data data = comments.get(0).getData();
+//                                if (data != null && data.getComments() != null)
+//                                    mLiveDataCommentSingle.postValue(NetworkCommentResult.success(data.getComments()));
+                            if (comments != null && comments.size() > 0) {
+                                mLiveDataCommentSingle.postValue(NetworkCommentResult.success(comments));
+                            }
                         },
                         throwable -> {
                             Log.d(TAG, "accept() called with: throwable = [" + throwable + "]");

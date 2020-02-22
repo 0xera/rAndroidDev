@@ -2,7 +2,6 @@ package ru.aydarov.randroid.presentation.common;
 
 import android.app.Application;
 
-import ru.aydarov.randroid.domain.util.LiveConnectUtil;
 import ru.aydarov.randroid.presentation.di.app.AppComponent;
 import ru.aydarov.randroid.presentation.di.app.AppModule;
 import ru.aydarov.randroid.presentation.di.app.DaggerAppComponent;
@@ -11,6 +10,7 @@ import ru.aydarov.randroid.presentation.di.comments.CommentComponent;
 import ru.aydarov.randroid.presentation.di.comments.InteractorModuleComment;
 import ru.aydarov.randroid.presentation.di.comments.NetworkModuleComment;
 import ru.aydarov.randroid.presentation.di.comments.RepositoryModuleComment;
+import ru.aydarov.randroid.presentation.util.LiveConnectUtil;
 
 /**
  * @author Aydarov Askhar 2020

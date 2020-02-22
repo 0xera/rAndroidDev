@@ -14,11 +14,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import kotlinx.android.synthetic.main.activity_video_view.*
-
 import ru.aydarov.randroid.R
 import ru.aydarov.randroid.data.util.Constants.SRC_OPEN_KEY
-import ru.aydarov.randroid.domain.util.RedditUtils
 import ru.aydarov.randroid.presentation.ui.adapters.LoaderSourceAdapter
+import ru.aydarov.randroid.presentation.util.RedditUtils
 import java.io.File
 import java.util.*
 

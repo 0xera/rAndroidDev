@@ -24,6 +24,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 import ru.aydarov.randroid.R;
+import ru.aydarov.randroid.data.model.RedditPost;
 import ru.aydarov.randroid.data.repository.repo.post.NetworkState;
 import ru.aydarov.randroid.data.util.RedditUtilsNet;
 import ru.aydarov.randroid.databinding.SearchedFragmentBinding;
@@ -33,6 +34,7 @@ import ru.aydarov.randroid.presentation.common.App;
 import ru.aydarov.randroid.presentation.common.INavigatorSource;
 import ru.aydarov.randroid.presentation.ui.adapters.PostAdapter;
 import ru.aydarov.randroid.presentation.ui.bottom_sheet.SortBottomSheetFragment;
+import ru.aydarov.randroid.presentation.ui.comments.CommentsFragment;
 import ru.aydarov.randroid.presentation.ui.post.PostListViewModel;
 import ru.aydarov.randroid.presentation.ui.search.SearchActivity;
 import ru.aydarov.randroid.presentation.ui.view.SwipeRefreshLayout;
@@ -151,13 +153,6 @@ public class SearchedFragment extends Fragment implements SortBottomSheetFragmen
 
 
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        mPostListBinding.setLifecycleOwner(this);
-    }
-
-
-    @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         inflater.inflate(R.menu.menu_toolbar_post, menu);
         super.onCreateOptionsMenu(menu, inflater);
@@ -243,5 +238,12 @@ public class SearchedFragment extends Fragment implements SortBottomSheetFragmen
     @Override
     public void onShare(Intent intent) {
         startActivity(intent);
+    }
+
+    @Override
+    public void openComments(RedditPost post) {
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(CommentsFragment.POST_KEY, post);
+        ((SingleActivity) requireActivity()).navigateFromSearchedToCommentsFragment(bundle);
     }
 }

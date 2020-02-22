@@ -2,15 +2,12 @@ package ru.aydarov.randroid.presentation.ui.comments;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-
-import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
 
@@ -30,15 +27,13 @@ import ru.aydarov.randroid.R;
 import ru.aydarov.randroid.data.model.RedditPost;
 import ru.aydarov.randroid.data.util.RedditUtilsNet;
 import ru.aydarov.randroid.databinding.CommentFragmentBinding;
-import ru.aydarov.randroid.domain.util.PostHelper;
-import ru.aydarov.randroid.domain.util.RedditUtils;
 import ru.aydarov.randroid.presentation.common.App;
 import ru.aydarov.randroid.presentation.common.INavigatorSource;
-import ru.aydarov.randroid.presentation.ui.adapters.LoaderSourceAdapter;
-import ru.aydarov.randroid.presentation.ui.adapters.PostAdapter;
+import ru.aydarov.randroid.presentation.ui.adapters.CommentsAdapter;
 import ru.aydarov.randroid.presentation.ui.bottom_sheet.SortBottomSheetFragment;
 import ru.aydarov.randroid.presentation.ui.searched.SearchedFragment;
 import ru.aydarov.randroid.presentation.ui.view.SwipeRefreshLayout;
+import ru.aydarov.randroid.presentation.util.PostBindingHelper;
 
 import static ru.aydarov.randroid.data.util.Constants.REQUEST_TRANSITION;
 
@@ -52,7 +47,7 @@ public class CommentsFragment extends Fragment implements SortBottomSheetFragmen
     private Toolbar mToolbar;
     private SortBottomSheetFragment mSortBottomSheetFragment;
     private RecyclerView mRecyclerView;
-    private PostAdapter mAdapter;
+    private CommentsAdapter mAdapter;
     private boolean toScrollToTop = false;
     private String mSortType = RedditUtilsNet.HOT;
     @Inject
@@ -88,7 +83,8 @@ public class CommentsFragment extends Fragment implements SortBottomSheetFragmen
                              @Nullable Bundle savedInstanceState) {
         mCommentBinding = CommentFragmentBinding.inflate(inflater, container, false);
         mViewModel = new ViewModelProvider(this, mFactoryViewModel.create(this)).get(CommentsViewModel.class);
-        bindingPost(mPost);
+        PostBindingHelper.binding(this, mCommentBinding.postItem, mPost, mOnClickMediaListener, mOnClickShareListener, null, false);
+        mCommentBinding.postItem.ivComments.setVisibility(View.GONE);
         initRecyclerView(savedInstanceState);
         initToolbar(savedInstanceState);
         return mCommentBinding.getRoot();
@@ -111,69 +107,13 @@ public class CommentsFragment extends Fragment implements SortBottomSheetFragmen
         if (savedInstanceState != null && savedInstanceState.getInt(RECYCLER_VIEW_POSITION_STATE) > 0) {
             mRecyclerView.scrollToPosition(savedInstanceState.getInt(RECYCLER_VIEW_POSITION_STATE));
         }
-        //TODO  mAdapter = new PostAdapter(mViewModel.getRetry(), this);
+        mAdapter = new CommentsAdapter(this);
         mRecyclerView.setAdapter(mAdapter);
-        mRecyclerView.setItemViewCacheSize(25);
         configView();
     }
 
-    private void bindingPost(RedditPost post) {
-        if (post != null) {
-            mCommentBinding.postItem.ivImage.layout(0, 0, 0, 0);
-            String urlPreview = RedditUtils.getUrlPreview(post);
-            if (!TextUtils.isEmpty(urlPreview)) {
-                mCommentBinding.postItem.ivImage.setVisibility(View.VISIBLE);
-                mCommentBinding.postItem.ivImage.setOnClickListener(getMediaOpenListener());
-                LoaderSourceAdapter.loadImagePost(mCommentBinding.postItem.ivImage, mCommentBinding.postItem.pbProgress, urlPreview);
-            } else {
-                mCommentBinding.postItem.ivImage.setVisibility(View.GONE);
-            }
-            mCommentBinding.postItem.ivShare.setOnClickListener(getShareListener());
-            mCommentBinding.postItem.tvTitle.setText(post.getTitle());
-            mCommentBinding.postItem.tvUsername.setText(post.getAuthor());
-            PostHelper.setTime(mCommentBinding.postItem.createdTime, post);
-            PostHelper.setPostType(mCommentBinding.postItem.tvType, post);
-            PostHelper.highlightText(mCommentBinding.postItem.tvTitle, post.getTitle(), post.getSearchQuery());
-            PostHelper.setSelfText(mCommentBinding.postItem.selfText, post);
-        }
-    }
-
-    @NotNull
-    private View.OnClickListener getMediaOpenListener() {
-        if (mOnClickMediaListener == null) {
-            mOnClickMediaListener = v -> {
-                if (mPost != null) {
-                    Intent intent = PostHelper.getMediaIntent(mPost, v);
-                    if (intent != null) {
-                        if (!TextUtils.isEmpty(intent.getAction()) && intent.getAction().equals(Intent.ACTION_VIEW)) {
-                            v.getContext().startActivity(intent);
-                        } else {
-                            navigateToSourceViewActivity(v, intent);
-                        }
-                    }
-                }
-            };
-        }
-        return mOnClickMediaListener;
-    }
-
-    @NotNull
-    private View.OnClickListener getShareListener() {
-        if (mOnClickShareListener == null) {
-            mOnClickShareListener = v -> shareLink(RedditUtilsNet.API_BASE_URI + mPost.getPermalink());
-        }
-        return mOnClickShareListener;
-    }
-
-    private void shareLink(String link) {
-        Intent intent = new Intent(Intent.ACTION_SEND);
-        intent.setType("text/plain");
-        intent.putExtra(Intent.EXTRA_TEXT, link);
-        onShare(intent);
-    }
 
     private void configView() {
-
         mViewModel.getComments().observe(getViewLifecycleOwner(), networkCommentResult -> {
             switch (networkCommentResult.getStatus()) {
                 case NONE:
@@ -182,29 +122,17 @@ public class CommentsFragment extends Fragment implements SortBottomSheetFragmen
                     mSwipeRefreshLayout.setRefreshing(true);
                     break;
                 case SUCCESS:
+                    mAdapter.submitList(networkCommentResult.getCommentList());
                     mSwipeRefreshLayout.setRefreshing(false);
                     break;
                 case FAILED:
+                    mAdapter.setError();
                     mSwipeRefreshLayout.setRefreshing(false);
                     break;
 
             }
 
         });
-//        mViewModel.getPosts().observe(getViewLifecycleOwner(), redditPosts -> mAdapter.submitList(redditPosts));
-//        mSwipeRefreshLayout.setOnRefreshListener(this::update);
-//        mViewModel.getNetworkState().observe(getViewLifecycleOwner(),
-//                networkState -> {
-//                    mAdapter.setNetworkState(networkState);
-//                    if (mSwipeRefreshLayout.isRefreshing())
-//                        toScrollToTop = true;
-//                    if (!mSwipeRefreshLayout.isRefreshing() && toScrollToTop && networkState.getStatus() == NetworkState.Status.SUCCESS) {
-//                        mLayoutManager.scrollToPosition(0);
-//                        toScrollToTop = false;
-//                    }
-//                });
-//        mViewModel.getRefreshState().observe(getViewLifecycleOwner(),
-//                networkState -> mSwipeRefreshLayout.setRefreshing(networkState.getStatus() == NetworkState.Status.RUNNING));
 
 
     }
@@ -220,15 +148,8 @@ public class CommentsFragment extends Fragment implements SortBottomSheetFragmen
 
 
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        mCommentBinding.setLifecycleOwner(this);
-    }
-
-
-    @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
-        inflater.inflate(R.menu.menu_toolbar_post, menu);
+        inflater.inflate(R.menu.menu_toolbar_comment, menu);
         super.onCreateOptionsMenu(menu, inflater);
     }
 
@@ -279,9 +200,8 @@ public class CommentsFragment extends Fragment implements SortBottomSheetFragmen
     }
 
     private void setSortType() {
-        //   mViewModel.update(mSortType);
-        //   mViewModel.refresh();
 
+        mViewModel.update(mPost.getId() + ":" + mSortType);
     }
 
 

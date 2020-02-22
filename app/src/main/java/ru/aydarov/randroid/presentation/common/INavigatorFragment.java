@@ -11,4 +11,8 @@ public interface INavigatorFragment {
     void navigateFromSearchedToSelf(Bundle extras);
 
     void navigateFromUserToSelf();
+
+    void navigateFromNewsToCommentsFragment(Bundle extras);
+
+    void navigateFromSearchedToCommentsFragment(Bundle extras);
 }

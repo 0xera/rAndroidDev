@@ -13,7 +13,7 @@ import ru.aydarov.randroid.data.repository.repo.comment.RepositoryCommentOauthIm
 
 import static ru.aydarov.randroid.presentation.di.NamesUtil.NO_OAUTH_COMMENT_API;
 import static ru.aydarov.randroid.presentation.di.NamesUtil.NO_OAUTH_REPO_COMMENT;
-import static ru.aydarov.randroid.presentation.di.NamesUtil.OAUTH_POST_API;
+import static ru.aydarov.randroid.presentation.di.NamesUtil.OAUTH_COMMENT_API;
 import static ru.aydarov.randroid.presentation.di.NamesUtil.OAUTH_REPO_COMMENT;
 
 @Module
@@ -28,7 +28,7 @@ public class RepositoryModuleComment {
     @Provides
     @CommentScope
     @Named(OAUTH_REPO_COMMENT)
-    RepositoryComment provideRepositoryCommmentOauth(@Named(OAUTH_POST_API) Lazy<RedditCommentOauthAPI> redditOauthAPI) {
+    RepositoryComment provideRepositoryCommentOauth(@Named(OAUTH_COMMENT_API) Lazy<RedditCommentOauthAPI> redditOauthAPI) {
         return new RepositoryCommentOauthImpl(redditOauthAPI);
     }
 }

@@ -31,4 +31,5 @@
     <dimen name="title_text_size">32sp</dimen>
     <dimen name="text_post_size">16sp</dimen>
     <dimen name="padding_type">2dp</dimen>
+    <dimen name="margin_iv_action_post">16dp</dimen>
 </resources>

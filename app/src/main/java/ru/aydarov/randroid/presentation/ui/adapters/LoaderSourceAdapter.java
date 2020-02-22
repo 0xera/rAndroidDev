@@ -26,7 +26,7 @@ import com.google.android.exoplayer2.util.Util;
 import androidx.annotation.Nullable;
 import androidx.databinding.BindingAdapter;
 import ru.aydarov.randroid.R;
-import ru.aydarov.randroid.domain.util.RedditUtils;
+import ru.aydarov.randroid.presentation.util.RedditUtils;
 
 public class LoaderSourceAdapter {
     private static final RequestOptions sRequestOptions = new RequestOptions().priority(Priority.IMMEDIATE);
