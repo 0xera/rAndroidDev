@@ -106,7 +106,7 @@ public class NetworkModule {
     @Provides
     @Singleton
     @Named(USER_API)
-    RedditUserApi provideUsetApi(@Named(OAUTH_RETROFIT) Retrofit retrofit) {
+    RedditUserApi provideUserApi(@Named(OAUTH_RETROFIT) Retrofit retrofit) {
         return retrofit.create(RedditUserApi.class);
 
     }

@@ -21,7 +21,6 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 import ru.aydarov.randroid.data.model.ListingPost;
 import ru.aydarov.randroid.data.model.RedditPost;
-import ru.aydarov.randroid.data.model.RedditPostSearch;
 import ru.aydarov.randroid.data.repository.repo.oauth.RepositoryUserOauth;
 import ru.aydarov.randroid.data.repository.repo.post.NetworkState;
 import ru.aydarov.randroid.data.repository.repo.search.RepositorySearch;
@@ -48,14 +47,14 @@ public class SearchInteractorImpl implements SearchInteractor {
     }
 
     @Override
-    public void insertResultIntoDb(String sorType, RedditPostSearch.RedditPostResponse response, String searchQuery) {
+    public void insertResultIntoDb(String sorType, RedditPost.RedditPostResponse response, String searchQuery) {
         RepositorySearch currentRepo = getCurrentRepo();
         int start;
-        List<RedditPostSearch.RedditChild> childList = response.getData().getChildren();
-        List<RedditPostSearch> posts = new ArrayList<>();
+        List<RedditPost.RedditChild> childList = response.getData().getChildren();
+        List<RedditPost> posts = new ArrayList<>();
         start = currentRepo.getNextIndexInSubreddit(searchQuery);
         for (int index = 0; index < childList.size(); index++) {
-            RedditPostSearch data = childList.get(index).getData();
+            RedditPost data = childList.get(index).getData();
             data.setIndexInResponse(start + index);
             data.setSortType(sorType);
             data.setSearchQuery(searchQuery);
@@ -124,8 +123,8 @@ public class SearchInteractorImpl implements SearchInteractor {
     }
 
     @Override
-    public Flowable<RedditPostSearch.RedditPostResponse> loadPosts(String sortType, String lastItem, int pageSize, String searchQuery) {
-        Flowable<RedditPostSearch.RedditPostResponse> responseFlowable;
+    public Flowable<RedditPost.RedditPostResponse> loadPosts(String sortType, String lastItem, int pageSize, String searchQuery) {
+        Flowable<RedditPost.RedditPostResponse> responseFlowable;
         if (TextUtils.isEmpty(lastItem)) {
             responseFlowable = getCurrentRepo().searchPosts(searchQuery, sortType, getToken(RedditUtilsNet.ACCESS_TOKEN_KEY), pageSize);
         } else {

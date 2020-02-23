@@ -119,40 +119,5 @@ public class SearchedViewModel extends ViewModel {
             };
         }
     }
-//
-//    public static class PostViewModelFactory extends AbstractSavedStateViewModelFactory {
-//
-//        @Inject
-//        PostViewModelFactory(SavedStateRegistryOwner owner) {
-//            super(owner, null);
-//        }
-//
-//        @NonNull
-//        @Override
-//        @SuppressWarnings("unchecked")
-//        public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
-//            return (T) new PostViewModel(mPostInteractor);
-//        }
-//
-//        @NonNull
-//        @Override
-//        protected <T extends ViewModel> T create(@NonNull String key, @NonNull Class<T> modelClass, @NonNull SavedStateHandle handle) {
-//            return null;
-//        }
-//    }
-//    public static class PostViewModelFactory extends ViewModelProvider.NewInstanceFactory {
-//        @Inject
-//        Lazy<SearchInteractor> mPostInteractor;
-//
-//        @Inject
-//        PostViewModelFactory() {
-//        }
-//
-//        @NonNull
-//        @Override
-//        @SuppressWarnings("unchecked")
-//        public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
-//            return (T) new PostViewModel(mPostInteractor);
-//        }
-//    }
+
 }

@@ -6,6 +6,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
+import ru.aydarov.randroid.data.model.Preview;
 import ru.aydarov.randroid.data.model.RedditPost;
 
 /**
@@ -46,7 +47,7 @@ public class RedditUtils {
 
     public static String getUrlPreview(RedditPost post) {
         if (post != null && post.getPreview() != null && post.getPreview().getImages() != null) {
-            List<RedditPost.Preview.Image.Resolution> images = post.getPreview().getImages().get(0).getResolutions();
+            List<Preview.Image.Resolution> images = post.getPreview().getImages().get(0).getResolutions();
             if (images != null) {
                 int index;
                 if (images.size() > 0) {
@@ -55,14 +56,14 @@ public class RedditUtils {
                         if (images.get(i).getHeight() > images.get(index).getHeight())
                             index = i;
                     }
-                    RedditPost.Preview.Image.Resolution source = images.get(index);
+                   Preview.Image.Resolution source = images.get(index);
                     if (source != null && !TextUtils.isEmpty(source.getUrl())) {
                         return source.getUrl();
                     }
                 }
 
             } else {
-                RedditPost.Preview.Image.Source source = post.getPreview().getImages().get(0).getSource();
+            Preview.Image.Source source = post.getPreview().getImages().get(0).getSource();
                 if (source != null && !TextUtils.isEmpty(source.getUrl()))
                     return source.getUrl();
             }

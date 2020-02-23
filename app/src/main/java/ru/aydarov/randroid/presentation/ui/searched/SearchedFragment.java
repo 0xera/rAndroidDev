@@ -32,7 +32,6 @@ import ru.aydarov.randroid.presentation.common.App;
 import ru.aydarov.randroid.presentation.common.INavigatorSource;
 import ru.aydarov.randroid.presentation.ui.adapters.PostAdapter;
 import ru.aydarov.randroid.presentation.ui.bottom_sheet.SortBottomSheetFragment;
-import ru.aydarov.randroid.presentation.ui.post.PostViewModel;
 import ru.aydarov.randroid.presentation.ui.search.SearchActivity;
 import ru.aydarov.randroid.presentation.ui.view.SwipeRefreshLayout;
 
@@ -44,7 +43,7 @@ public class SearchedFragment extends Fragment implements SortBottomSheetFragmen
 
     private static final String REFRESH = "key_ref";
     private static final String RECYCLER_VIEW_POSITION_STATE = "key_pos";
-    private PostViewModel mViewModel;
+    private SearchedViewModel mViewModel;
     private SearchedFragmentBinding mPostListBinding;
     private Toolbar mToolbar;
     private SortBottomSheetFragment mSortBottomSheetFragment;
@@ -54,7 +53,7 @@ public class SearchedFragment extends Fragment implements SortBottomSheetFragmen
     private String mQuery;
 
     @Inject
-    PostViewModel.Factory mFactoryViewModel;
+    SearchedViewModel.Factory mFactoryViewModel;
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private RecyclerView.LayoutManager mLayoutManager;
     private StaggeredGridLayoutManager mStaggeredGridLayoutManager;
@@ -72,7 +71,7 @@ public class SearchedFragment extends Fragment implements SortBottomSheetFragmen
         setHasOptionsMenu(true);
         setRetainInstance(true);
         mSortBottomSheetFragment = new SortBottomSheetFragment();
-        App.getAppComponent().inject(this);
+        App.getSearchComponent().inject(this);
         if (getArguments() != null) {
             mQuery = getArguments().getString(SEARCH_KEY_EXTRA);
         }
@@ -83,7 +82,7 @@ public class SearchedFragment extends Fragment implements SortBottomSheetFragmen
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         mPostListBinding = SearchedFragmentBinding.inflate(inflater, container, false);
-        mViewModel = new ViewModelProvider(this, mFactoryViewModel.create(this)).get(PostViewModel.class);
+        mViewModel = new ViewModelProvider(this, mFactoryViewModel.create(this)).get(SearchedViewModel.class);
         initRecyclerView(savedInstanceState);
         initToolbar();
         setToolbarTitle(mQuery);
@@ -236,6 +235,12 @@ public class SearchedFragment extends Fragment implements SortBottomSheetFragmen
     private void setToolbarTitle(String query) {
         mToolbar.setTitle(query);
 
+    }
+
+    @Override
+    public void onDestroy() {
+        App.clearSearchComponent();
+        super.onDestroy();
     }
 
     @Override

@@ -63,7 +63,6 @@ public class PostListFragment extends Fragment implements SortBottomSheetFragmen
     private RecyclerView.LayoutManager mLayoutManager;
     private StaggeredGridLayoutManager mStaggeredGridLayoutManager;
     private LinearLayoutManager mLinearLayoutManager;
-    private boolean mRefresh = true;
 
     public static PostListFragment newInstance() {
         return new PostListFragment();
@@ -88,7 +87,6 @@ public class PostListFragment extends Fragment implements SortBottomSheetFragmen
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        mRefresh = true;
         initView(savedInstanceState);
         initToolbar(savedInstanceState);
         setToolbarTitle();
@@ -98,7 +96,7 @@ public class PostListFragment extends Fragment implements SortBottomSheetFragmen
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putBoolean(REFRESH, mRefresh);
+        outState.putBoolean(REFRESH, true);
         if (mLinearLayoutManager != null && !getResources().getBoolean(R.bool.is_horizontal)) {
             outState.putInt(RECYCLER_VIEW_POSITION_STATE, mLinearLayoutManager.findFirstVisibleItemPosition());
         } else if (mStaggeredGridLayoutManager != null && getResources().getBoolean(R.bool.is_horizontal)) {
@@ -191,7 +189,6 @@ public class PostListFragment extends Fragment implements SortBottomSheetFragmen
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if (requestCode == SearchActivity.SEARCH_REQUEST_CODE && resultCode == RESULT_OK && data != null && data.getExtras() != null) {
-            mRefresh = false;
             ((SingleActivity) requireActivity()).navigateFromNewsToSearchedFragment(data.getExtras());
         }
         super.onActivityResult(requestCode, resultCode, data);

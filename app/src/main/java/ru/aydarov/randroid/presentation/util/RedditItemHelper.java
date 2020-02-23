@@ -21,6 +21,7 @@ import java.util.Objects;
 
 import androidx.core.content.ContextCompat;
 import ru.aydarov.randroid.R;
+import ru.aydarov.randroid.data.model.Media;
 import ru.aydarov.randroid.data.model.RedditPost;
 import ru.aydarov.randroid.data.util.RedditUtilsNet;
 import ru.aydarov.randroid.presentation.activty.ImageViewActivity;
@@ -91,7 +92,7 @@ public class RedditItemHelper {
         }
     }
 
-    public static void setTime(TextView textView, String value) {
+    static void setTime(TextView textView, String value) {
         if (!TextUtils.isEmpty(value) && !((Activity) textView.getContext()).isDestroyed()) {
             Locale locale;
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
@@ -110,7 +111,7 @@ public class RedditItemHelper {
     private static Intent getMediaIntent(RedditPost post, View view) {
         Intent intent = null;
         if (RedditUtils.isVideo(post)) {
-            RedditPost.Media.Video video = Objects.requireNonNull(post.getMedia()).getVideo();
+            Media.Video video = Objects.requireNonNull(post.getMedia()).getVideo();
             String url = Objects.requireNonNull(video).getFallback();
             if (!TextUtils.isEmpty(url))
                 intent = new Intent(view.getContext(), VideoViewActivity.class).putExtra(SRC_OPEN_KEY, url);
@@ -127,8 +128,8 @@ public class RedditItemHelper {
     }
 
     @NotNull
-    public static View.OnClickListener getShareListener(INavigatorSource navigatorSource,
-                                                        View.OnClickListener onClickListener, String permalink) {
+    static View.OnClickListener getShareListener(INavigatorSource navigatorSource,
+                                                 View.OnClickListener onClickListener, String permalink) {
         if (onClickListener == null) {
             onClickListener = v -> shareLink(navigatorSource, RedditUtilsNet.API_BASE_URI + permalink);
         }

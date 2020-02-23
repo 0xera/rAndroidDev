@@ -12,6 +12,8 @@ public class NamesUtil {
     public static final String USER_API = "token_api";
     public static final String NO_OAUTH_POST_API = "no_oauth_api";
     public static final String OAUTH_POST_API = "oauth_api";
+    public static final String NO_OAUTH_SEARCH_API = "no_oauth_api_Ser";
+    public static final String OAUTH_SEARCH_API = "oauth_api_ser";
     public static final String NO_OAUTH_COMMENT_API = "no_oauth_api_COM";
     public static final String OAUTH_COMMENT_API = "oauth_api_COM";
     public static final String OAUTH_RETROFIT = "oauth_retrofit";
@@ -19,6 +21,8 @@ public class NamesUtil {
     public static final String AUTHENTICATOR = "authenticator";
     public static final String NO_OAUTH_REPO_POST = "no_oauth_repo";
     public static final String OAUTH_REPO_POST = "oauth_repo";
+    public static final String NO_OAUTH_REPO_SEARCH = "no_oauth_repo_ser";
+    public static final String OAUTH_REPO_SEARCH = "oauth_repo_Ser";
     public static final String NO_OAUTH_REPO_COMMENT = "no_oauth_repo_com";
     public static final String OAUTH_REPO_COMMENT = "oauth_repo_com";
 }
