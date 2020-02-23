@@ -94,8 +94,6 @@ public class ZoomLayout extends FrameLayout {
                 if (animation.getAnimatedValue("posX") != null && animation.getAnimatedValue("posX") != null) {
                     mPositionX = (float) animation.getAnimatedValue("posX");
                     mPositionY = (float) animation.getAnimatedValue("posY");
-                } else {
-
                 }
                 invalidate();
             });

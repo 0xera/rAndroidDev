@@ -28,7 +28,7 @@ public class WebViewViewModel extends ViewModel {
     }
 
     boolean checkUrlAndGetTokens(String url) {
-        return mTokenInteractor.get().checkUrlAndGetTokens(mState, url);
+        return !mTokenInteractor.get().checkUrlAndGetTokens(mState, url);
     }
 
     String getUrl() {

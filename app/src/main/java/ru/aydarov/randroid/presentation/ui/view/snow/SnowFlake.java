@@ -13,21 +13,18 @@ class SnowFlake {
     private static final double HALF_PI = 1.5707963267948966d;
     private static final double INCREMENT_LOWER = 2.0d;
     private static final double INCREMENT_UPPER = 3.0d;
-    private static RandomSnow random = new RandomSnow();
     private double angle;
     private final double flakeSize;
     private final double increment;
     private final Paint paint;
-    public final Point position;
+    final Point position;
 
     public static SnowFlake create(int width, int height, Paint paint2) {
         RandomSnow random2 = new RandomSnow();
-        SnowFlake snowFlake = new SnowFlake(random2, new Point(random2.getRandom(width), random2.getRandom(height)), random2.getRandom(6.283185307179586d), random2.getRandom(INCREMENT_LOWER, INCREMENT_UPPER), random2.getRandom(FLAKE_SIZE_LOWER, FLAKE_SIZE_UPPER), paint2);
-        return snowFlake;
+        return new SnowFlake(random2, new Point(random2.getRandom(width), random2.getRandom(height)), random2.getRandom(6.283185307179586d), random2.getRandom(INCREMENT_LOWER, INCREMENT_UPPER), random2.getRandom(FLAKE_SIZE_LOWER, FLAKE_SIZE_UPPER), paint2);
     }
 
     SnowFlake(RandomSnow random2, Point position2, double angle2, double increment2, double flakeSize2, Paint paint2) {
-        random = random2;
         this.position = position2;
         this.angle = angle2;
         this.increment = increment2;

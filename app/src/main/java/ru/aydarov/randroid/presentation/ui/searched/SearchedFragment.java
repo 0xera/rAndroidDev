@@ -55,7 +55,6 @@ public class SearchedFragment extends Fragment implements SortBottomSheetFragmen
     @Inject
     SearchedViewModel.Factory mFactoryViewModel;
     private SwipeRefreshLayout mSwipeRefreshLayout;
-    private RecyclerView.LayoutManager mLayoutManager;
     private StaggeredGridLayoutManager mStaggeredGridLayoutManager;
     private LinearLayoutManager mLinearLayoutManager;
     private byte isChangeSort = 1;
@@ -105,14 +104,15 @@ public class SearchedFragment extends Fragment implements SortBottomSheetFragmen
     private void initRecyclerView(Bundle savedInstanceState) {
         mSwipeRefreshLayout = mPostListBinding.swipeRefreshLayout;
         mRecyclerView = mPostListBinding.postListRecyclerView;
+        RecyclerView.LayoutManager layoutManager;
         if (getResources().getBoolean(R.bool.is_horizontal)) {
             mStaggeredGridLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
-            mLayoutManager = mStaggeredGridLayoutManager;
-            mRecyclerView.setLayoutManager(mLayoutManager);
+            layoutManager = mStaggeredGridLayoutManager;
+            mRecyclerView.setLayoutManager(layoutManager);
         } else {
             mLinearLayoutManager = new LinearLayoutManager(requireContext());
-            mLayoutManager = mLinearLayoutManager;
-            mRecyclerView.setLayoutManager(mLayoutManager);
+            layoutManager = mLinearLayoutManager;
+            mRecyclerView.setLayoutManager(layoutManager);
         }
         if (savedInstanceState != null && savedInstanceState.getInt(RECYCLER_VIEW_POSITION_STATE) > 0) {
             mRecyclerView.scrollToPosition(savedInstanceState.getInt(RECYCLER_VIEW_POSITION_STATE));

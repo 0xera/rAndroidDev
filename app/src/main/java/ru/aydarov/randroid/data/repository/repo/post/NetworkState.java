@@ -9,8 +9,8 @@ public class NetworkState {
 
     private String mMsg;
 
-    private NetworkState(Status status, String msg) {
-        mStatus = status;
+    private NetworkState(String msg) {
+        mStatus = Status.FAILED;
         mMsg = msg;
     }
 
@@ -30,7 +30,7 @@ public class NetworkState {
     public static NetworkState LOADING = new NetworkState(Status.RUNNING);
 
     public static NetworkState error(String msg) {
-        return new NetworkState(Status.FAILED, msg);
+        return new NetworkState(msg);
     }
 
     public enum Status {

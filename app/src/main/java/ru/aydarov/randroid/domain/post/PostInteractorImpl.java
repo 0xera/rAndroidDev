@@ -54,7 +54,7 @@ public class PostInteractorImpl implements PostInteractor {
         List<RedditPost> posts = new ArrayList<>();
         start = currentRepo.getNextIndexInSubreddit();
         for (int index = 0; index < childList.size(); index++) {
-            RedditPost data = (RedditPost) childList.get(index).getData();
+            RedditPost data = childList.get(index).getData();
             data.setIndexInResponse(start + index);
             data.setSortType(sorType);
             posts.add(data);

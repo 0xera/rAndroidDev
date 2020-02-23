@@ -12,7 +12,6 @@ import android.widget.TextView;
 import java.util.List;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.paging.PagedListAdapter;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
@@ -48,7 +47,6 @@ public class PostAdapter extends PagedListAdapter<RedditPost, PostAdapter.Reddit
                     && !TextUtils.isEmpty(oldItem.getSelfText()) && !TextUtils.isEmpty(newItem.getSelfText()) && oldItem.getSelfText().equals(newItem.getSelfText());
         }
 
-        @Nullable
         @Override
         public Object getChangePayload(@NonNull RedditPost oldItem, @NonNull RedditPost newItem) {
             Bundle bundle = new Bundle();
@@ -157,7 +155,6 @@ public class PostAdapter extends PagedListAdapter<RedditPost, PostAdapter.Reddit
 
 
         private final RedditPostBinding mBinding;
-        private RedditPost mPost;
         private View.OnClickListener mOnClickMediaListener;
         private View.OnClickListener mOnClickShareListener;
         private View.OnClickListener mOnClickCommentsListener;
@@ -169,7 +166,6 @@ public class PostAdapter extends PagedListAdapter<RedditPost, PostAdapter.Reddit
 
         @Override
         void bind(RedditPost post) {
-            mPost = post;
             PostBindingHelper.binding(mNavigatorSource, mBinding, post, mOnClickMediaListener, mOnClickShareListener, mOnClickCommentsListener);
         }
 

@@ -60,7 +60,6 @@ public class PostListFragment extends Fragment implements SortBottomSheetFragmen
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private PostAdapter mAdapter;
     private byte isChangeSort = 1;
-    private RecyclerView.LayoutManager mLayoutManager;
     private StaggeredGridLayoutManager mStaggeredGridLayoutManager;
     private LinearLayoutManager mLinearLayoutManager;
 
@@ -121,15 +120,16 @@ public class PostListFragment extends Fragment implements SortBottomSheetFragmen
     }
 
     private LayoutManager getLayoutManager() {
+        LayoutManager layoutManager;
         if (getResources().getBoolean(R.bool.is_horizontal)) {
             mStaggeredGridLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
-            mLayoutManager = mStaggeredGridLayoutManager;
+            layoutManager = mStaggeredGridLayoutManager;
         } else {
             mLinearLayoutManager = new LinearLayoutManager(requireContext());
-            mLayoutManager = mLinearLayoutManager;
+            layoutManager = mLinearLayoutManager;
 
         }
-        return mLayoutManager;
+        return layoutManager;
     }
 
     private void configView() {

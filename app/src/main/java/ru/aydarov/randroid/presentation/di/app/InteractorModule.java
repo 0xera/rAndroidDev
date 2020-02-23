@@ -27,7 +27,7 @@ import static ru.aydarov.randroid.presentation.di.NamesUtil.TOKEN_PREF;
  * @author Aydarov Askhar 2020
  */
 @Module
-public class InteractorModule {
+class InteractorModule {
 
     @Provides
     @Singleton

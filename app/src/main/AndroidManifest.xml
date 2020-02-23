@@ -43,16 +43,26 @@
         <activity
             android:name=".presentation.activty.SingleActivity"
             android:theme="@style/ThemeLight">
-            <nav-graph android:value="@navigation/navigation_graph" />
-
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity
             android:name=".presentation.activty.SplashActivity"
             android:theme="@style/SplashThemeDark">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.BROWSABLE" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data
+                    android:host="www.reddit.com"
+                    android:scheme="https" />
             </intent-filter>
         </activity>
     </application>

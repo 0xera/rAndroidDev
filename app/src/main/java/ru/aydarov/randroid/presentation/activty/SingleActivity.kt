@@ -80,12 +80,8 @@ class SingleActivity : AppCompatActivity(), INavigatorFragment {
     }
 
     fun nullifyTokens() {
-        saveTokens(TokensSharedHelper.NONE, TokensSharedHelper.NONE)
-    }
-
-    fun saveTokens(accessToken: String, refreshToken: String) {
-        TokensSharedHelper.saveAccessToken(this, accessToken)
-        TokensSharedHelper.saveRefreshToken(this, refreshToken)
+        TokensSharedHelper.saveAccessToken(this, TokensSharedHelper.NONE)
+        TokensSharedHelper.saveRefreshToken(this, TokensSharedHelper.NONE)
     }
 
     companion object {

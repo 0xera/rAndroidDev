@@ -68,7 +68,7 @@ public class WebViewActivity extends AppCompatActivity {
     }
 
     private void initWebView() {
-        WebView webView = mWebViewActivityBinding.webviewLogin;
+        WebView webView = mWebViewActivityBinding.webViewLogin;
         webView.getSettings().setJavaScriptEnabled(true);
         webView.getSettings().setDomStorageEnabled(true);
         webView.setWebViewClient(getWebViewClient());
@@ -109,7 +109,7 @@ public class WebViewActivity extends AppCompatActivity {
         return new WebViewClient() {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                if (!mViewModel.checkUrlAndGetTokens(url))
+                if (mViewModel.checkUrlAndGetTokens(url))
                     view.loadUrl(url);
                 return true;
             }
@@ -117,7 +117,7 @@ public class WebViewActivity extends AppCompatActivity {
 
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
-                if (!mViewModel.checkUrlAndGetTokens(request.getUrl().toString()))
+                if (mViewModel.checkUrlAndGetTokens(request.getUrl().toString()))
                     view.loadUrl(request.getUrl().toString());
                 return true;
             }

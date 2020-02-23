@@ -32,7 +32,6 @@ public class SortBottomSheetFragment extends BottomSheetDialogFragment {
     private static final String FRAGMENT_TAG = "Bottom_sheet_tag";
     private SortListener mListener;
     private SortBottomSheetBinding mSortBottomSheetBinding;
-    private RadioGroup mRadioGroup;
 
     public static SortBottomSheetFragment newInstance() {
         return new SortBottomSheetFragment();
@@ -60,9 +59,9 @@ public class SortBottomSheetFragment extends BottomSheetDialogFragment {
     }
 
     private void initView() {
-        mRadioGroup = mSortBottomSheetBinding.radioGroupSort;
+        RadioGroup radioGroup = mSortBottomSheetBinding.radioGroupSort;
         setCheckedButton(SortTypeHelper.getSortType(requireActivity()));
-        mRadioGroup.setOnCheckedChangeListener(getOnCheckedChangeListener());
+        radioGroup.setOnCheckedChangeListener(getOnCheckedChangeListener());
     }
 
     private void setCheckedButton(int sortType) {

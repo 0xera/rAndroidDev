@@ -50,8 +50,7 @@ public class SearchedActivity extends AppCompatActivity implements INavigatorFra
     @Override
     public void navigateFromSearchedToSelf(Bundle extras) {
         getSupportFragmentManager().beginTransaction()
-                .replace(R.id.nav_host_fragment, SearchedFragment.newInstance(getIntent().getExtras()), SearchedFragment.class.getSimpleName())
-                .addToBackStack(SearchedFragment.class.getSimpleName())
+                .replace(R.id.container, SearchedFragment.newInstance(extras), SearchedFragment.class.getSimpleName())
                 .commit();
     }
 }
