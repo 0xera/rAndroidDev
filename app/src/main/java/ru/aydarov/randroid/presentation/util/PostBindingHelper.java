@@ -12,7 +12,7 @@ public class PostBindingHelper {
 
     public static void binding(INavigatorSource navigatorSource, RedditPostBinding binding,
                                RedditPost post, View.OnClickListener onClickMediaListener,
-                               View.OnClickListener onClickShareListener, View.OnClickListener onClickCommentsListener, boolean openComment) {
+                               View.OnClickListener onClickShareListener, View.OnClickListener onClickCommentsListener) {
         if (post != null) {
             binding.ivImage.layout(0, 0, 0, 0);
             String urlPreview = RedditUtils.getUrlPreview(post);
@@ -23,8 +23,6 @@ public class PostBindingHelper {
             } else {
                 binding.ivImage.setVisibility(View.GONE);
             }
-            if (openComment)
-                binding.ivComments.setOnClickListener(RedditItemHelper.getCommentsOpenListener(navigatorSource, onClickCommentsListener, post));
             binding.ivShare.setOnClickListener(RedditItemHelper.getShareListener(navigatorSource, onClickShareListener, post.getPermalink()));
             binding.tvTitle.setText(post.getTitle());
             binding.tvUsername.setText(post.getAuthor());

@@ -24,29 +24,27 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 import ru.aydarov.randroid.R;
-import ru.aydarov.randroid.data.model.RedditPost;
 import ru.aydarov.randroid.data.repository.repo.post.NetworkState;
 import ru.aydarov.randroid.data.util.RedditUtilsNet;
 import ru.aydarov.randroid.databinding.SearchedFragmentBinding;
 import ru.aydarov.randroid.domain.util.SortTypeHelper;
-import ru.aydarov.randroid.presentation.activty.SingleActivity;
 import ru.aydarov.randroid.presentation.common.App;
 import ru.aydarov.randroid.presentation.common.INavigatorSource;
 import ru.aydarov.randroid.presentation.ui.adapters.PostAdapter;
 import ru.aydarov.randroid.presentation.ui.bottom_sheet.SortBottomSheetFragment;
-import ru.aydarov.randroid.presentation.ui.comments.CommentsFragment;
-import ru.aydarov.randroid.presentation.ui.post.PostListViewModel;
+import ru.aydarov.randroid.presentation.ui.post.PostViewModel;
 import ru.aydarov.randroid.presentation.ui.search.SearchActivity;
 import ru.aydarov.randroid.presentation.ui.view.SwipeRefreshLayout;
 
 import static android.app.Activity.RESULT_OK;
 import static ru.aydarov.randroid.data.util.Constants.REQUEST_TRANSITION;
+import static ru.aydarov.randroid.presentation.ui.search.SearchActivity.SEARCH_KEY_EXTRA;
 
 public class SearchedFragment extends Fragment implements SortBottomSheetFragment.SortListener, INavigatorSource {
 
     private static final String REFRESH = "key_ref";
     private static final String RECYCLER_VIEW_POSITION_STATE = "key_pos";
-    private PostListViewModel mViewModel;
+    private PostViewModel mViewModel;
     private SearchedFragmentBinding mPostListBinding;
     private Toolbar mToolbar;
     private SortBottomSheetFragment mSortBottomSheetFragment;
@@ -56,7 +54,7 @@ public class SearchedFragment extends Fragment implements SortBottomSheetFragmen
     private String mQuery;
 
     @Inject
-    PostListViewModel.Factory mFactoryViewModel;
+    PostViewModel.Factory mFactoryViewModel;
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private RecyclerView.LayoutManager mLayoutManager;
     private StaggeredGridLayoutManager mStaggeredGridLayoutManager;
@@ -72,10 +70,11 @@ public class SearchedFragment extends Fragment implements SortBottomSheetFragmen
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         setHasOptionsMenu(true);
+        setRetainInstance(true);
         mSortBottomSheetFragment = new SortBottomSheetFragment();
         App.getAppComponent().inject(this);
         if (getArguments() != null) {
-            mQuery = getArguments().getString(SearchActivity.SEARCH_KEY_EXTRA);
+            mQuery = getArguments().getString(SEARCH_KEY_EXTRA);
         }
         super.onCreate(savedInstanceState);
     }
@@ -84,9 +83,9 @@ public class SearchedFragment extends Fragment implements SortBottomSheetFragmen
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         mPostListBinding = SearchedFragmentBinding.inflate(inflater, container, false);
-        mViewModel = new ViewModelProvider(requireActivity(), mFactoryViewModel.create(this)).get(PostListViewModel.class);
+        mViewModel = new ViewModelProvider(this, mFactoryViewModel.create(this)).get(PostViewModel.class);
         initRecyclerView(savedInstanceState);
-        initToolbar(savedInstanceState);
+        initToolbar();
         setToolbarTitle(mQuery);
         return mPostListBinding.getRoot();
     }
@@ -133,22 +132,32 @@ public class SearchedFragment extends Fragment implements SortBottomSheetFragmen
                 isChangeSort--;
             }
         });
-        mSwipeRefreshLayout.setOnRefreshListener(mViewModel::refresh);
         mViewModel.getNetworkState().observe(getViewLifecycleOwner(),
                 networkState -> mAdapter.setNetworkState(networkState));
+        mSwipeRefreshLayout.setOnRefreshListener(() -> {
+            mAdapter.swipeRefreshing(false);
+            mViewModel.refresh();
+        });
         mViewModel.getRefreshState().observe(getViewLifecycleOwner(),
                 networkState -> mSwipeRefreshLayout.setRefreshing(networkState.getStatus() == NetworkState.Status.RUNNING));
 
 
     }
 
-    private void initToolbar(Bundle savedInstanceState) {
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        if (savedInstanceState == null || !savedInstanceState.getBoolean(REFRESH))
+            mToolbar.post(() -> onSortSelected(SortTypeHelper.getSortType(requireActivity())));
+        super.onActivityCreated(savedInstanceState);
+    }
+
+    private void initToolbar() {
         mToolbar = mPostListBinding.toolbarLayout.toolbar;
         ((AppCompatActivity) requireActivity()).setSupportActionBar(mToolbar);
         Objects.requireNonNull(((AppCompatActivity) requireActivity()).getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         Objects.requireNonNull(((AppCompatActivity) requireActivity()).getSupportActionBar()).setDisplayShowTitleEnabled(false);
-        if (savedInstanceState == null || !savedInstanceState.getBoolean(REFRESH))
-            mToolbar.post(() -> onSortSelected(SortTypeHelper.getSortType(requireActivity())));
+        mToolbar.setNavigationOnClickListener(v -> requireActivity().onBackPressed());
+
     }
 
 
@@ -184,7 +193,7 @@ public class SearchedFragment extends Fragment implements SortBottomSheetFragmen
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if (requestCode == SearchActivity.SEARCH_REQUEST_CODE && resultCode == RESULT_OK && data != null && data.getExtras() != null) {
-            ((SingleActivity) requireActivity()).navigateFromSearchedToSelf(data.getExtras());
+            ((SearchedActivity) requireActivity()).navigateFromSearchedToSelf(data.getExtras());
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
@@ -240,10 +249,4 @@ public class SearchedFragment extends Fragment implements SortBottomSheetFragmen
         startActivity(intent);
     }
 
-    @Override
-    public void openComments(RedditPost post) {
-        Bundle bundle = new Bundle();
-        bundle.putSerializable(CommentsFragment.POST_KEY, post);
-        ((SingleActivity) requireActivity()).navigateFromSearchedToCommentsFragment(bundle);
-    }
 }

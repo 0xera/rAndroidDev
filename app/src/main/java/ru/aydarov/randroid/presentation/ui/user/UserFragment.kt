@@ -74,13 +74,14 @@ class UserFragment : Fragment() {
 //            }
 //    }
 
-//    private fun getBitmapFromDrawable(drawable: Drawable): Bitmap? {
+    //    private fun getBitmapFromDrawable(drawable: Drawable): Bitmap? {
 //        val bitmap = Bitmap.createBitmap(drawable.intrinsicWidth, drawable.intrinsicHeight, Bitmap.Config.ARGB_8888)
 //        val canvas = Canvas(bitmap)
 //        drawable.setBounds(0, 0, canvas.width, canvas.height)
 //        drawable.draw(canvas)
 //        return bitmap
 //    }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -255,7 +256,11 @@ class UserFragment : Fragment() {
         super.onDestroy()
     }
 
-
+    companion object {
+        fun newInstance(): UserFragment {
+            return UserFragment()
+        }
+    }
 }
 
 enum class Request(val code: Int) {

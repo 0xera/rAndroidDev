@@ -24,7 +24,7 @@ import static ru.aydarov.randroid.domain.post.PostInteractorImpl.PAGE_SIZE;
 /**
  * @author Aydarov Askhar 2020
  */
-public class PostListViewModel extends ViewModel {
+public class PostViewModel extends ViewModel {
 
     public static final String POST_KEY = "POST_Key";
     private Lazy<PostInteractor> mInteractor;
@@ -40,11 +40,11 @@ public class PostListViewModel extends ViewModel {
             return mInteractor.get().getPosts(split[0], PAGE_SIZE, null);
     }
 
-    private LiveData<PagedList<RedditPost>> mPosts = Transformations.switchMap(mResultLive, ListingPost<RedditPost>::getPagedList);
-    private LiveData<NetworkState> mNetworkState = Transformations.switchMap(mResultLive, ListingPost::getNetworkState);
     private LiveData<NetworkState> mRefreshState = Transformations.switchMap(mResultLive, ListingPost::getRefreshState);
+    private LiveData<NetworkState> mNetworkState = Transformations.switchMap(mResultLive, ListingPost::getNetworkState);
+    private LiveData<PagedList<RedditPost>> mPosts = Transformations.switchMap(mResultLive, ListingPost<RedditPost>::getPagedList);
 
-    private PostListViewModel(SavedStateHandle handle, Lazy<PostInteractor> interactor) {
+    private PostViewModel(SavedStateHandle handle, Lazy<PostInteractor> interactor) {
         mInteractor = interactor;
         mHandle = handle;
         checkHandle();
@@ -114,7 +114,7 @@ public class PostListViewModel extends ViewModel {
                 @Override
                 @SuppressWarnings("unchecked")
                 protected <T extends ViewModel> T create(@NonNull String key, @NonNull Class<T> modelClass, @NonNull SavedStateHandle handle) {
-                    return (T) new PostListViewModel(handle, mPostInteractor);
+                    return (T) new PostViewModel(handle, mPostInteractor);
                 }
             };
         }
@@ -131,7 +131,7 @@ public class PostListViewModel extends ViewModel {
 //        @Override
 //        @SuppressWarnings("unchecked")
 //        public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
-//            return (T) new PostListViewModel(mPostInteractor);
+//            return (T) new PostViewModel(mPostInteractor);
 //        }
 //
 //        @NonNull
@@ -152,7 +152,7 @@ public class PostListViewModel extends ViewModel {
 //        @Override
 //        @SuppressWarnings("unchecked")
 //        public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
-//            return (T) new PostListViewModel(mPostInteractor);
+//            return (T) new PostViewModel(mPostInteractor);
 //        }
 //    }
 }

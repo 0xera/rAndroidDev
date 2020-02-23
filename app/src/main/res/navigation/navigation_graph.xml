@@ -12,9 +12,6 @@
         <action
             android:id="@+id/action_navigation_news_to_searchedFragment"
             app:destination="@id/searchedFragment" />
-        <action
-            android:id="@+id/action_navigation_news_to_commentsFragment"
-            app:destination="@id/commentsFragment" />
     </fragment>
 
     <fragment
@@ -41,17 +38,6 @@
         <argument
             android:name="searchQuery"
             app:argType="string" />
-        <action
-            android:id="@+id/action_searchedFragment_to_commentsFragment"
-            app:destination="@id/commentsFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/commentsFragment"
-        android:name="ru.aydarov.randroid.presentation.ui.comments.CommentsFragment"
-        android:label="CommentsFragment" >
-        <argument
-            android:name="Post"
-            app:argType="ru.aydarov.randroid.data.model.RedditPost" />
     </fragment>
 
 </navigation>

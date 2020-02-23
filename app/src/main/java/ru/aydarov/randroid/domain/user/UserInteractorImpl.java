@@ -30,9 +30,7 @@ public class UserInteractorImpl implements UserInteractor {
         mDisposable = mRepository.get().getUserDataApi(accessToken)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
-                .subscribe(userData -> mRepository.get().saveUserData(userData), throwable -> {
-                    Log.d(TAG, "getUserData() called with: accessToken = [" + accessToken + "]");
-                });
+                .subscribe(userData -> mRepository.get().saveUserData(userData), throwable -> Log.d(TAG, "getUserData() called with: accessToken = [" + accessToken + "]"));
         return mRepository.get().getUserDataDao().distinctUntilChanged();
     }
 

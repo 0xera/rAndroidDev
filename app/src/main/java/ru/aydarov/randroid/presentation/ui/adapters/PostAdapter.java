@@ -34,16 +34,17 @@ public class PostAdapter extends PagedListAdapter<RedditPost, PostAdapter.Reddit
     private final Function0<Unit> mRetryFunc;
     private INavigatorSource mNavigatorSource;
 
+    private static boolean sSwipeRefresh = false;
     private NetworkState mNetworkState;
     private static final DiffUtil.ItemCallback<RedditPost> DIFF_CALLBACK = new DiffUtil.ItemCallback<RedditPost>() {
         @Override
         public boolean areItemsTheSame(@NonNull RedditPost oldItem, @NonNull RedditPost newItem) {
-            return oldItem.getName().equals(newItem.getName());
+            return sSwipeRefresh && oldItem.getName().equals(newItem.getName());
         }
 
         @Override
         public boolean areContentsTheSame(@NonNull RedditPost oldItem, @NonNull RedditPost newItem) {
-            return !TextUtils.isEmpty(oldItem.getTitle()) && !TextUtils.isEmpty(newItem.getTitle()) && oldItem.getTitle().equals(newItem.getTitle())
+            return sSwipeRefresh && !TextUtils.isEmpty(oldItem.getTitle()) && !TextUtils.isEmpty(newItem.getTitle()) && oldItem.getTitle().equals(newItem.getTitle())
                     && !TextUtils.isEmpty(oldItem.getSelfText()) && !TextUtils.isEmpty(newItem.getSelfText()) && oldItem.getSelfText().equals(newItem.getSelfText());
         }
 
@@ -135,6 +136,10 @@ public class PostAdapter extends PagedListAdapter<RedditPost, PostAdapter.Reddit
         return mNetworkState != null && mNetworkState.getStatus() != NetworkState.Status.SUCCESS;
     }
 
+    public void swipeRefreshing(boolean swipeRefresh) {
+        sSwipeRefresh = swipeRefresh;
+    }
+
 
     abstract class RedditPostViewHolder extends RecyclerView.ViewHolder {
         RedditPostViewHolder(@NonNull View itemView) {
@@ -165,7 +170,7 @@ public class PostAdapter extends PagedListAdapter<RedditPost, PostAdapter.Reddit
         @Override
         void bind(RedditPost post) {
             mPost = post;
-            PostBindingHelper.binding(mNavigatorSource, mBinding, post, mOnClickMediaListener, mOnClickShareListener, mOnClickCommentsListener, true);
+            PostBindingHelper.binding(mNavigatorSource, mBinding, post, mOnClickMediaListener, mOnClickShareListener, mOnClickCommentsListener);
         }
 
     }

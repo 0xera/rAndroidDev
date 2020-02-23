@@ -18,7 +18,6 @@ data class UserData(
         @ColumnInfo(name = RedditUtilsNet.ICON_IMG_KEY) @SerializedName(RedditUtilsNet.ICON_IMG_KEY) val icon: String,
         @ColumnInfo(name = RedditUtilsNet.SUBREDDIT_KEY) @SerializedName(RedditUtilsNet.SUBREDDIT_KEY) val sub: UserSubReddit) {
     data class UserSubReddit(@ColumnInfo(name = RedditUtilsNet.BANNER_IMG_KEY) @SerializedName(RedditUtilsNet.BANNER_IMG_KEY) val banner: String,
-                             @ColumnInfo(name = RedditUtilsNet.DESCRIPTION_KEY) @SerializedName(RedditUtilsNet.DESCRIPTION_KEY) val description: String){
-    }
+                             @ColumnInfo(name = RedditUtilsNet.DESCRIPTION_KEY) @SerializedName(RedditUtilsNet.DESCRIPTION_KEY) val description: String)
 }
 

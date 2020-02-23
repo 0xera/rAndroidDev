@@ -1,19 +1,21 @@
 package ru.aydarov.randroid.presentation.activty
 
+
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.navigation.NavController
-import androidx.navigation.findNavController
-import androidx.navigation.ui.NavigationUI
-
+import androidx.fragment.app.Fragment
 import kotlinx.android.synthetic.main.activity_single.*
 import ru.aydarov.randroid.R
 import ru.aydarov.randroid.domain.util.TokensSharedHelper
 import ru.aydarov.randroid.presentation.common.INavigatorFragment
+import ru.aydarov.randroid.presentation.common.IScrollUp
+import ru.aydarov.randroid.presentation.ui.post.PostListFragment
+import ru.aydarov.randroid.presentation.ui.searched.SearchedActivity
+import ru.aydarov.randroid.presentation.ui.searched.SearchedFragment
+import ru.aydarov.randroid.presentation.ui.user.UserFragment
 import ru.aydarov.randroid.theme_helper.ThemeHelper
-
 
 /**
  * @author Aydarov Askhar 2020
@@ -25,17 +27,57 @@ class SingleActivity : AppCompatActivity(), INavigatorFragment {
     val mRefreshToken: String
         get() = TokensSharedHelper.getRefreshToken(this)
 
-    private val mNavController: NavController by lazy {
-        findNavController(R.id.nav_host_fragment)
-    }
+
+    private lateinit var postListFragment: PostListFragment
+    private lateinit var userFragment: UserFragment
+
+    private var activeFragment: Fragment? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         ThemeHelper.setTheme(this)
         setContentView(R.layout.activity_single)
-        NavigationUI.setupWithNavController(navView, mNavController)
+        if (savedInstanceState == null) {
+            postListFragment = PostListFragment.newInstance()
+            userFragment = UserFragment.newInstance()
+            postShow()
+        } else {
+            postListFragment = supportFragmentManager.findFragmentByTag(PostListFragment::class.java.simpleName) as PostListFragment
+            userFragment = supportFragmentManager.findFragmentByTag(UserFragment::class.java.simpleName) as UserFragment
+        }
+        navView.setOnNavigationItemSelectedListener {
+            when (it.itemId) {
+                R.id.navigation_news -> {
+                    if (it.isChecked && activeFragment !is SearchedFragment) {
+                        val findFragmentByTag = supportFragmentManager.findFragmentByTag(PostListFragment::class.java.simpleName)
+                        if (findFragmentByTag != null && findFragmentByTag.isVisible && findFragmentByTag is IScrollUp)
+                            ((findFragmentByTag as IScrollUp).scrollUp())
+                        false
+                    } else {
+                        navigateToNews()
+                        true
+                    }
+                }
+                R.id.navigation_user -> {
+                    if (it.isChecked)
+                        false
+                    else {
+                        navigateToUser()
+                        true
+                    }
+                }
+                else -> false
+            }
+        }
     }
 
+    override fun onResume() {
+        activeFragment = if (navView.selectedItemId == R.id.navigation_news)
+            postListFragment
+        else
+            userFragment
+        super.onResume()
+    }
 
     fun nullifyTokens() {
         saveTokens(TokensSharedHelper.NONE, TokensSharedHelper.NONE)
@@ -46,33 +88,67 @@ class SingleActivity : AppCompatActivity(), INavigatorFragment {
         TokensSharedHelper.saveRefreshToken(this, refreshToken)
     }
 
-    override fun onSupportNavigateUp() = mNavController.navigateUp()
-
-
     companion object {
+
         fun newIntent(context: Context) = with(context) {
             Intent(this, SingleActivity::class.java)
         }
     }
 
-    override fun navigateFromSearchedToSelf(extras: Bundle?) {
-        mNavController.navigate(R.id.action_searchedFragment_self, extras)
+    override fun navigateToNews() {
+        val transaction = supportFragmentManager.beginTransaction()
+                .show(postListFragment)
+        activeFragment?.let {
+            transaction.hide(it)
+        }
+        transaction.commit()
+        activeFragment = postListFragment
     }
+
 
     override fun navigateFromUserToSelf() {
-        mNavController.navigate(R.id.action_navigation_user_self)
+        val newInstance = UserFragment.newInstance()
+        supportFragmentManager.beginTransaction()
+                .hide(userFragment)
+                .add(R.id.nav_host_fragment, newInstance, UserFragment::class.java.simpleName)
+                .commit()
+        userFragment = newInstance
+        activeFragment = newInstance
     }
 
-    override fun navigateFromSearchedToCommentsFragment(extras: Bundle?) {
-        mNavController.navigate(R.id.action_searchedFragment_to_commentsFragment, extras)
+    override fun navigateToUser() {
+        val transaction = supportFragmentManager.beginTransaction()
+                .show(userFragment)
+        activeFragment?.let {
+            transaction.hide(it)
+        }
+        transaction.commit()
+
+        activeFragment = userFragment
     }
 
-    override fun navigateFromNewsToCommentsFragment(extras: Bundle?) {
-        mNavController.navigate(R.id.action_navigation_news_to_commentsFragment, extras)
+    private fun userShow() {
+        val transaction = supportFragmentManager.beginTransaction()
+                .replace(R.id.nav_host_fragment, postListFragment, PostListFragment::class.java.simpleName)
+                .add(R.id.nav_host_fragment, userFragment, UserFragment::class.java.simpleName)
+                .hide(postListFragment)
+        transaction.commit()
     }
+
+    private fun postShow() {
+        supportFragmentManager.beginTransaction()
+                .replace(R.id.nav_host_fragment, postListFragment, PostListFragment::class.java.simpleName)
+                .add(R.id.nav_host_fragment, userFragment, UserFragment::class.java.simpleName)
+                .hide(userFragment)
+                .commit()
+        activeFragment = postListFragment
+    }
+
 
     override fun navigateFromNewsToSearchedFragment(extras: Bundle) {
-        mNavController.navigate(R.id.action_navigation_news_to_searchedFragment, extras)
+        val intent = Intent(this, SearchedActivity::class.java)
+        intent.putExtra(SearchedActivity.SEARCH_KEY_EXTRA, extras)
+        startActivity(intent)
     }
 
 

@@ -45,6 +45,7 @@ public class RepositoryPostImpl implements RepositoryPost {
         return mRedditDao.get().getNextIndexInSubreddit(searchQuery);
     }
 
+
     @Override
     public void insertPost(List<RedditPost> posts) {
         mRedditDao.get().insert(posts);

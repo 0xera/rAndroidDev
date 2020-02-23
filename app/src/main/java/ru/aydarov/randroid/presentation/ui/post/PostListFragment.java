@@ -25,7 +25,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.RecyclerView.LayoutManager;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 import ru.aydarov.randroid.R;
-import ru.aydarov.randroid.data.model.RedditPost;
 import ru.aydarov.randroid.data.repository.repo.post.NetworkState;
 import ru.aydarov.randroid.data.util.RedditUtilsNet;
 import ru.aydarov.randroid.databinding.PostListBinding;
@@ -33,9 +32,9 @@ import ru.aydarov.randroid.domain.util.SortTypeHelper;
 import ru.aydarov.randroid.presentation.activty.SingleActivity;
 import ru.aydarov.randroid.presentation.common.App;
 import ru.aydarov.randroid.presentation.common.INavigatorSource;
+import ru.aydarov.randroid.presentation.common.IScrollUp;
 import ru.aydarov.randroid.presentation.ui.adapters.PostAdapter;
 import ru.aydarov.randroid.presentation.ui.bottom_sheet.SortBottomSheetFragment;
-import ru.aydarov.randroid.presentation.ui.comments.CommentsFragment;
 import ru.aydarov.randroid.presentation.ui.search.SearchActivity;
 import ru.aydarov.randroid.presentation.ui.view.SwipeRefreshLayout;
 
@@ -45,25 +44,26 @@ import static ru.aydarov.randroid.data.util.Constants.REQUEST_TRANSITION;
 /**
  * @author Aydarov Askhar 2020
  */
-public class PostListFragment extends Fragment implements SortBottomSheetFragment.SortListener, INavigatorSource {
+public class PostListFragment extends Fragment implements SortBottomSheetFragment.SortListener, INavigatorSource, IScrollUp {
 
     private static final String REFRESH = "ref_key";
     private static final String RECYCLER_VIEW_POSITION_STATE = "pos_key";
     private static int SORT_TYPE = 1;
     private String mSortType = RedditUtilsNet.HOT;
-    private PostListViewModel mViewModel;
+    private PostViewModel mViewModel;
     private PostListBinding mPostListBinding;
     private Toolbar mToolbar;
     private SortBottomSheetFragment mSortBottomSheetFragment;
     private RecyclerView mRecyclerView;
     @Inject
-    PostListViewModel.Factory mFactoryViewModel;
+    PostViewModel.Factory mFactoryViewModel;
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private PostAdapter mAdapter;
     private byte isChangeSort = 1;
     private RecyclerView.LayoutManager mLayoutManager;
     private StaggeredGridLayoutManager mStaggeredGridLayoutManager;
     private LinearLayoutManager mLinearLayoutManager;
+    private boolean mRefresh = true;
 
     public static PostListFragment newInstance() {
         return new PostListFragment();
@@ -72,6 +72,7 @@ public class PostListFragment extends Fragment implements SortBottomSheetFragmen
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         setHasOptionsMenu(true);
+        setRetainInstance(true);
         App.getAppComponent().inject(this);
         mSortBottomSheetFragment = new SortBottomSheetFragment();
         super.onCreate(savedInstanceState);
@@ -81,24 +82,30 @@ public class PostListFragment extends Fragment implements SortBottomSheetFragmen
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         mPostListBinding = PostListBinding.inflate(inflater, container, false);
-        mViewModel = new ViewModelProvider(this, mFactoryViewModel.create(this)).get(PostListViewModel.class);
-        initView(savedInstanceState);
-        initToolbar(savedInstanceState);
-        setToolbarTitle();
+        mViewModel = new ViewModelProvider(this, mFactoryViewModel.create(this)).get(PostViewModel.class);
         return mPostListBinding.getRoot();
     }
 
     @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        mRefresh = true;
+        initView(savedInstanceState);
+        initToolbar(savedInstanceState);
+        setToolbarTitle();
+        super.onViewCreated(view, savedInstanceState);
+    }
+
+    @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
-        outState.putBoolean(REFRESH, true);
-        if (mLinearLayoutManager != null) {
+        super.onSaveInstanceState(outState);
+        outState.putBoolean(REFRESH, mRefresh);
+        if (mLinearLayoutManager != null && !getResources().getBoolean(R.bool.is_horizontal)) {
             outState.putInt(RECYCLER_VIEW_POSITION_STATE, mLinearLayoutManager.findFirstVisibleItemPosition());
-        } else if (mStaggeredGridLayoutManager != null) {
+        } else if (mStaggeredGridLayoutManager != null && getResources().getBoolean(R.bool.is_horizontal)) {
             int[] into = new int[2];
             outState.putInt(RECYCLER_VIEW_POSITION_STATE,
                     mStaggeredGridLayoutManager.findFirstVisibleItemPositions(into)[0]);
         }
-        super.onSaveInstanceState(outState);
     }
 
 
@@ -129,19 +136,20 @@ public class PostListFragment extends Fragment implements SortBottomSheetFragmen
 
     private void configView() {
         mViewModel.getPosts().observe(getViewLifecycleOwner(), redditPosts -> {
-            mAdapter.submitList(redditPosts);
+            mAdapter.submitList(redditPosts, () -> mAdapter.swipeRefreshing(true));
             if (!mSwipeRefreshLayout.isRefreshing() && isChangeSort > 0) {
                 mRecyclerView.scrollToPosition(0);
                 isChangeSort--;
             }
-
         });
-        mSwipeRefreshLayout.setOnRefreshListener(mViewModel::refresh);
+        mSwipeRefreshLayout.setOnRefreshListener(() -> {
+            mAdapter.swipeRefreshing(false);
+            mViewModel.refresh();
+        });
+        mViewModel.getRefreshState().observe(getViewLifecycleOwner(),
+                networkState -> mSwipeRefreshLayout.setRefreshing(networkState.getStatus() == NetworkState.Status.RUNNING));
         mViewModel.getNetworkState().observe(getViewLifecycleOwner(),
                 networkState -> mAdapter.setNetworkState(networkState));
-        mViewModel.getRefreshState().observe(getViewLifecycleOwner(),
-                networkState ->
-                        mSwipeRefreshLayout.setRefreshing(networkState.getStatus() == NetworkState.Status.RUNNING));
     }
 
     private void initToolbar(Bundle savedInstanceState) {
@@ -180,10 +188,10 @@ public class PostListFragment extends Fragment implements SortBottomSheetFragmen
         }
     }
 
-
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if (requestCode == SearchActivity.SEARCH_REQUEST_CODE && resultCode == RESULT_OK && data != null && data.getExtras() != null) {
+            mRefresh = false;
             ((SingleActivity) requireActivity()).navigateFromNewsToSearchedFragment(data.getExtras());
         }
         super.onActivityResult(requestCode, resultCode, data);
@@ -243,9 +251,7 @@ public class PostListFragment extends Fragment implements SortBottomSheetFragmen
     }
 
     @Override
-    public void openComments(RedditPost post) {
-        Bundle bundle = new Bundle();
-        bundle.putSerializable(CommentsFragment.POST_KEY, post);
-        ((SingleActivity) requireActivity()).navigateFromNewsToCommentsFragment(bundle);
+    public void scrollUp() {
+        mRecyclerView.scrollToPosition(0);
     }
 }

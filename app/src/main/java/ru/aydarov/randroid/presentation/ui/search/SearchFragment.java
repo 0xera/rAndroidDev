@@ -17,7 +17,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
 import ru.aydarov.randroid.R;
 import ru.aydarov.randroid.databinding.SearchFragmentBinding;
 
@@ -26,7 +25,6 @@ import ru.aydarov.randroid.databinding.SearchFragmentBinding;
  */
 public class SearchFragment extends Fragment {
 
-    private SearchViewModel mViewModel;
     private SearchFragmentBinding mSearchFragmentBinding;
     private Toolbar mToolbar;
     private androidx.appcompat.widget.SearchView mSearchView;
@@ -92,7 +90,6 @@ public class SearchFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mViewModel = new ViewModelProvider(this).get(SearchViewModel.class);
     }
 
 

@@ -35,6 +35,9 @@
             android:name=".presentation.ui.search.SearchActivity"
             android:theme="@style/ThemeLight" />
         <activity
+            android:name=".presentation.ui.searched.SearchedActivity"
+            android:theme="@style/ThemeLight" />
+        <activity
             android:name=".theme_helper.ThemeChanger"
             android:theme="@style/ThemeChangeTheme" />
         <activity

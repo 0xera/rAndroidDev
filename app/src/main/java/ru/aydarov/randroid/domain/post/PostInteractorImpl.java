@@ -52,17 +52,18 @@ public class PostInteractorImpl implements PostInteractor {
     public void insertResultIntoDb(String sorType, RedditPostResponse response, String searchQuery) {
         RepositoryPost currentRepo = getCurrentRepo();
         int start;
+        List<RedditChild> childList = response.getData().getChildren();
+        List<RedditPost> posts = new ArrayList<>();
         if (TextUtils.isEmpty(searchQuery))
             start = currentRepo.getNextIndexInSubreddit();
         else
             start = currentRepo.getNextIndexInSubreddit(searchQuery);
-        List<RedditChild> childList = response.getData().getChildren();
-        List<RedditPost> posts = new ArrayList<>();
         for (int index = 0; index < childList.size(); index++) {
-            RedditPost data = childList.get(index).getData();
+            RedditPost data = (RedditPost) childList.get(index).getData();
             data.setIndexInResponse(start + index);
             data.setSortType(sorType);
-            data.setSearchQuery(searchQuery);
+            if (!TextUtils.isEmpty(searchQuery))
+                data.setSearchQuery(searchQuery);
             posts.add(data);
 
         }

@@ -30,4 +30,5 @@ public interface RepositoryPost {
     void deletePosts();
 
     int getNextIndexInSubreddit(String searchQuery);
+
 }

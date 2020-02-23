@@ -8,11 +8,12 @@ import android.os.Bundle;
 public interface INavigatorFragment {
     void navigateFromNewsToSearchedFragment(Bundle extras);
 
-    void navigateFromSearchedToSelf(Bundle extras);
 
     void navigateFromUserToSelf();
 
-    void navigateFromNewsToCommentsFragment(Bundle extras);
+    void navigateToNews();
 
-    void navigateFromSearchedToCommentsFragment(Bundle extras);
+    void navigateToUser();
+
+
 }
