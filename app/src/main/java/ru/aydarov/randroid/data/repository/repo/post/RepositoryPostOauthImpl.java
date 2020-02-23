@@ -6,7 +6,6 @@ import androidx.paging.DataSource;
 import dagger.Lazy;
 import io.reactivex.Flowable;
 import ru.aydarov.randroid.data.model.RedditPost;
-import ru.aydarov.randroid.data.model.RedditPostResponse;
 import ru.aydarov.randroid.data.repository.api.post.RedditPostOauthAPI;
 import ru.aydarov.randroid.data.repository.databases.RedditDao;
 import ru.aydarov.randroid.data.util.RedditUtilsNet;
@@ -31,15 +30,7 @@ public class RepositoryPostOauthImpl implements RepositoryPost {
 
     }
 
-    @Override
-    public DataSource.Factory<Integer, RedditPost> getSearchedPostsDb(String searchQuery) {
-        return mRedditDao.get().getPosts(searchQuery);
-    }
 
-    @Override
-    public int getNextIndexInSubreddit(String searchQuery) {
-        return mRedditDao.get().getNextIndexInSubreddit(searchQuery);
-    }
 
     @Override
     public int getNextIndexInSubreddit() {
@@ -52,25 +43,15 @@ public class RepositoryPostOauthImpl implements RepositoryPost {
     }
 
     @Override
-    public Flowable<RedditPostResponse> loadPosts(String sortType, String lastItem, String accessToken, int pageSize) {
+    public Flowable<RedditPost.RedditPostResponse> loadPosts(String sortType, String lastItem, String accessToken, int pageSize) {
         return mRedditOauthAPI.get().loadPostsOauth(sortType, lastItem, RedditUtilsNet.getOAuthHeader(accessToken), pageSize);
     }
 
     @Override
-    public Flowable<RedditPostResponse> loadPosts(String sortType, String accessToken, int pageSize) {
+    public Flowable<RedditPost.RedditPostResponse> loadPosts(String sortType, String accessToken, int pageSize) {
         return mRedditOauthAPI.get().loadPostsOauth(sortType, RedditUtilsNet.getOAuthHeader(accessToken), pageSize);
     }
 
-    @Override
-    public Flowable<RedditPostResponse> searchPosts(String query, String sortType, String lastItem, String accessToken, int pageSize) {
-        return mRedditOauthAPI.get().searchPostsOauth(query, sortType, lastItem, RedditUtilsNet.getOAuthHeader(accessToken), pageSize);
-    }
-
-    @Override
-    public Flowable<RedditPostResponse> searchPosts(String query, String sortType, String accessToken, int pageSize) {
-        return mRedditOauthAPI.get().searchPostsOauth(query, sortType, RedditUtilsNet.getOAuthHeader(accessToken), pageSize);
-
-    }
 
     @Override
     public void deletePosts() {

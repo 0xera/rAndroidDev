@@ -6,7 +6,6 @@ import androidx.paging.DataSource;
 import dagger.Lazy;
 import io.reactivex.Flowable;
 import ru.aydarov.randroid.data.model.RedditPost;
-import ru.aydarov.randroid.data.model.RedditPostResponse;
 import ru.aydarov.randroid.data.repository.api.post.RedditPostAPI;
 import ru.aydarov.randroid.data.repository.databases.RedditDao;
 
@@ -30,19 +29,10 @@ public class RepositoryPostImpl implements RepositoryPost {
 
     }
 
-    @Override
-    public DataSource.Factory<Integer, RedditPost> getSearchedPostsDb(String searchQuery) {
-        return mRedditDao.get().getPosts(searchQuery);
-    }
 
     @Override
     public int getNextIndexInSubreddit() {
         return mRedditDao.get().getNextIndexInSubreddit();
-    }
-
-    @Override
-    public int getNextIndexInSubreddit(String searchQuery) {
-        return mRedditDao.get().getNextIndexInSubreddit(searchQuery);
     }
 
 
@@ -52,25 +42,15 @@ public class RepositoryPostImpl implements RepositoryPost {
     }
 
     @Override
-    public Flowable<RedditPostResponse> loadPosts(String sortType, String lastItem, String accessToken, int pageSize) {
+    public Flowable<RedditPost.RedditPostResponse> loadPosts(String sortType, String lastItem, String accessToken, int pageSize) {
         return mRedditAPI.get().loadPosts(sortType, lastItem, pageSize);
     }
 
     @Override
-    public Flowable<RedditPostResponse> loadPosts(String sortType, String accessToken, int pageSize) {
+    public Flowable<RedditPost.RedditPostResponse> loadPosts(String sortType, String accessToken, int pageSize) {
         return mRedditAPI.get().loadPosts(sortType, pageSize);
     }
 
-    @Override
-    public Flowable<RedditPostResponse> searchPosts(String query, String sortType, String lastItem, String accessToken, int pageSize) {
-        return mRedditAPI.get().searchPosts(query, sortType, lastItem, pageSize);
-    }
-
-    @Override
-    public Flowable<RedditPostResponse> searchPosts(String query, String sortType, String accessToken, int pageSize) {
-        return mRedditAPI.get().searchPosts(query, sortType, pageSize);
-
-    }
 
     @Override
     public void deletePosts() {

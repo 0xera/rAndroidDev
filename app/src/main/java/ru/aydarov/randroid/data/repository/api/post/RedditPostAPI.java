@@ -4,7 +4,7 @@ import io.reactivex.Flowable;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
-import ru.aydarov.randroid.data.model.RedditPostResponse;
+import ru.aydarov.randroid.data.model.RedditPost;
 
 import static ru.aydarov.randroid.data.util.Constants.SUBREDDIT;
 
@@ -13,12 +13,12 @@ import static ru.aydarov.randroid.data.util.Constants.SUBREDDIT;
  */
 public interface RedditPostAPI {
     @GET(SUBREDDIT + "/{sortType}.json?raw_json=1")
-    Flowable<RedditPostResponse> loadPosts(@Path("sortType") String sortType,
-                                           @Query("after") String lastItem, @Query("limit") int limit);
+    Flowable<RedditPost.RedditPostResponse> loadPosts(@Path("sortType") String sortType,
+                                                      @Query("after") String lastItem, @Query("limit") int limit);
 
     @GET(SUBREDDIT + "/{sortType}.json?raw_json=1")
-    Flowable<RedditPostResponse> loadPosts(@Path("sortType") String sortType,
-                                           @Query("limit") int limit);
+    Flowable<RedditPost.RedditPostResponse> loadPosts(@Path("sortType") String sortType,
+                                                      @Query("limit") int limit);
 
 
 

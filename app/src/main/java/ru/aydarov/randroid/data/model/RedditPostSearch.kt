@@ -15,7 +15,7 @@ import java.io.Serializable
 @Entity
 @TypeConverters(PostRedditConverter.PreviewConverter::class,
         PostRedditConverter.VideoConverter::class)
-data class RedditPost(
+data class RedditPostSearch(
         @PrimaryKey
         @SerializedName("name")
         val name: String,
@@ -72,10 +72,9 @@ data class RedditPost(
         val url: String
 
 ) : Serializable {
-
+    var searchQuery: String? = null
     var indexInResponse = -1
     var sortType = RedditUtilsNet.HOT
-
 
     data class Media(
             @SerializedName("reddit_video")
@@ -142,7 +141,8 @@ data class RedditPost(
 
         }
     }
-    data class RedditChild(val data: RedditPost)
+
+    data class RedditChild(val data: RedditPostSearch)
 
     data class RedditPostData(
             val children: List<RedditChild>,

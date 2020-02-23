@@ -29,20 +29,14 @@ public interface RedditDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insert(List<RedditPost> posts);
 
-    @Query("SELECT * FROM redditpost  where searchQuery is null")
-    DataSource.Factory<Integer, RedditPost> getPosts();
-
 
     @Query("DELETE FROM redditpost")
     void deletePosts();
 
 
-    @Query("SELECT MAX(indexInResponse) + 1 FROM redditpost where searchQuery is null")
+    @Query("SELECT MAX(indexInResponse) + 1 FROM redditpost")
     int getNextIndexInSubreddit();
 
-    @Query("SELECT * FROM redditpost where searchQuery=:searchQuery")
-    DataSource.Factory<Integer, RedditPost> getPosts(String searchQuery);
-
-    @Query("SELECT MAX(indexInResponse) + 1 FROM redditpost where searchQuery=:searchQuery")
-    int getNextIndexInSubreddit(String searchQuery);
+    @Query("SELECT * FROM redditpost")
+    DataSource.Factory<Integer, RedditPost> getPosts();
 }

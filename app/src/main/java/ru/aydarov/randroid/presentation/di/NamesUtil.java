@@ -5,6 +5,7 @@ package ru.aydarov.randroid.presentation.di;
  */
 public class NamesUtil {
     public static final String USER_DATA_DATABASE_NAME = "database";
+    public static final String SEARCH_DATA_DATABASE_NAME = "database_sea";
     public static final String TOKEN_PREF = "token_pref";
     public static final String NO_AUTHENTICATOR = "no_authenticator";
     public static final String TOKEN_API = "token_api";

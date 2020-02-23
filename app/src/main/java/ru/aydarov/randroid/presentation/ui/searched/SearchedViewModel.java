@@ -1,4 +1,4 @@
-package ru.aydarov.randroid.presentation.ui.post;
+package ru.aydarov.randroid.presentation.ui.searched;
 
 import javax.inject.Inject;
 
@@ -17,30 +17,34 @@ import kotlin.jvm.functions.Function0;
 import ru.aydarov.randroid.data.model.ListingPost;
 import ru.aydarov.randroid.data.model.RedditPost;
 import ru.aydarov.randroid.data.repository.repo.post.NetworkState;
-import ru.aydarov.randroid.domain.post.PostInteractor;
+import ru.aydarov.randroid.domain.search.SearchInteractor;
 
 import static ru.aydarov.randroid.domain.post.PostInteractorImpl.PAGE_SIZE;
 
 /**
  * @author Aydarov Askhar 2020
  */
-public class PostViewModel extends ViewModel {
+public class SearchedViewModel extends ViewModel {
 
     public static final String POST_KEY = "POST_Key";
-    private Lazy<PostInteractor> mInteractor;
+    private Lazy<SearchInteractor> mInteractor;
     private SavedStateHandle mHandle;
     private MutableLiveData<String> mSortTypeLive = new MutableLiveData<>();
     private LiveData<ListingPost<RedditPost>> mResultLive = Transformations.map(mSortTypeLive, this::getRedditPostListing);
 
     private ListingPost<RedditPost> getRedditPostListing(String input) {
-        return mInteractor.get().getPosts(input, PAGE_SIZE);
+        String[] split = input.split(":", 2);
+        if (split.length >= 2)
+            return mInteractor.get().getPosts(split[0], PAGE_SIZE, split[1]);
+        else
+            return null;
     }
 
     private LiveData<NetworkState> mRefreshState = Transformations.switchMap(mResultLive, ListingPost::getRefreshState);
     private LiveData<NetworkState> mNetworkState = Transformations.switchMap(mResultLive, ListingPost::getNetworkState);
     private LiveData<PagedList<RedditPost>> mPosts = Transformations.switchMap(mResultLive, ListingPost<RedditPost>::getPagedList);
 
-    private PostViewModel(SavedStateHandle handle, Lazy<PostInteractor> interactor) {
+    private SearchedViewModel(SavedStateHandle handle, Lazy<SearchInteractor> interactor) {
         mInteractor = interactor;
         mHandle = handle;
         checkHandle();
@@ -97,7 +101,7 @@ public class PostViewModel extends ViewModel {
     public static class Factory {
 
         @Inject
-        Lazy<PostInteractor> mPostInteractor;
+        Lazy<SearchInteractor> mPostInteractor;
 
         @Inject
         Factory() {
@@ -110,7 +114,7 @@ public class PostViewModel extends ViewModel {
                 @Override
                 @SuppressWarnings("unchecked")
                 protected <T extends ViewModel> T create(@NonNull String key, @NonNull Class<T> modelClass, @NonNull SavedStateHandle handle) {
-                    return (T) new PostViewModel(handle, mPostInteractor);
+                    return (T) new SearchedViewModel(handle, mPostInteractor);
                 }
             };
         }

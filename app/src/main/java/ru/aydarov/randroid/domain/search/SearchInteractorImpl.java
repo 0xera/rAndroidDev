@@ -1,4 +1,4 @@
-package ru.aydarov.randroid.domain.post;
+package ru.aydarov.randroid.domain.search;
 
 import android.content.SharedPreferences;
 import android.text.TextUtils;
@@ -21,25 +21,26 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 import ru.aydarov.randroid.data.model.ListingPost;
 import ru.aydarov.randroid.data.model.RedditPost;
+import ru.aydarov.randroid.data.model.RedditPostSearch;
 import ru.aydarov.randroid.data.repository.repo.oauth.RepositoryUserOauth;
 import ru.aydarov.randroid.data.repository.repo.post.NetworkState;
-import ru.aydarov.randroid.data.repository.repo.post.RepositoryPost;
+import ru.aydarov.randroid.data.repository.repo.search.RepositorySearch;
 import ru.aydarov.randroid.data.util.RedditUtilsNet;
 import ru.aydarov.randroid.domain.util.TokensSharedHelper;
 
 /**
  * @author Aydarov Askhar 2020
  */
-public class PostInteractorImpl implements PostInteractor {
+public class SearchInteractorImpl implements SearchInteractor {
 
     public static final int PAGE_SIZE = 25;
-    private final Lazy<RepositoryPost> mRepositoryPost;
+    private final Lazy<RepositorySearch> mRepositoryPost;
     private final Lazy<SharedPreferences> mSharedPreferences;
-    private final Lazy<RepositoryPost> mRepositoryPostOauth;
-    private final Lazy<PostRedditBoundaryCallback> mRedditBoundaryCallback;
+    private final Lazy<RepositorySearch> mRepositoryPostOauth;
+    private final Lazy<SearchRedditBoundaryCallback> mRedditBoundaryCallback;
     private Disposable mDisposable;
 
-    public PostInteractorImpl(Lazy<RepositoryUserOauth> repositoryUserOauth, Lazy<RepositoryPost> repositoryPostOauth, Lazy<RepositoryPost> repositoryPost, Lazy<SharedPreferences> sharedPreferences, Lazy<PostRedditBoundaryCallback> redditBoundaryCallback) {
+    public SearchInteractorImpl(Lazy<RepositoryUserOauth> repositoryUserOauth, Lazy<RepositorySearch> repositoryPostOauth, Lazy<RepositorySearch> repositoryPost, Lazy<SharedPreferences> sharedPreferences, Lazy<SearchRedditBoundaryCallback> redditBoundaryCallback) {
         mRepositoryPost = repositoryPost;
         mSharedPreferences = sharedPreferences;
         mRepositoryPostOauth = repositoryPostOauth;
@@ -47,16 +48,17 @@ public class PostInteractorImpl implements PostInteractor {
     }
 
     @Override
-    public void insertResultIntoDb(String sorType, RedditPost.RedditPostResponse response) {
-        RepositoryPost currentRepo = getCurrentRepo();
+    public void insertResultIntoDb(String sorType, RedditPostSearch.RedditPostResponse response, String searchQuery) {
+        RepositorySearch currentRepo = getCurrentRepo();
         int start;
-        List<RedditPost.RedditChild> childList = response.getData().getChildren();
-        List<RedditPost> posts = new ArrayList<>();
-        start = currentRepo.getNextIndexInSubreddit();
+        List<RedditPostSearch.RedditChild> childList = response.getData().getChildren();
+        List<RedditPostSearch> posts = new ArrayList<>();
+        start = currentRepo.getNextIndexInSubreddit(searchQuery);
         for (int index = 0; index < childList.size(); index++) {
-            RedditPost data = (RedditPost) childList.get(index).getData();
+            RedditPostSearch data = childList.get(index).getData();
             data.setIndexInResponse(start + index);
             data.setSortType(sorType);
+            data.setSearchQuery(searchQuery);
             posts.add(data);
 
         }
@@ -67,13 +69,13 @@ public class PostInteractorImpl implements PostInteractor {
         return TextUtils.isEmpty(getToken(RedditUtilsNet.ACCESS_TOKEN_KEY)) || TextUtils.isEmpty(getToken(RedditUtilsNet.REFRESH_TOKEN_KEY));
     }
 
-    private LiveData<NetworkState> refresh(String sortType) {
+    private LiveData<NetworkState> refresh(String sortType, String searchQuery) {
         MutableLiveData<NetworkState> networkState = new MutableLiveData<>();
         networkState.postValue(NetworkState.LOADING);
-        mDisposable = loadPosts(sortType, null, PAGE_SIZE)
+        mDisposable = loadPosts(sortType, null, PAGE_SIZE, searchQuery)
                 .subscribe(response -> {
                     Completable.fromAction(getCurrentRepo()::deletePosts)
-                            .andThen(Completable.fromAction(() -> insertResultIntoDb(sortType, response)))
+                            .andThen(Completable.fromAction(() -> insertResultIntoDb(sortType, response, searchQuery)))
                             .subscribeOn(Schedulers.io())
                             .observeOn(Schedulers.io())
                             .subscribe();
@@ -88,21 +90,21 @@ public class PostInteractorImpl implements PostInteractor {
         return mSharedPreferences.get().getString(accessTokenKey, TokensSharedHelper.NONE);
     }
 
-    private RepositoryPost getCurrentRepo() {
+    private RepositorySearch getCurrentRepo() {
         if (isEmptyTokens())
             return mRepositoryPost.get();
         else return mRepositoryPostOauth.get();
     }
 
     @Override
-    public ListingPost<RedditPost> getPosts(String sortType, int pageSize) {
+    public ListingPost<RedditPost> getPosts(String sortType, int pageSize, String searchQuery) {
         mRedditBoundaryCallback.get().setSortType(sortType);
         mRedditBoundaryCallback.get().setPageSize(pageSize);
+        mRedditBoundaryCallback.get().setSearchQuery(searchQuery);
         MutableLiveData<Void> refreshTrigger = new MutableLiveData<>();
-        LiveData<NetworkState> refreshState = Transformations.switchMap(refreshTrigger, input -> refresh(sortType));
-
+        LiveData<NetworkState> refreshState = Transformations.switchMap(refreshTrigger, input -> refresh(sortType, searchQuery));
         DataSource.Factory<Integer, RedditPost> postsDb;
-        postsDb = getCurrentRepo().getPostsDb();
+        postsDb = getCurrentRepo().getSearchedPostsDb(searchQuery);
         PagedList.Config config = new PagedList.Config.Builder()
                 .setEnablePlaceholders(false)
                 .setPageSize(pageSize)
@@ -122,12 +124,12 @@ public class PostInteractorImpl implements PostInteractor {
     }
 
     @Override
-    public Flowable<RedditPost.RedditPostResponse> loadPosts(String sortType, String lastItem, int pageSize) {
-        Flowable<RedditPost.RedditPostResponse> responseFlowable;
+    public Flowable<RedditPostSearch.RedditPostResponse> loadPosts(String sortType, String lastItem, int pageSize, String searchQuery) {
+        Flowable<RedditPostSearch.RedditPostResponse> responseFlowable;
         if (TextUtils.isEmpty(lastItem)) {
-            responseFlowable = getCurrentRepo().loadPosts(sortType, getToken(RedditUtilsNet.ACCESS_TOKEN_KEY), pageSize);
+            responseFlowable = getCurrentRepo().searchPosts(searchQuery, sortType, getToken(RedditUtilsNet.ACCESS_TOKEN_KEY), pageSize);
         } else {
-            responseFlowable = getCurrentRepo().loadPosts(sortType, lastItem, getToken(RedditUtilsNet.ACCESS_TOKEN_KEY), pageSize);
+            responseFlowable = getCurrentRepo().searchPosts(searchQuery, sortType, lastItem, getToken(RedditUtilsNet.ACCESS_TOKEN_KEY), pageSize);
         }
 
         return responseFlowable

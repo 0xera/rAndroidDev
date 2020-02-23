@@ -1,4 +1,4 @@
-package ru.aydarov.randroid.domain.post;
+package ru.aydarov.randroid.domain.search;
 
 import java.util.concurrent.Executors;
 
@@ -16,16 +16,18 @@ import ru.aydarov.randroid.domain.paging_helper.PagingRequestHelperExtKt;
 /**
  * @author Aydarov Askhar 2020
  */
-public class PostRedditBoundaryCallback extends PagedList.BoundaryCallback<RedditPost> {
+public class SearchRedditBoundaryCallback extends PagedList.BoundaryCallback<RedditPost> {
 
-    private final Lazy<PostInteractor> mInteractor;
+    private final Lazy<SearchInteractor> mInteractor;
     private LiveData<NetworkState> mNetworkState;
     private String mSortType = RedditUtilsNet.HOT;
 
+
+    private String mSearchQuery;
     private int mPageSize = 25;
     private Disposable mDisposable;
 
-    public PostRedditBoundaryCallback(Lazy<PostInteractor> interactor) {
+    public SearchRedditBoundaryCallback(Lazy<SearchInteractor> interactor) {
 
         mInteractor = interactor;
     }
@@ -49,9 +51,9 @@ public class PostRedditBoundaryCallback extends PagedList.BoundaryCallback<Reddi
     @Override
     public void onZeroItemsLoaded() {
         mPagingRequestHelper.runIfNotRunning(PagingRequestHelper.RequestType.INITIAL,
-                callback -> mDisposable = mInteractor.get().loadPosts(mSortType, null, mPageSize)
+                callback -> mDisposable = mInteractor.get().loadPosts(mSortType, null, mPageSize, mSearchQuery)
                         .subscribe(response -> {
-                            mInteractor.get().insertResultIntoDb(mSortType, response);
+                            mInteractor.get().insertResultIntoDb(mSortType, response, mSearchQuery);
                             callback.recordSuccess();
                         }, callback::recordFailure));
         super.onZeroItemsLoaded();
@@ -61,9 +63,9 @@ public class PostRedditBoundaryCallback extends PagedList.BoundaryCallback<Reddi
     @Override
     public void onItemAtEndLoaded(@NonNull RedditPost itemAtEnd) {
         mPagingRequestHelper.runIfNotRunning(PagingRequestHelper.RequestType.AFTER,
-                callback -> mDisposable = mInteractor.get().loadPosts(mSortType, itemAtEnd.getName(), mPageSize)
+                callback -> mDisposable = mInteractor.get().loadPosts(mSortType, itemAtEnd.getName(), mPageSize, mSearchQuery)
                         .subscribe(response -> {
-                            mInteractor.get().insertResultIntoDb(mSortType, response);
+                            mInteractor.get().insertResultIntoDb(mSortType, response, mSearchQuery);
                             callback.recordSuccess();
                         }, callback::recordFailure));
         super.onItemAtEndLoaded(itemAtEnd);
@@ -75,6 +77,9 @@ public class PostRedditBoundaryCallback extends PagedList.BoundaryCallback<Reddi
 
     }
 
+    void setSearchQuery(String searchQuery) {
+        mSearchQuery = searchQuery;
+    }
 
     void setPageSize(int pageSize) {
         mPageSize = pageSize;
