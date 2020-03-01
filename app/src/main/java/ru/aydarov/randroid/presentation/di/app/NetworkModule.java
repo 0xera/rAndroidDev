@@ -20,6 +20,7 @@ import ru.aydarov.randroid.data.repository.api.user.RedditUserApi;
 import ru.aydarov.randroid.data.util.RedditUtilsNet;
 import ru.aydarov.randroid.domain.token.TokenInteractor;
 import ru.aydarov.randroid.domain.user.AccessTokenAuthenticator;
+import ru.aydarov.randroid.domain.user.HeaderGenerator;
 
 import static ru.aydarov.randroid.presentation.di.NamesUtil.AUTHENTICATOR;
 import static ru.aydarov.randroid.presentation.di.NamesUtil.NO_AUTHENTICATOR;
@@ -56,7 +57,7 @@ public class NetworkModule {
     @Provides
     @Singleton
     AccessTokenAuthenticator provideAuthenticator(Lazy<TokenInteractor> tokenInteractor) {
-        return new AccessTokenAuthenticator(tokenInteractor);
+        return new AccessTokenAuthenticator(tokenInteractor, new HeaderGenerator());
     }
 
     @Provides

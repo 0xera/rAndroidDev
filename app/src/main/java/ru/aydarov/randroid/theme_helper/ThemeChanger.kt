@@ -69,7 +69,7 @@ class ThemeChanger : AppCompatActivity() {
     }
 
     private fun startAnimation() {
-        ViewAnimationUtils.createCircularReveal(ivScreenshot, mPositionX, mPositionY, calculateValues().toFloat(), 0f)
+        ViewAnimationUtils.createCircularReveal(ivScreenshot, mPositionX, mPositionY, calculateValues(), 0f)
                 .apply {
                     duration = DURATION_ANIM.toLong()
                     interpolator = DecelerateInterpolator()
@@ -78,8 +78,8 @@ class ThemeChanger : AppCompatActivity() {
                 }
     }
 
-    private fun calculateValues(): Int {
-        return hypot(ivScreenshot.width.toDouble(), ivScreenshot.height.toDouble()).toInt()
+    private fun calculateValues(): Float {
+        return hypot(ivScreenshot.width.toFloat(), ivScreenshot.height.toFloat())
     }
 
     companion object {

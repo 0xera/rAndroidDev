@@ -19,8 +19,4 @@ public interface RedditPostAPI {
     @GET(SUBREDDIT + "/{sortType}.json?raw_json=1")
     Flowable<RedditPost.RedditPostResponse> loadPosts(@Path("sortType") String sortType,
                                                       @Query("limit") int limit);
-
-
-
-
 }

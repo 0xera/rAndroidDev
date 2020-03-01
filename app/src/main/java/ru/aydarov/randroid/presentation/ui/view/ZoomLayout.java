@@ -58,21 +58,7 @@ public class ZoomLayout extends FrameLayout {
 
         @Override
         public boolean onSingleTapConfirmed(MotionEvent e) {
-            Window window = ((Activity) getContext()).getWindow();
-            if (mIsActionBarHidden) {
-                window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                        | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                        | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
-                mIsActionBarHidden = false;
-            } else {
-                window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_IMMERSIVE
-                        | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                        | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                        | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                        | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                        | View.SYSTEM_UI_FLAG_FULLSCREEN);
-                mIsActionBarHidden = true;
-            }
+            hideAndShowMenu();
             return true;
         }
 
@@ -111,6 +97,35 @@ public class ZoomLayout extends FrameLayout {
         }
     }
 
+    private void hideAndShowMenu() {
+
+        if (mIsActionBarHidden) {
+            show();
+            postDelayed(this::hide, 2000);
+        } else {
+            hide();
+            mIsActionBarHidden = true;
+        }
+    }
+
+    private void hide() {
+        Window window = ((Activity) getContext()).getWindow();
+        window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_IMMERSIVE
+                | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                | View.SYSTEM_UI_FLAG_FULLSCREEN);
+    }
+
+    private void show() {
+        Window window = ((Activity) getContext()).getWindow();
+        window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
+        mIsActionBarHidden = false;
+    }
+
     private class SwipeGesture extends GestureDetector.SimpleOnGestureListener {
         @Override
         public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
@@ -144,6 +159,12 @@ public class ZoomLayout extends FrameLayout {
         mScaleGestureDetector.setQuickScaleEnabled(true);
         mDoubleTapGesture = new GestureDetector(getContext(), new DoubleTapGesture());
         mSwipeGesture = new GestureDetector(getContext(), new SwipeGesture());
+        postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                hideAndShowMenu();
+            }
+        }, 2000);
     }
 
     @Override

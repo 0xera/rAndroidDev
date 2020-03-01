@@ -1,4 +1,4 @@
-package ru.aydarov.randroid.presentation.activty
+package ru.aydarov.randroid.presentation.ui.activity
 
 import android.Manifest
 import android.app.DownloadManager
@@ -13,11 +13,10 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import kotlinx.android.synthetic.main.activity_video_view.*
+import kotlinx.android.synthetic.main.activity_image_view.*
 import ru.aydarov.randroid.R
 import ru.aydarov.randroid.data.util.Constants.SRC_OPEN_KEY
 import ru.aydarov.randroid.presentation.ui.adapters.LoaderSourceAdapter
-import ru.aydarov.randroid.presentation.util.RedditUtils
 import java.io.File
 import java.util.*
 
@@ -25,20 +24,20 @@ import java.util.*
 /**
  * @author Aydarov Askhar 2020
  */
-class VideoViewActivity : AppCompatActivity() {
+class ImageViewActivity : AppCompatActivity() {
     private var mIsDownloading: Boolean = false
 
     private var mUrl: String? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_video_view)
+        setContentView(R.layout.activity_image_view)
         supportActionBar?.let {
             it.setDisplayHomeAsUpEnabled(true)
             it.setDisplayShowTitleEnabled(mIsDownloading)
         }
         mUrl = intent.getStringExtra(SRC_OPEN_KEY)
         mUrl?.let {
-            LoaderSourceAdapter.loadVideo(ivVideoView, it)
+            LoaderSourceAdapter.loadImage(ivShowView, it)
         }
     }
 
@@ -76,15 +75,15 @@ class VideoViewActivity : AppCompatActivity() {
 
 
     private fun downloadImage() {
-        val request = DownloadManager.Request(Uri.parse(RedditUtils.getUri(mUrl)))
-        val filename = VIDEO_FILE_NAME + UUID.randomUUID() + FORMAT
+        val request = DownloadManager.Request(Uri.parse(mUrl))
+        val filename = IMAGE_FILE_NAME + UUID.randomUUID() + FORMAT
         request.setTitle(filename)
         request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             request.setDestinationInExternalPublicDir(Environment.DIRECTORY_PICTURES, filename)
         } else {
             val path: String = getExternalFilesDir(Environment.DIRECTORY_PICTURES).toString()
-            val directory = File("$path$VIDEO_FILE_DIR")
+            val directory = File("$path$IMAGE_FILE_DIR")
             var saveToInfinityFolder = true
             if (!directory.exists()) {
                 if (!directory.mkdir()) {
@@ -98,7 +97,7 @@ class VideoViewActivity : AppCompatActivity() {
                 }
             }
             if (saveToInfinityFolder) {
-                request.setDestinationInExternalPublicDir(Environment.DIRECTORY_PICTURES.toString() + VIDEO_FILE_DIR, filename)
+                request.setDestinationInExternalPublicDir(Environment.DIRECTORY_PICTURES.toString() + IMAGE_FILE_DIR, filename)
             } else {
                 request.setDestinationInExternalPublicDir(Environment.DIRECTORY_PICTURES, filename)
             }
@@ -121,9 +120,9 @@ class VideoViewActivity : AppCompatActivity() {
     }
 
     companion object {
-        const val FORMAT = ".mp4"
-        const val VIDEO_FILE_NAME = "VIDEO"
-        const val VIDEO_FILE_DIR = "/rAndroidDev/video/"
+        const val FORMAT = ".png"
+        const val IMAGE_FILE_NAME = "IMAGE"
+        const val IMAGE_FILE_DIR = "/rAndroidDev/image/"
         const val PERMISSION_REQUEST_WRITE_EXTERNAL_STORAGE = 121
     }
 }

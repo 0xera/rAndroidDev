@@ -29,6 +29,15 @@ public class PostViewModel extends ViewModel {
     public static final String POST_KEY = "POST_Key";
     private Lazy<PostInteractor> mInteractor;
     private SavedStateHandle mHandle;
+
+    void setSortTypeLive(MutableLiveData<String> sortTypeLive) {
+        mSortTypeLive = sortTypeLive;
+    }
+
+     MutableLiveData<String> getSortTypeLive() {
+        return mSortTypeLive;
+    }
+
     private MutableLiveData<String> mSortTypeLive = new MutableLiveData<>();
     private LiveData<ListingPost<RedditPost>> mResultLive = Transformations.map(mSortTypeLive, this::getRedditPostListing);
 
@@ -40,7 +49,7 @@ public class PostViewModel extends ViewModel {
     private LiveData<NetworkState> mNetworkState = Transformations.switchMap(mResultLive, ListingPost::getNetworkState);
     private LiveData<PagedList<RedditPost>> mPosts = Transformations.switchMap(mResultLive, ListingPost<RedditPost>::getPagedList);
 
-    private PostViewModel(SavedStateHandle handle, Lazy<PostInteractor> interactor) {
+    public PostViewModel(SavedStateHandle handle, Lazy<PostInteractor> interactor) {
         mInteractor = interactor;
         mHandle = handle;
         checkHandle();
@@ -81,9 +90,14 @@ public class PostViewModel extends ViewModel {
     }
 
     public void updateSortType(String sortType) {
-        mHandle.set(POST_KEY, sortType);
+        saveSortType(sortType);
         mSortTypeLive.setValue(sortType);
 
+    }
+
+    private void saveSortType(String sortType) {
+        if (mHandle != null)
+            mHandle.set(POST_KEY, sortType);
     }
 
     public Function0<Unit> getRetry() {

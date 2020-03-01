@@ -22,15 +22,17 @@ public class CustomPlayerView extends PlayerView {
     private boolean hideController;
 
     {
-        hideController = true;
+        hideController = false;
     }
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         if (hideController) {
             hideController();
+            setControllerShowTimeoutMs(0);
             hideController = false;
         } else {
+            setControllerShowTimeoutMs(2000);
             showController();
             hideController = true;
         }

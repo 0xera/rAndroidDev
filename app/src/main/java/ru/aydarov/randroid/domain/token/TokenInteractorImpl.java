@@ -8,12 +8,11 @@ import java.util.Map;
 
 import androidx.lifecycle.MutableLiveData;
 import dagger.Lazy;
-import io.reactivex.Single;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
 import ru.aydarov.randroid.data.model.Token;
 import ru.aydarov.randroid.data.repository.repo.token.RepositoryToken;
 import ru.aydarov.randroid.data.util.RedditUtilsNet;
+import ru.aydarov.randroid.domain.util.SchedulersProvider;
 import ru.aydarov.randroid.domain.util.TokensSharedHelper;
 import ru.aydarov.randroid.presentation.ui.web.WebViewViewModel;
 
@@ -34,10 +33,6 @@ public class TokenInteractorImpl implements TokenInteractor {
         mPreferences = preferences;
     }
 
-    @Override
-    public Single<Token> getAccessToken() {
-        return null;
-    }
 
     public String getUrl() {
         Uri baseUri = Uri.parse(RedditUtilsNet.OAUTH_URL);
@@ -56,8 +51,9 @@ public class TokenInteractorImpl implements TokenInteractor {
         if (url.contains(CODE_URL_1) || url.contains(CODE_URL_2)) {
             mUri = Uri.parse(url);
             String state_key = mUri.getQueryParameter(RedditUtilsNet.STATE_KEY);
+            String code = mUri.getQueryParameter(RedditUtilsNet.RESPONSE_TYPE);
             if (state_key != null && state_key.equals(RedditUtilsNet.STATE))
-                return getAccessAndRefreshTokens(state);
+                return getAccessAndRefreshTokens(state, code);
         } else if (url.contains(ERROR_ACCESS_DENIED)) {
             state.postValue(WebViewViewModel.State.DENIED);
             return false;
@@ -65,11 +61,11 @@ public class TokenInteractorImpl implements TokenInteractor {
         return false;
     }
 
-    private boolean getAccessAndRefreshTokens(MutableLiveData<WebViewViewModel.State> state) {
-        Map<String, String> params = RedditUtilsNet.getParamsAuth(mUri);
+    private boolean getAccessAndRefreshTokens(MutableLiveData<WebViewViewModel.State> state, String code) {
+        Map<String, String> params = RedditUtilsNet.getParamsAuth(code);
         mDisposable = mRepositoryToken.get().getToken(RedditUtilsNet.getHttpBasicAuthHeader(), params)
-                .subscribeOn(Schedulers.io())
-                .observeOn(Schedulers.io())
+                .subscribeOn(SchedulersProvider.io())
+                .observeOn(SchedulersProvider.io())
                 .subscribe(token -> {
                     saveToken(token);
                     state.postValue(WebViewViewModel.State.SUCCESS);
@@ -77,6 +73,8 @@ public class TokenInteractorImpl implements TokenInteractor {
                 }, throwable -> state.postValue(WebViewViewModel.State.ERROR));
         return true;
     }
+
+
 
     private void saveToken(Token token) {
         mPreferences.get().edit().putString(RedditUtilsNet.ACCESS_TOKEN_KEY, token.getAccessToken()).apply();

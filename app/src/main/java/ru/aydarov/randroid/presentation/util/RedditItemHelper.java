@@ -24,9 +24,9 @@ import ru.aydarov.randroid.R;
 import ru.aydarov.randroid.data.model.Media;
 import ru.aydarov.randroid.data.model.RedditPost;
 import ru.aydarov.randroid.data.util.RedditUtilsNet;
-import ru.aydarov.randroid.presentation.activty.ImageViewActivity;
-import ru.aydarov.randroid.presentation.activty.VideoViewActivity;
 import ru.aydarov.randroid.presentation.common.INavigatorSource;
+import ru.aydarov.randroid.presentation.ui.activity.ImageViewActivity;
+import ru.aydarov.randroid.presentation.ui.activity.VideoViewActivity;
 import ru.noties.markwon.Markwon;
 
 import static android.util.Patterns.WEB_URL;
@@ -36,7 +36,7 @@ import static ru.aydarov.randroid.data.util.RedditUtilsNet.LINK;
 import static ru.aydarov.randroid.data.util.RedditUtilsNet.TEXT;
 import static ru.aydarov.randroid.data.util.RedditUtilsNet.VIDEO;
 
-public class RedditItemHelper {
+class RedditItemHelper {
 
     private static final String PATTERN_DATE = "MMM d, yyyy, HH:mm";
 
@@ -67,6 +67,8 @@ public class RedditItemHelper {
                 e.printStackTrace();
             }
             Linkify.addLinks(selfText, WEB_URL, "");
+        } else {
+            selfText.setText("");
         }
 
     }
@@ -165,7 +167,8 @@ public class RedditItemHelper {
 
 
     static View.OnClickListener getCommentsOpenListener(INavigatorSource navigatorSource,
-                                                        View.OnClickListener onClickListener, RedditPost post) { {
+                                                        View.OnClickListener onClickListener, RedditPost post) {
+        {
             if (onClickListener == null) {
                 onClickListener = v -> navigatorSource.openComments(post);
             }

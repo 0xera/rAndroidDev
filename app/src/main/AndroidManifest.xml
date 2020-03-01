@@ -26,11 +26,17 @@
             android:theme="@style/ThemeLight"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name=".presentation.activty.ImageViewActivity"
+            android:name="ru.aydarov.randroid.presentation.ui.activity.ImageViewActivity"
             android:theme="@style/ViewSourceTheme" />
         <activity
-            android:name=".presentation.activty.VideoViewActivity"
-            android:theme="@style/ViewSourceTheme" />
+            android:name="ru.aydarov.randroid.presentation.ui.activity.VideoViewActivity"
+            android:allowTaskReparenting="true"
+            android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation"
+            android:launchMode="singleTask"
+            android:taskAffinity="@string/unique_code_for_video"
+            android:supportsPictureInPicture="true"
+            android:theme="@style/ViewSourceTheme"
+            tools:targetApi="n" />
         <activity
             android:name=".presentation.ui.search.SearchActivity"
             android:theme="@style/ThemeLight" />
@@ -41,15 +47,10 @@
             android:name=".theme_helper.ThemeChanger"
             android:theme="@style/ThemeChangeTheme" />
         <activity
-            android:name=".presentation.activty.SingleActivity"
-            android:theme="@style/ThemeLight">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+            android:name="ru.aydarov.randroid.presentation.ui.activity.SingleActivity"
+            android:theme="@style/ThemeLight" />
         <activity
-            android:name=".presentation.activty.SplashActivity"
+            android:name="ru.aydarov.randroid.presentation.ui.activity.SplashActivity"
             android:theme="@style/SplashThemeDark">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -60,6 +61,7 @@
 
                 <category android:name="android.intent.category.BROWSABLE" />
                 <category android:name="android.intent.category.DEFAULT" />
+
                 <data
                     android:host="www.reddit.com"
                     android:scheme="https" />

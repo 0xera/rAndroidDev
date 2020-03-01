@@ -15,14 +15,14 @@ import javax.inject.Inject
  */
 class UserViewModel(private val mInteractor: Lazy<UserInteractor>) : ViewModel() {
     private var mDisposable: Disposable? = null
-    val user = MutableLiveData<UserData>()
-    val result = MutableLiveData<Result>(Result.NONE)
+    var user: MutableLiveData<UserData>? = MutableLiveData()
+    var result = MutableLiveData<Result>(Result.NONE)
 
 
     fun fetchMyData(accessToken: String) {
         mDisposable = mInteractor.get().getUserData(accessToken)
                 .subscribe({
-                    user.postValue(it)
+                    user?.postValue(it)
                     result.postValue(Result.SUCCESS)
                 }, {
                     result.postValue(Result.ERROR)
@@ -41,7 +41,7 @@ class UserViewModel(private val mInteractor: Lazy<UserInteractor>) : ViewModel()
     }
 
     fun logOut() {
-        mInteractor.get().logOut(user.value?.name)
+        mInteractor.get().logOut(user?.value?.name)
     }
 
     enum class Result {

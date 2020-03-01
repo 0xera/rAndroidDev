@@ -14,18 +14,14 @@ import static ru.aydarov.randroid.data.util.Constants.SUBREDDIT;
  * @author Aydarov Askhar 2020
  */
 
-public interface RedditSerachOauthAPI {
+public interface RedditSearchOauthAPI {
 
-
-
-
-
-    @GET(SUBREDDIT + "/search.json?include_over_18=1&raw_json=1&type=link&restrict_sr=true")
+    @GET(SUBREDDIT + "/search.json?raw_json=1&type=link&restrict_sr=true")
     Flowable<RedditPost.RedditPostResponse> searchPostsOauth(
             @Query("q") String query, @Query("sort") String sort, @Query("after") String after,
             @HeaderMap Map<String, String> headers, @Query("limit") int pageSize);
 
-    @GET(SUBREDDIT + "/search.json?include_over_18=1&raw_json=1&type=link&restrict_sr=true")
+    @GET(SUBREDDIT + "/search.json?raw_json=1&type=link&restrict_sr=true")
     Flowable<RedditPost.RedditPostResponse> searchPostsOauth(
             @Query("q") String query, @Query("sort") String sort,
             @HeaderMap Map<String, String> headers, @Query("limit") int pageSize);

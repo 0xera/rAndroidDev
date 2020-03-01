@@ -44,7 +44,7 @@ public class SearchedViewModel extends ViewModel {
     private LiveData<NetworkState> mNetworkState = Transformations.switchMap(mResultLive, ListingPost::getNetworkState);
     private LiveData<PagedList<RedditPost>> mPosts = Transformations.switchMap(mResultLive, ListingPost<RedditPost>::getPagedList);
 
-    private SearchedViewModel(SavedStateHandle handle, Lazy<SearchInteractor> interactor) {
+    public SearchedViewModel(SavedStateHandle handle, Lazy<SearchInteractor> interactor) {
         mInteractor = interactor;
         mHandle = handle;
         checkHandle();
@@ -85,9 +85,14 @@ public class SearchedViewModel extends ViewModel {
     }
 
     public void updateSortType(String sortType) {
-        mHandle.set(POST_KEY, sortType);
+        saveSortType(sortType);
         mSortTypeLive.setValue(sortType);
 
+    }
+
+    private void saveSortType(String sortType) {
+        if (mHandle != null)
+            mHandle.set(POST_KEY, sortType);
     }
 
     public Function0<Unit> getRetry() {
@@ -98,10 +103,18 @@ public class SearchedViewModel extends ViewModel {
         };
     }
 
+    void setSortTypeLive(MutableLiveData<String> sortType) {
+        mSortTypeLive = sortType;
+    }
+
+    LiveData<String> getSortTypeLive() {
+        return mSortTypeLive;
+    }
+
     public static class Factory {
 
         @Inject
-        Lazy<SearchInteractor> mPostInteractor;
+        Lazy<SearchInteractor> mSearchInteractor;
 
         @Inject
         Factory() {
@@ -114,7 +127,7 @@ public class SearchedViewModel extends ViewModel {
                 @Override
                 @SuppressWarnings("unchecked")
                 protected <T extends ViewModel> T create(@NonNull String key, @NonNull Class<T> modelClass, @NonNull SavedStateHandle handle) {
-                    return (T) new SearchedViewModel(handle, mPostInteractor);
+                    return (T) new SearchedViewModel(handle, mSearchInteractor);
                 }
             };
         }

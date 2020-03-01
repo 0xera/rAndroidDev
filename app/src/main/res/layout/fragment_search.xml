@@ -1,18 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-    <data class="SearchFragmentBinding" />
-
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <include
-            android:id="@+id/toolbar_layout"
-            layout="@layout/toolbar_search_fragment" />
+    <include
+        android:id="@+id/toolbar_layout"
+        layout="@layout/toolbar_search_fragment" />
 
 
-
-    </FrameLayout>
-</layout>
+</FrameLayout>

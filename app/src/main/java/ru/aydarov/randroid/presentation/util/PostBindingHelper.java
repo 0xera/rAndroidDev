@@ -4,15 +4,15 @@ import android.text.TextUtils;
 import android.view.View;
 
 import ru.aydarov.randroid.data.model.RedditPost;
-import ru.aydarov.randroid.databinding.RedditPostBinding;
+import ru.aydarov.randroid.databinding.RedditPostItemBinding;
 import ru.aydarov.randroid.presentation.common.INavigatorSource;
 import ru.aydarov.randroid.presentation.ui.adapters.LoaderSourceAdapter;
 
 public class PostBindingHelper {
 
-    public static void binding(INavigatorSource navigatorSource, RedditPostBinding binding,
+    public static void binding(INavigatorSource navigatorSource, RedditPostItemBinding binding,
                                RedditPost post, View.OnClickListener onClickMediaListener,
-                               View.OnClickListener onClickShareListener, View.OnClickListener onClickCommentsListener) {
+                               View.OnClickListener onClickShareListener) {
         if (post != null) {
             binding.ivImage.layout(0, 0, 0, 0);
             String urlPreview = RedditUtils.getUrlPreview(post);

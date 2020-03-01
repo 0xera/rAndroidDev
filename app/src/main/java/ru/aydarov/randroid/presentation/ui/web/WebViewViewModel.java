@@ -1,7 +1,5 @@
 package ru.aydarov.randroid.presentation.ui.web;
 
-import android.webkit.CookieManager;
-
 import javax.inject.Inject;
 
 import androidx.annotation.NonNull;
@@ -23,8 +21,6 @@ public class WebViewViewModel extends ViewModel {
 
     public WebViewViewModel(Lazy<TokenInteractor> tokenInteractor) {
         mTokenInteractor = tokenInteractor;
-        CookieManager.getInstance().removeAllCookies(aBoolean -> {
-        });
     }
 
     boolean checkUrlAndGetTokens(String url) {

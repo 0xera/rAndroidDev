@@ -6,7 +6,7 @@ import androidx.paging.DataSource;
 import dagger.Lazy;
 import io.reactivex.Flowable;
 import ru.aydarov.randroid.data.model.RedditPost;
-import ru.aydarov.randroid.data.repository.api.search.RedditSerachOauthAPI;
+import ru.aydarov.randroid.data.repository.api.search.RedditSearchOauthAPI;
 import ru.aydarov.randroid.data.repository.databases.RedditSearchDao;
 import ru.aydarov.randroid.data.util.RedditUtilsNet;
 
@@ -16,10 +16,10 @@ import ru.aydarov.randroid.data.util.RedditUtilsNet;
 public class RepositorySearchOauthImpl implements RepositorySearch {
 
 
-    private final Lazy<RedditSerachOauthAPI> mRedditOauthAPI;
+    private final Lazy<RedditSearchOauthAPI> mRedditOauthAPI;
     private final Lazy<RedditSearchDao> mRedditDao;
 
-    public RepositorySearchOauthImpl(Lazy<RedditSerachOauthAPI> redditOauthAPI, Lazy<RedditSearchDao> redditDao) {
+    public RepositorySearchOauthImpl(Lazy<RedditSearchOauthAPI> redditOauthAPI, Lazy<RedditSearchDao> redditDao) {
         mRedditOauthAPI = redditOauthAPI;
         mRedditDao = redditDao;
     }

@@ -1,35 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <RelativeLayout
+        <FrameLayout
+            android:id="@+id/nav_host_fragment"
+            android:name="androidx.navigation.fragment.NavHostFragment"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:layout_above="@id/navView" />
 
-            <FrameLayout
-                android:id="@+id/nav_host_fragment"
-                android:name="androidx.navigation.fragment.NavHostFragment"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_above="@id/navView"
-            />
-
-            <com.google.android.material.bottomnavigation.BottomNavigationView
-                android:id="@+id/navView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:background="?navigation_background"
-                app:itemIconTint="@color/selector_bottom_item_state"
-                app:labelVisibilityMode="unlabeled"
-                app:menu="@menu/menu_bottom_nav" />
-
-        </RelativeLayout>
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/navView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:background="?navigation_background"
+            app:itemIconTint="@color/selector_bottom_item_state"
+            app:labelVisibilityMode="unlabeled"
+            app:menu="@menu/menu_bottom_nav" />
 
 
-</layout>
+    </RelativeLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

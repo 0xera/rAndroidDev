@@ -6,7 +6,7 @@ import dagger.Module;
 import dagger.Provides;
 import retrofit2.Retrofit;
 import ru.aydarov.randroid.data.repository.api.search.RedditSearchApi;
-import ru.aydarov.randroid.data.repository.api.search.RedditSerachOauthAPI;
+import ru.aydarov.randroid.data.repository.api.search.RedditSearchOauthAPI;
 
 import static ru.aydarov.randroid.presentation.di.NamesUtil.NO_OAUTH_RETROFIT;
 import static ru.aydarov.randroid.presentation.di.NamesUtil.NO_OAUTH_SEARCH_API;
@@ -33,8 +33,8 @@ public class NetworkSearchModule {
     @Provides
     @SearchScope
     @Named(OAUTH_SEARCH_API)
-    RedditSerachOauthAPI provideSearchOauthApi(@Named(OAUTH_RETROFIT) Retrofit retrofit) {
-        return retrofit.create(RedditSerachOauthAPI.class);
+    RedditSearchOauthAPI provideSearchOauthApi(@Named(OAUTH_RETROFIT) Retrofit retrofit) {
+        return retrofit.create(RedditSearchOauthAPI.class);
 
     }
 

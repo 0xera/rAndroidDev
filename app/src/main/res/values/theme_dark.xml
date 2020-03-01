@@ -106,4 +106,5 @@
         <item name="android:textColor">@color/dark_accent</item>
         <item name="hintTextColor">@color/dark_accent</item>
     </style>
+
 </resources>

@@ -17,7 +17,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.app.ActivityOptionsCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -27,19 +26,18 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 import ru.aydarov.randroid.R;
 import ru.aydarov.randroid.data.repository.repo.post.NetworkState;
 import ru.aydarov.randroid.data.util.RedditUtilsNet;
-import ru.aydarov.randroid.databinding.PostListBinding;
+import ru.aydarov.randroid.databinding.FragmentPostListBinding;
 import ru.aydarov.randroid.domain.util.SortTypeHelper;
-import ru.aydarov.randroid.presentation.activty.SingleActivity;
 import ru.aydarov.randroid.presentation.common.App;
 import ru.aydarov.randroid.presentation.common.INavigatorSource;
 import ru.aydarov.randroid.presentation.common.IScrollUp;
+import ru.aydarov.randroid.presentation.ui.activity.SingleActivity;
 import ru.aydarov.randroid.presentation.ui.adapters.PostAdapter;
 import ru.aydarov.randroid.presentation.ui.bottom_sheet.SortBottomSheetFragment;
 import ru.aydarov.randroid.presentation.ui.search.SearchActivity;
 import ru.aydarov.randroid.presentation.ui.view.SwipeRefreshLayout;
 
 import static android.app.Activity.RESULT_OK;
-import static ru.aydarov.randroid.data.util.Constants.REQUEST_TRANSITION;
 
 /**
  * @author Aydarov Askhar 2020
@@ -51,7 +49,7 @@ public class PostListFragment extends Fragment implements SortBottomSheetFragmen
     private static int SORT_TYPE = 1;
     private String mSortType = RedditUtilsNet.HOT;
     private PostViewModel mViewModel;
-    private PostListBinding mPostListBinding;
+    private FragmentPostListBinding mPostListBinding;
     private Toolbar mToolbar;
     private SortBottomSheetFragment mSortBottomSheetFragment;
     private RecyclerView mRecyclerView;
@@ -79,7 +77,7 @@ public class PostListFragment extends Fragment implements SortBottomSheetFragmen
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        mPostListBinding = PostListBinding.inflate(inflater, container, false);
+        mPostListBinding = FragmentPostListBinding.inflate(inflater, container, false);
         mViewModel = new ViewModelProvider(this, mFactoryViewModel.create(this)).get(PostViewModel.class);
         return mPostListBinding.getRoot();
     }
@@ -238,8 +236,9 @@ public class PostListFragment extends Fragment implements SortBottomSheetFragmen
 
     @Override
     public void navigateToSourceViewActivity(View view, Intent intent) {
-        ActivityOptionsCompat activityOptionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(requireActivity(), view, getString(R.string.src_transition));
-        requireActivity().startActivityFromFragment(this, intent, REQUEST_TRANSITION, activityOptionsCompat.toBundle());
+//        ActivityOptionsCompat activityOptionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(requireActivity(), view, getString(R.string.src_transition));
+//        requireActivity().startActivityFromFragment(this, intent, REQUEST_TRANSITION, activityOptionsCompat.toBundle());
+        startActivity(intent);
     }
 
     @Override

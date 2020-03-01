@@ -14,7 +14,6 @@ import ru.aydarov.randroid.theme_helper.ThemeHelper;
  */
 public class SearchedActivity extends AppCompatActivity implements INavigatorFragmentSearch {
 
-    public static final int SEARCH_REQUEST_CODE = 98;
     public static final String SEARCH_KEY_EXTRA = "keuss";
 
     @Override

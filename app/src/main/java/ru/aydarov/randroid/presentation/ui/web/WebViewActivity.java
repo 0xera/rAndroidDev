@@ -4,7 +4,9 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
+import android.webkit.CookieManager;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -16,10 +18,9 @@ import javax.inject.Inject;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProvider;
 import ru.aydarov.randroid.R;
-import ru.aydarov.randroid.databinding.WebViewActivityBinding;
+import ru.aydarov.randroid.databinding.ActivityWebViewBinding;
 import ru.aydarov.randroid.presentation.common.App;
 import ru.aydarov.randroid.theme_helper.ThemeHelper;
 
@@ -29,7 +30,7 @@ public class WebViewActivity extends AppCompatActivity {
     public static final int MINUTE_IN_SECOND = 60;
     @Inject
     WebViewViewModel.WebViewViewModelFactory mViewModelFactory;
-    private WebViewActivityBinding mWebViewActivityBinding;
+    private ActivityWebViewBinding mWebViewActivityBinding;
     private WebViewViewModel mViewModel;
 
     @Override
@@ -37,11 +38,13 @@ public class WebViewActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         App.getAppComponent().inject(this);
         mViewModel = new ViewModelProvider(this, mViewModelFactory).get(WebViewViewModel.class);
+        CookieManager.getInstance().removeAllCookies(aBoolean -> {
+        });
         ThemeHelper.setTheme(this);
-        mWebViewActivityBinding = DataBindingUtil.setContentView(this, R.layout.activity_web_view);
-        mWebViewActivityBinding.setLifecycleOwner(this);
+        mWebViewActivityBinding = ActivityWebViewBinding.inflate(LayoutInflater.from(this));
         initView();
         setLiveDataObserver();
+        setContentView(mWebViewActivityBinding.getRoot());
 
     }
 

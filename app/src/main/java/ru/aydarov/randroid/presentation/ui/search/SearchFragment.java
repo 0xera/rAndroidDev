@@ -18,14 +18,14 @@ import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import ru.aydarov.randroid.R;
-import ru.aydarov.randroid.databinding.SearchFragmentBinding;
+import ru.aydarov.randroid.databinding.FragmentSearchBinding;
 
 /**
  * @author Aydarov Askhar 2020
  */
 public class SearchFragment extends Fragment {
 
-    private SearchFragmentBinding mSearchFragmentBinding;
+    private FragmentSearchBinding mSearchFragmentBinding;
     private Toolbar mToolbar;
     private androidx.appcompat.widget.SearchView mSearchView;
 
@@ -42,8 +42,7 @@ public class SearchFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        mSearchFragmentBinding = SearchFragmentBinding.inflate(inflater, container, false);
-        mSearchFragmentBinding.setLifecycleOwner(this);
+        mSearchFragmentBinding = FragmentSearchBinding.inflate(inflater, container, false);
         initSearchView();
         initToolbar();
         return mSearchFragmentBinding.getRoot();

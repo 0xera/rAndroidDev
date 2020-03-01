@@ -6,7 +6,7 @@ import dagger.Lazy;
 import dagger.Module;
 import dagger.Provides;
 import ru.aydarov.randroid.data.repository.api.search.RedditSearchApi;
-import ru.aydarov.randroid.data.repository.api.search.RedditSerachOauthAPI;
+import ru.aydarov.randroid.data.repository.api.search.RedditSearchOauthAPI;
 import ru.aydarov.randroid.data.repository.databases.RedditSearchDao;
 import ru.aydarov.randroid.data.repository.repo.search.RepositorySearch;
 import ru.aydarov.randroid.data.repository.repo.search.RepositorySearchImpl;
@@ -33,7 +33,7 @@ public class RepositorySearchModule {
     @Provides
     @SearchScope
     @Named(OAUTH_REPO_SEARCH)
-    RepositorySearch provideRepositoryPostOauth(@Named(OAUTH_SEARCH_API) Lazy<RedditSerachOauthAPI> redditOauthAPI, Lazy<RedditSearchDao> redditDao) {
+    RepositorySearch provideRepositoryPostOauth(@Named(OAUTH_SEARCH_API) Lazy<RedditSearchOauthAPI> redditOauthAPI, Lazy<RedditSearchDao> redditDao) {
         return new RepositorySearchOauthImpl(redditOauthAPI, redditDao);
     }
 }

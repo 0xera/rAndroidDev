@@ -26,9 +26,9 @@ import ru.aydarov.randroid.data.util.Constants.REQUEST_TRANSITION
 import ru.aydarov.randroid.data.util.Constants.SRC_OPEN_KEY
 import ru.aydarov.randroid.databinding.UserFragmentBinding
 import ru.aydarov.randroid.domain.util.TokensSharedHelper
-import ru.aydarov.randroid.presentation.activty.ImageViewActivity
-import ru.aydarov.randroid.presentation.activty.SingleActivity
 import ru.aydarov.randroid.presentation.common.App
+import ru.aydarov.randroid.presentation.ui.activity.ImageViewActivity
+import ru.aydarov.randroid.presentation.ui.activity.SingleActivity
 import ru.aydarov.randroid.presentation.ui.bottom_sheet.AboutAppBottomSheetFragment
 import ru.aydarov.randroid.presentation.ui.web.WebViewActivity
 import ru.aydarov.randroid.presentation.util.LiveConnectUtil
@@ -151,11 +151,11 @@ class UserFragment : Fragment() {
         tvLogout.setOnClickListener { createLogoutAlertDialog() }
         //  ivBackground.setOnLongClickListener { openGallery(Request.BACKGROUND) }
         ivBackground.setOnClickListener {
-            val uri = RedditUtils.getUri(mUserViewModel.user.value?.sub?.banner)
+            val uri = RedditUtils.getUrl(mUserViewModel.user?.value?.sub?.banner)
             uri.openImage(it)
         }
         ivProfile.setOnClickListener {
-            mUserViewModel.user.value?.icon?.openImage(it)
+            mUserViewModel.user?.value?.icon?.openImage(it)
         }
 
         // ivProfile.setOnLongClickListener { openGallery(Request.PROFILE) }

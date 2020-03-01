@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="src_transition" translatable="false">iv_transition</string>
+    <string name="unique_code_for_video" translatable="false">.unique_code_for_video</string>
+
 </resources>

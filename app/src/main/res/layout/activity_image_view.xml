@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".presentation.activty.ImageViewActivity">
+    tools:context=".presentation.ui.activity.ImageViewActivity">
 
 
     <ru.aydarov.randroid.presentation.ui.view.ZoomLayout

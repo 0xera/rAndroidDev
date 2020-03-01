@@ -1,13 +1,9 @@
 package ru.aydarov.randroid.data.util;
 
-import android.net.Uri;
 import android.util.Base64;
 
 import java.util.HashMap;
 import java.util.Map;
-
-import okhttp3.MediaType;
-import okhttp3.RequestBody;
 
 /**
  * @author Aydarov Askhar 2020
@@ -40,6 +36,7 @@ public class RedditUtilsNet {
     public static final String EXPIRES_KEY = "expires_in";
     public static final String VIDEO = "VIDEO";
     public static final String IMAGE = "IMAGE";
+    public static final String image = "IMAGE";
     public static final String TEXT = "TEXT";
     public static final String LINK = "LINK";
     public static final String AUTHORIZATION_CODE = "authorization_code";
@@ -47,7 +44,6 @@ public class RedditUtilsNet {
     public static final String AUTHORIZATION_BASE = "bearer ";
     public static final String USER_AGENT_KEY = "User-Agent";
     public static final String USER_AGENT = "rAndroid";
-    public static final String ACCESS_TOKEN_URL = "https://www.reddit.com/api/v1/access_token";
     public static final String GRANT_TYPE_KEY = "grant_type";
     public static final String GRANT_TYPE_REFRESH_TOKEN = "refresh_token";
     public static final String REFRESH_TOKEN_KEY = "refresh_token";
@@ -73,15 +69,11 @@ public class RedditUtilsNet {
         return params;
     }
 
-    public static RequestBody getRequestBody(String s) {
-        return RequestBody.create(s, MediaType.parse("text/plain"));
-    }
 
-    public static Map<String, String> getParamsAuth(Uri uri) {
-        String authCode = uri.getQueryParameter(RedditUtilsNet.RESPONSE_TYPE);
+    public static Map<String, String> getParamsAuth(String code) {
         Map<String, String> params = new HashMap<>();
         params.put(RedditUtilsNet.GRANT_TYPE_KEY, RedditUtilsNet.AUTHORIZATION_CODE);
-        params.put(RedditUtilsNet.RESPONSE_TYPE, authCode);
+        params.put(RedditUtilsNet.RESPONSE_TYPE, code);
         params.put(RedditUtilsNet.REDIRECT_URI_KEY, RedditUtilsNet.REDIRECT_URI);
         return params;
     }

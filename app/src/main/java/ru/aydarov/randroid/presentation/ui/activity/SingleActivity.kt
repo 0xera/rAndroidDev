@@ -1,4 +1,4 @@
-package ru.aydarov.randroid.presentation.activty
+package ru.aydarov.randroid.presentation.ui.activity
 
 
 import android.content.Context

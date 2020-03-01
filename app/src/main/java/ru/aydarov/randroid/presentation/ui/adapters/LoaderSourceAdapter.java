@@ -16,8 +16,10 @@ import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.Target;
-import com.google.android.exoplayer2.ExoPlayerFactory;
+import com.google.android.exoplayer2.ExoPlaybackException;
+import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.SimpleExoPlayer;
+import com.google.android.exoplayer2.source.MergingMediaSource;
 import com.google.android.exoplayer2.source.ProgressiveMediaSource;
 import com.google.android.exoplayer2.ui.PlayerView;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
@@ -64,7 +66,7 @@ public class LoaderSourceAdapter {
     @BindingAdapter("bannerImageUrl")
     public static void loadImageBanner(ImageView imageView, String url) {
         if (!TextUtils.isEmpty(url) && !((Activity) imageView.getContext()).isDestroyed() && URLUtil.isValidUrl(url)) {
-            Glide.with(imageView.getContext()).load(RedditUtils.getUri(url)).apply(sRequestOptions).error(getResourceIdHasError(imageView)).into(imageView);
+            Glide.with(imageView.getContext()).load(RedditUtils.getUrl(url)).apply(sRequestOptions).error(getResourceIdHasError(imageView)).into(imageView);
         }
     }
 
@@ -75,9 +77,28 @@ public class LoaderSourceAdapter {
     }
 
     @BindingAdapter("videoUrl")
-    public static void loadVideo(PlayerView playerView, String url) {
+    public static void loadVideo(SimpleExoPlayer simpleExoPlayer, PlayerView playerView, String url) {
 
         if (!TextUtils.isEmpty(url) && !((Activity) playerView.getContext()).isDestroyed() && URLUtil.isValidUrl(url)) {
+            playerView.setPlayer(simpleExoPlayer);
+            String userAgent = Util.getUserAgent(playerView.getContext(), playerView.getContext().getString(R.string.app_name));
+            DefaultDataSourceFactory defaultDataSourceFactory = new DefaultDataSourceFactory(playerView.getContext(), userAgent);
+            ProgressiveMediaSource videoSource = new ProgressiveMediaSource.Factory(defaultDataSourceFactory).createMediaSource(Uri.parse(RedditUtils.getUrl(url)));
+            ProgressiveMediaSource audioSource = new ProgressiveMediaSource.Factory(defaultDataSourceFactory).createMediaSource(Uri.parse(RedditUtils.getAudioUrl(url)));
+            simpleExoPlayer.prepare(new MergingMediaSource(videoSource, audioSource));
+            simpleExoPlayer.addListener(new Player.EventListener() {
+                @Override
+                public void onPlayerError(ExoPlaybackException error) {
+                    simpleExoPlayer.prepare(videoSource);
+                    simpleExoPlayer.setPlayWhenReady(true);
+                }
+            });
+            simpleExoPlayer.setPlayWhenReady(true);
+
+        }
+    }
+}
+
 //                    videoView.setVideoPath(url);
 //                    MediaController controller = new MediaController(videoView.getContext());
 //                    controller.setAnchorView(videoView);
@@ -85,22 +106,7 @@ public class LoaderSourceAdapter {
 //                    videoView.requestFocus(0);
 //                    videoView.setOnPreparedListener(mp -> {
 //                        videoView.start();
-//                    });
-
-            SimpleExoPlayer simpleExoPlayer = ExoPlayerFactory.newSimpleInstance(playerView.getContext());
-            playerView.setPlayer(simpleExoPlayer);
-            String userAgent = Util.getUserAgent(playerView.getContext(), playerView.getContext().getString(R.string.app_name));
-            DefaultDataSourceFactory defaultDataSourceFactory = new DefaultDataSourceFactory(playerView.getContext(), userAgent);
-            ProgressiveMediaSource mediaSource = new ProgressiveMediaSource.Factory(defaultDataSourceFactory).createMediaSource(Uri.parse(RedditUtils.getUri(url)));
-            simpleExoPlayer.prepare(mediaSource);
-            simpleExoPlayer.setPlayWhenReady(true);
-
-        }
-    }
-}
-
-
-//    @BindingAdapter({"refreshState", "refreshListener"})
+//                    });//    @BindingAdapter({"refreshState", "refreshListener"})
 //    public static void refreshData(SwipeRefreshLayout refreshLayout, boolean isRefresh, SwipeRefreshLayout.OnRefreshListener listener) {
 //        refreshLayout.setRefreshing(isRefresh);
 //        refreshLayout.setOnRefreshListener(listener);

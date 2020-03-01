@@ -2,10 +2,11 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
+apply plugin: "scabbard.gradle"
 
 android {
     compileSdkVersion 29
-    buildToolsVersion "29.0.2"
+    buildToolsVersion '29.0.2'
     defaultConfig {
         applicationId "ru.aydarov.randroid"
         minSdkVersion 21
@@ -13,7 +14,18 @@ android {
         versionCode 1
         versionName "v0.1"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments = [
+                        "room.schemaLocation"  : "$projectDir/schemas".toString(),
+                        "room.incremental"     : "true",
+                        "room.expandProjection": "true"]
+            }
+        }
 
+    }
+    testOptions {
+        unitTests.returnDefaultValues = true
     }
     buildTypes {
         release {
@@ -27,12 +39,27 @@ android {
     dataBinding {
         enabled = true
     }
+    viewBinding {
+        enabled = true
+    }
+    scabbard {
+        enabled true
+    }
     compileOptions {
         sourceCompatibility = 1.8
         targetCompatibility = 1.8
     }
 }
-
+buildscript {
+    repositories {
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+    }
+    dependencies {
+        classpath "gradle.plugin.dev.arunkumar:scabbard-gradle-plugin:0.1.0"
+    }
+}
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     //design
@@ -56,9 +83,17 @@ dependencies {
 
     //tests
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    testImplementation 'junit:junit:4.12'
+    testImplementation 'junit:junit:4.13'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+    testImplementation 'org.mockito:mockito-core:2.28.2'
+    testImplementation 'org.mockito:mockito-inline:2.22.0'
+
+    testImplementation "androidx.arch.core:core-testing:2.1.0"
+
+    testImplementation 'org.powermock:powermock-core:2.0.0-beta.5'
+    testImplementation 'org.powermock:powermock-module-junit4:2.0.0-beta.5'
+    testImplementation 'org.powermock:powermock-api-mockito2:2.0.0-beta.5'
 
     //ktx
     implementation "androidx.core:core-ktx:1.2.0"
@@ -74,20 +109,19 @@ dependencies {
 
 
     //internet - rx, retrofit
-    implementation 'io.reactivex.rxjava2:rxjava:2.2.15'
+    implementation 'io.reactivex.rxjava2:rxjava:2.2.18'
     implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
-    implementation 'com.squareup.retrofit2:converter-gson:2.7.0'
-    implementation 'com.squareup.retrofit2:adapter-rxjava2:2.7.0'
-    implementation 'com.squareup.okhttp3:logging-interceptor:4.2.2'
+    implementation 'com.squareup.retrofit2:converter-gson:2.7.2'
+    implementation 'com.squareup.retrofit2:adapter-rxjava2:2.7.2'
+    implementation 'com.squareup.okhttp3:logging-interceptor:4.4.0'
 
     //pics, video, text
-    implementation 'com.github.bumptech.glide:glide:4.10.0'
+    implementation 'com.github.bumptech.glide:glide:4.11.0'
     implementation 'com.google.android.exoplayer:exoplayer:2.10.4'
-    implementation 'ru.noties:markwon:1.0.6-SNAPSHOT'
+    implementation 'ru.noties:markwon:2.0.2'
 
     //Room
     implementation "androidx.room:room-runtime:2.2.4"
-    annotationProcessor "androidx.room:room-compiler:2.2.4"
     kapt "androidx.room:room-compiler:2.2.4"
     implementation "androidx.room:room-rxjava2:2.2.4"
 
@@ -95,12 +129,10 @@ dependencies {
     //implementation "android.arch.work:work-runtime:1.0.1"
 
     //dagger2
-    implementation 'com.google.dagger:dagger-android:2.22'
-    implementation 'com.google.dagger:dagger-android-support:2.22'
-    annotationProcessor 'com.google.dagger:dagger-android-processor:2.20'
-    annotationProcessor 'com.google.dagger:dagger-compiler:2.25.2'
-    kapt 'com.google.dagger:dagger-android-processor:2.20'
-    kapt 'com.google.dagger:dagger-compiler:2.25.2'
+    implementation 'com.google.dagger:dagger-android:2.26'
+    implementation 'com.google.dagger:dagger-android-support:2.26'
+    kapt 'com.google.dagger:dagger-android-processor:2.26'
+    kapt 'com.google.dagger:dagger-compiler:2.26'
 
     //pagination
     implementation "androidx.paging:paging-runtime:2.1.1"

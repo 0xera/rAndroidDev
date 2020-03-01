@@ -1,36 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<androidx.coordinatorlayout.widget.CoordinatorLayout android:layout_height="match_parent"
+
+    android:layout_width="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <data class="PostListBinding">
+    <include
+        android:id="@+id/toolbar_layout"
+        layout="@layout/toolbar_post_fragment" />
 
-    </data>
-
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
+    <ru.aydarov.randroid.presentation.ui.view.SwipeRefreshLayout
+        android:id="@+id/swipe_refresh_layout"
+        android:layout_height="wrap_content"
         android:layout_width="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        app:scheme_color="?android:colorAccent"
+        app:scheme_color_background="?card_view_color">
 
-        android:layout_height="match_parent">
+        <androidx.recyclerview.widget.RecyclerView
 
-        <include
-            android:id="@+id/toolbar_layout"
-            layout="@layout/toolbar_post_fragment" />
-
-        <ru.aydarov.randroid.presentation.ui.view.SwipeRefreshLayout
-            android:id="@+id/swipe_refresh_layout"
-            android:layout_width="match_parent"
+            android:id="@+id/post_list_recycler_view"
+            android:layout_below="@id/toolbar_layout"
             android:layout_height="wrap_content"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"
-            app:scheme_color="?android:colorAccent"
-            app:scheme_color_background="?card_view_color">
+            android:layout_width="match_parent" />
+    </ru.aydarov.randroid.presentation.ui.view.SwipeRefreshLayout>
 
-            <androidx.recyclerview.widget.RecyclerView
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
 
-                android:id="@+id/post_list_recycler_view"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/toolbar_layout" />
-        </ru.aydarov.randroid.presentation.ui.view.SwipeRefreshLayout>
-
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
-
-</layout>

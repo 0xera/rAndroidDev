@@ -14,7 +14,7 @@ import org.jetbrains.annotations.NotNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import ru.aydarov.randroid.R;
-import ru.aydarov.randroid.databinding.SortBottomSheetBinding;
+import ru.aydarov.randroid.databinding.FragmentSortBottomSheetBinding;
 import ru.aydarov.randroid.domain.util.SortTypeHelper;
 import ru.aydarov.randroid.theme_helper.ThemeHelper;
 
@@ -31,7 +31,7 @@ public class SortBottomSheetFragment extends BottomSheetDialogFragment {
 
     private static final String FRAGMENT_TAG = "Bottom_sheet_tag";
     private SortListener mListener;
-    private SortBottomSheetBinding mSortBottomSheetBinding;
+    private FragmentSortBottomSheetBinding mSortBottomSheetBinding;
 
     public static SortBottomSheetFragment newInstance() {
         return new SortBottomSheetFragment();
@@ -52,8 +52,7 @@ public class SortBottomSheetFragment extends BottomSheetDialogFragment {
     @Override
     public View onCreateView(@NotNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        mSortBottomSheetBinding = SortBottomSheetBinding.inflate(inflater, container, false);
-        mSortBottomSheetBinding.setLifecycleOwner(this);
+        mSortBottomSheetBinding = FragmentSortBottomSheetBinding.inflate(inflater, container, false);
         initView();
         return mSortBottomSheetBinding.getRoot();
     }

@@ -22,7 +22,7 @@ import ru.aydarov.randroid.data.model.RedditPost;
 import ru.aydarov.randroid.data.repository.repo.post.NetworkState;
 import ru.aydarov.randroid.data.util.RedditUtilsNet;
 import ru.aydarov.randroid.databinding.NetworkStateBinding;
-import ru.aydarov.randroid.databinding.RedditPostBinding;
+import ru.aydarov.randroid.databinding.RedditPostItemBinding;
 import ru.aydarov.randroid.presentation.common.INavigatorSource;
 import ru.aydarov.randroid.presentation.util.PostBindingHelper;
 
@@ -80,7 +80,7 @@ public class PostAdapter extends PagedListAdapter<RedditPost, PostAdapter.Reddit
     @Override
     public RedditPostViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         if (viewType == R.layout.reddit_post_item) {
-            return new PostViewHolder(RedditPostBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false));
+            return new PostViewHolder(RedditPostItemBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false));
         } else {
             return new NetworkStateHolder(NetworkStateBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false));
 
@@ -154,19 +154,19 @@ public class PostAdapter extends PagedListAdapter<RedditPost, PostAdapter.Reddit
     class PostViewHolder extends RedditPostViewHolder {
 
 
-        private final RedditPostBinding mBinding;
+        private final RedditPostItemBinding mBinding;
         private View.OnClickListener mOnClickMediaListener;
         private View.OnClickListener mOnClickShareListener;
         private View.OnClickListener mOnClickCommentsListener;
 
-        public PostViewHolder(@NonNull RedditPostBinding binding) {
+        public PostViewHolder(@NonNull RedditPostItemBinding binding) {
             super(binding.getRoot());
             mBinding = binding;
         }
 
         @Override
         void bind(RedditPost post) {
-            PostBindingHelper.binding(mNavigatorSource, mBinding, post, mOnClickMediaListener, mOnClickShareListener, mOnClickCommentsListener);
+            PostBindingHelper.binding(mNavigatorSource, mBinding, post, mOnClickMediaListener, mOnClickShareListener);
         }
 
     }

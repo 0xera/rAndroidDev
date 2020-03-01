@@ -32,4 +32,5 @@
     <dimen name="text_post_size">16sp</dimen>
     <dimen name="padding_type">2dp</dimen>
     <dimen name="margin_iv_action_post">16dp</dimen>
+    <dimen name="seek_bar_margin">20dp</dimen>
 </resources>

@@ -36,4 +36,7 @@
         <attr name="scheme_color" format="color" />
         <attr name="scheme_color_background" format="color" />
     </declare-styleable>
+    <declare-styleable name="SearchActivityStyle">
+        <attr name="background_color_search" format="color" />
+    </declare-styleable>
 </resources>

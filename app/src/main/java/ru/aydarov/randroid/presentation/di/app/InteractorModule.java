@@ -52,4 +52,5 @@ class InteractorModule {
     PostRedditBoundaryCallback provideRedditBoundaryCallback(Lazy<PostInteractor> postInteractor) {
         return new PostRedditBoundaryCallback(postInteractor);
     }
+
 }

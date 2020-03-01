@@ -17,7 +17,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.app.ActivityOptionsCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -26,7 +25,7 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 import ru.aydarov.randroid.R;
 import ru.aydarov.randroid.data.repository.repo.post.NetworkState;
 import ru.aydarov.randroid.data.util.RedditUtilsNet;
-import ru.aydarov.randroid.databinding.SearchedFragmentBinding;
+import ru.aydarov.randroid.databinding.FragmentSearchedBinding;
 import ru.aydarov.randroid.domain.util.SortTypeHelper;
 import ru.aydarov.randroid.presentation.common.App;
 import ru.aydarov.randroid.presentation.common.INavigatorSource;
@@ -36,7 +35,6 @@ import ru.aydarov.randroid.presentation.ui.search.SearchActivity;
 import ru.aydarov.randroid.presentation.ui.view.SwipeRefreshLayout;
 
 import static android.app.Activity.RESULT_OK;
-import static ru.aydarov.randroid.data.util.Constants.REQUEST_TRANSITION;
 import static ru.aydarov.randroid.presentation.ui.search.SearchActivity.SEARCH_KEY_EXTRA;
 
 public class SearchedFragment extends Fragment implements SortBottomSheetFragment.SortListener, INavigatorSource {
@@ -44,14 +42,13 @@ public class SearchedFragment extends Fragment implements SortBottomSheetFragmen
     private static final String REFRESH = "key_ref";
     private static final String RECYCLER_VIEW_POSITION_STATE = "key_pos";
     private SearchedViewModel mViewModel;
-    private SearchedFragmentBinding mPostListBinding;
+    private FragmentSearchedBinding mPostListBinding;
     private Toolbar mToolbar;
     private SortBottomSheetFragment mSortBottomSheetFragment;
     private RecyclerView mRecyclerView;
     private PostAdapter mAdapter;
     private String mSortType = RedditUtilsNet.HOT;
     private String mQuery;
-
     @Inject
     SearchedViewModel.Factory mFactoryViewModel;
     private SwipeRefreshLayout mSwipeRefreshLayout;
@@ -80,8 +77,8 @@ public class SearchedFragment extends Fragment implements SortBottomSheetFragmen
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        mPostListBinding = SearchedFragmentBinding.inflate(inflater, container, false);
         mViewModel = new ViewModelProvider(this, mFactoryViewModel.create(this)).get(SearchedViewModel.class);
+        mPostListBinding = FragmentSearchedBinding.inflate(inflater, container, false);
         initRecyclerView(savedInstanceState);
         initToolbar();
         setToolbarTitle(mQuery);
@@ -245,8 +242,9 @@ public class SearchedFragment extends Fragment implements SortBottomSheetFragmen
 
     @Override
     public void navigateToSourceViewActivity(View view, Intent intent) {
-        ActivityOptionsCompat activityOptionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(requireActivity(), view, getString(R.string.src_transition));
-        requireActivity().startActivityFromFragment(this, intent, REQUEST_TRANSITION, activityOptionsCompat.toBundle());
+//        ActivityOptionsCompat activityOptionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(requireActivity(), view, getString(R.string.src_transition));
+//        requireActivity().startActivityFromFragment(this, intent, REQUEST_TRANSITION, activityOptionsCompat.toBundle());
+        startActivity(intent);
     }
 
     @Override

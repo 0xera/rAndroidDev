@@ -18,6 +18,7 @@ object ThemeHelper {
             setTheme(R.style.ThemeDark)
     }
 
+
     @JvmStatic
     fun updateTheme(context: Context, light: Boolean) = with(context) {
         getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE).edit().putBoolean(THEME_KEY, light).apply()
